@@ -65,6 +65,7 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^5.10.0",
     "redux-saga": "^1.0.1",
+    "reselect": "^4.0.0",
     "superagent": "^3.8.3"
   },
   "lint-staged": {

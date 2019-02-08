@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home is rendered 1`] = `
+<Layout
+  className="home-page"
+>
+  <div
+    className="container pt-4 pb-4"
+  >
+    <h1
+      className="title text-center pb-3"
+    />
+    <img
+      className="w-100"
+      src="static/images/the-team.jpg"
+    />
+  </div>
+</Layout>
+`;

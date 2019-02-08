@@ -1,0 +1,5 @@
+{
+  "pageTitle": "AnalyticsFire - Home Page",
+  "title":
+    "This page was made using NextJs. It's currently running in {{ env }} mode!"
+}

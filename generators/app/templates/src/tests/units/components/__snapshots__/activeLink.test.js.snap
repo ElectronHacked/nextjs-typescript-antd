@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ActiveLink is rendered 1`] = `
+<a
+  class="link active"
+  href="/home"
+>
+  Home
+</a>
+`;

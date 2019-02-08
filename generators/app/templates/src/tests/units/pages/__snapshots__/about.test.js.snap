@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`About is rendered 1`] = `
+<Layout
+  className="about-page"
+>
+  <div
+    className="container pt-4 pb-4"
+  >
+    <h1
+      className="title text-center pb-3"
+    />
+    <blockquote
+      className="blockquote text-center"
+    />
+    <p
+      className="text-center"
+    />
+  </div>
+</Layout>
+`;

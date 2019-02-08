@@ -31,7 +31,9 @@ module.exports = class extends Generator {
 
     const stateName = `I${nameToUpper}State`;
 
-    const sagaName = `I${nameToUpper}Saga`;
+    const selectorState = `${nameWithLowerCase}State`;
+
+    const sagaName = `${nameWithLowerCase}Saga`;
 
     // create folder project
     mkdirp(`redux/${nameWithLowerCase}`);
@@ -80,6 +82,16 @@ module.exports = class extends Generator {
       this.templatePath('_selectors.ts'),
       this.destinationPath(`redux/${nameWithLowerCase}/selectors.ts`),
       {
+        stateName: selectorState,
+        nameWithLowerCase,
+      }
+    );
+
+    // copy state
+    this.fs.copyTpl(
+      this.templatePath('_state.ts'),
+      this.destinationPath(`redux/${nameWithLowerCase}/state.ts`),
+      {
         stateName,
       }
     );
@@ -92,7 +104,7 @@ module.exports = class extends Generator {
           .toString()
           .replace(
             regEx,
-            `@import ${nameWithLowerCase} from './${nameWithLowerCase}/reducer';\n/* new-imported-reducer-goes-here */`
+            `import ${nameWithLowerCase} from './${nameWithLowerCase}/reducer';\n/* new-imported-reducer-goes-here */`
           );
         return newContent;
       },
@@ -123,7 +135,7 @@ module.exports = class extends Generator {
           .toString()
           .replace(
             regEx,
-            `@import ${nameWithLowerCase} from './${nameWithLowerCase}/sagas';\n/* new-imported-saga-goes-here */`
+            `import ${nameWithLowerCase} from './${nameWithLowerCase}/sagas';\n/* new-imported-saga-goes-here */`
           );
         return newContent;
       },
@@ -154,14 +166,14 @@ module.exports = class extends Generator {
           .toString()
           .replace(
             regEx,
-            `@import { ${stateName} } from './${nameWithLowerCase}/state';\n/* new-imported-state-goes-here */`
+            `import { ${stateName} } from './${nameWithLowerCase}/state';\n\t/* new-imported-state-goes-here */`
           );
         return newContent;
       },
     });
 
     // update storeState.ts to add the new reducer to the storeState object
-    this.fs.copy('./redux/storeState.ts', './redux/rootSaga.ts', {
+    this.fs.copy('./redux/storeState.ts', './redux/storeState.ts', {
       process: function(content) {
         var regEx = new RegExp(
           /\/\* new-imported-state-key-goes-here \*\//,
@@ -171,7 +183,7 @@ module.exports = class extends Generator {
           .toString()
           .replace(
             regEx,
-            `${stateName},\n/* new-imported-state-key-goes-here */`
+            `readonly ${nameWithLowerCase}: ${stateName};\n\t/* new-imported-state-key-goes-here */`
           );
         return newContent;
       },

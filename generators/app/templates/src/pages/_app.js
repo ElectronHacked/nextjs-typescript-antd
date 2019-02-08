@@ -1,28 +1,30 @@
 // pages/_app.js
 import React from 'react';
-import { Provider } from 'react-redux';
-import App, { Container } from 'next/app';
-import withRedux from 'next-redux-wrapper';
-import initStore from '@root/redux';
+import App, {Container} from 'next/app';
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
+import {configureStore} from '../redux/createStore';
+
+const {store, persistor} = configureStore ();
 
 class MyApp extends App {
-  static async getInitialProps({ Component, ctx }) {
+  static async getInitialProps({Component, ctx}) {
     const pageProps = Component.getInitialProps
-      ? await Component.getInitialProps(ctx)
+      ? await Component.getInitialProps (ctx)
       : {};
-    return { pageProps };
+    return {pageProps};
   }
 
-  render() {
-    const { Component, pageProps, store } = this.props;
+  render () {
+    const {Component, pageProps} = this.props;
     return (
       <Container>
         <Provider store={store}>
-          <Component {...pageProps} />
+          <PersistGate loading={null} persistor={persistor}>
+            <Component {...pageProps} />
+          </PersistGate>
         </Provider>
       </Container>
     );
   }
 }
-
-export default withRedux(initStore)(MyApp);

@@ -4,21 +4,18 @@ import { ILoadingPayload } from './payloads';
 
 import {DEFAULT_ACTION} from './constants';
 
-import {IMyInvoicesState} from './state';
+import { <%= stateName %> } from './state';
 
-
-const initialState: <%= state %> = {
+const initialState: <%= stateName %> = {
   isLoading: false,
 };
 
-const myInvoicesReducer = handleActions<<%= state %>>(
+export default handleActions<<%= stateName %>>(
   {
-    [FETCH_MY_INVOICES]: (state: <%= state %>, action: ReduxActions.Action<ILoadingPayload>) => ({
+    [DEFAULT_ACTION]: (state: <%= stateName %>, action: ReduxActions.Action<ILoadingPayload>) => ({
       ...state,
       ...action.payload,
     }),
   },
   initialState,
 );
-
-export default myInvoicesReducer;

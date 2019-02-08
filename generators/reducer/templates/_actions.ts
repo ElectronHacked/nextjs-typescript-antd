@@ -1,6 +1,5 @@
 import {createAction} from 'redux-actions';
 
-// @ts-ignore
 import {DEFAULT_ACTION} from './constants';
 
-export const fetchMyInvoices = createAction(DEFAULT_ACTION);
+export const defaultAction = createAction(DEFAULT_ACTION);

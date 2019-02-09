@@ -166,7 +166,7 @@ module.exports = class extends Generator {
           .toString()
           .replace(
             regEx,
-            `import { ${stateName} } from './${nameWithLowerCase}/state';\n\t/* new-imported-state-goes-here */`
+            `import { ${stateName} } from './${nameWithLowerCase}/state';\n/* new-imported-state-goes-here */`
           );
         return newContent;
       },

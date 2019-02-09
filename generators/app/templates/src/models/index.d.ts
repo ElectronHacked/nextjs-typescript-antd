@@ -4,4 +4,4 @@ import { ILoadable } from './loadable';
 export {
   ILoadable,
   /* new-imported-interface-export-goes-here */
-}
+};

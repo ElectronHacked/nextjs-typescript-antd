@@ -1,7 +1,7 @@
 {
-  "name": "generator-next-typescript-ant",
+  "name": "yo-nextjs-typescript-generator",
   "version": "1.0.9",
-  "description": "Yoman Generator for next-typescript-ant",
+  "description": "Yoman Generator for yo-nextjs-typescript-generator",
   "scripts": {
     "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
     "precommit": "lint-staged",
@@ -31,7 +31,7 @@
   "files": [
     "generators"
   ],
-  "author": "Damian Aruj <damian@analyticsfire.com> (https://github.com/daruj)",
+  "author": "Electron Hacked (https://github.com/ElectronHacked)",
   "license": "MIT",
   "dependencies": {
     "@types/react": "^16.8.2",
@@ -81,6 +81,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AnalyticsFire/generator-create-next-app-reloaded"
+    "url": "https://github.com/ElectronHacked/yo-nextjs-typescript-generator"
   }
 }

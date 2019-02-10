@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Card } from 'antd';
 import { IComment } from 'models';
-import './styles.less';
+import './styles.scss';
 
 interface Props {
   readonly comment: IComment;

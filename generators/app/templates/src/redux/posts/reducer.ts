@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions';
-import { PostState } from './state';
+import { IPostsState } from './state';
 import {
   FETCH_POSTS,
   FETCH_POSTS_SUCCESS,
@@ -15,7 +15,7 @@ import {
   FetchPostCommentsSuccessPayload,
 } from './payloads';
 
-const initialState: PostState = {
+const initialState: IPostsState = {
   posts: [],
   comments: [],
   isFetchingPosts: false,
@@ -24,7 +24,7 @@ const initialState: PostState = {
   selectedPostId: '',
 };
 
-export default handleActions<PostState>(
+export default handleActions<IPostsState>(
   {
     [FETCH_POSTS]: (state, action: ReduxActions.Action<FetchPostsPayload>) => ({
       ...state,

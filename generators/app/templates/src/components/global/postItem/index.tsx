@@ -18,7 +18,7 @@ const PostItem: React.SFC<Props> = ({ post, hasViewCommentsLink = true }) => {
       title={title}
       extra={
         hasViewCommentsLink && (
-          <Link as={`/post/${post.id}`} href={`/post?id=${id}`}>
+          <Link href={`/post?id=${id}`}>
             <a>View Comments</a>
           </Link>
         )

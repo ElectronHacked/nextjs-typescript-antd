@@ -4,9 +4,9 @@ import { createSelector } from 'reselect';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { IComment } from 'models';
-import CommentItem from '../CommentItem';
 import { selectSelectedPostComments } from './../../../redux/posts/selectors';
 import './styles.scss';
+import CommentItem from './../commentItem';
 
 interface Props {
   readonly comments: IComment[];

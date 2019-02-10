@@ -1,6 +1,6 @@
 import * as React from 'react';
 import uuid from 'uuid/v4';
-import PostItem from '../PostItem';
+import PostItem from '../postItem';
 import { createSelector } from 'reselect';
 import { selectAllPosts } from '../../../redux/posts/selectors';
 import { compose } from 'recompose';
@@ -14,6 +14,7 @@ interface Props {
 
 const PostList: React.SFC<Props> = ({ posts }) => (
   <React.Fragment>
+    <h1>Posts</h1>
     {posts.map(post => (
       <PostItem post={post} key={uuid()} />
     ))}

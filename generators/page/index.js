@@ -83,7 +83,10 @@ module.exports = class extends Generator {
     );
 
     const linkItem = `
-      <MenuItem key={uuid()}>
+      <MenuItem
+        key={uuid()}
+        className={asPath === '/${nameWithLowerCase}' ? activeClass : ''}
+      >
         <Link href="/${nameWithLowerCase}">
           <a>${title}</a>
         </Link>

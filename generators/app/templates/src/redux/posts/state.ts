@@ -1,6 +1,6 @@
 import { IPost, IComment } from 'models';
 
-export interface IPostState {
+export interface IPostsState {
   readonly posts: IPost[];
   readonly comments: IComment[];
   readonly isFetchingPosts: boolean;

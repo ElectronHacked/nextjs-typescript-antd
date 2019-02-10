@@ -28,12 +28,12 @@ module.exports = class extends Generator {
     const className = nameWithLowerCase;
     const component = name.charAt(0).toUpperCase() + name.slice(1);
     // create folder project
-    mkdirp(`components/${nameWithLowerCase}`);
+    mkdirp(`components/global/${nameWithLowerCase}`);
 
     // copy component into the components folder
     this.fs.copyTpl(
       this.templatePath('_component.js'),
-      this.destinationPath(`components/${nameWithLowerCase}/index.tsx`),
+      this.destinationPath(`components/global/${nameWithLowerCase}/index.tsx`),
       {
         component,
         className,

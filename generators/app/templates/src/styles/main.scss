@@ -1,19 +1,6 @@
 // Project variables and Mixins
 @import 'variables';
 @import 'mixins';
-// Ant Design Reset, Grid & Utilities
-//Components
-@import '~@root/components/header/header.scss';
-@import '~@root/components/footer/footer.scss';
-@import '~@root/components/nav/nav.scss';
-@import '~@root/components/characterInfo/characterInfo.scss';
-/* new-component-stylesheet-goes-here */
-
-// Pages
-@import '~@root/pages/home/home.scss';
-@import '~@root/pages/about/about.scss';
-/* new-page-stylesheet-goes-here */
-
 // Main Styles
 main {
   min-height: 100vh;

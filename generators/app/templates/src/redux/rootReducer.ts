@@ -1,11 +1,13 @@
 import { combineReducers, Reducer, AnyAction } from 'redux';
-import { StoreState } from './storeState';
+import { IStoreState } from './storeState';
+import posts from './posts/reducer';
 /* new-imported-reducer-goes-here */
 
-const rootReducer: Reducer<StoreState, AnyAction> = combineReducers<StoreState>(
-  {
-    /* new-tranformed-reducer-export-goes-here */
-  }
-);
+const rootReducer: Reducer<IStoreState, AnyAction> = combineReducers<
+  IStoreState
+>({
+  posts,
+  /* new-tranformed-reducer-export-goes-here */
+});
 
 export default rootReducer;

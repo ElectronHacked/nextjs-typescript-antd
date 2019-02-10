@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './about.scss';
-import Layout from './../../components/global/layout/index';
+import Layout from 'components/global/layout';
 
 export const About = () => (
   <Layout title="About Us" description="This is About Page">

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Layout from 'components/layout/index';
+import Layout from 'components/global/layout';
 import './home.scss';
 
 export const Home = () => (

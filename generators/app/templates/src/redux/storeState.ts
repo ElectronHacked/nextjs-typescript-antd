@@ -1,5 +1,7 @@
+import { IPostState } from './posts/state';
 /* new-imported-state-goes-here */
 
-export interface StoreState {
+export interface IStoreState {
+  readonly posts: IPostState;
   /* new-imported-state-key-goes-here */
 }

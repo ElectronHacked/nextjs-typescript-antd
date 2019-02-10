@@ -58,9 +58,7 @@ module.exports = class extends Generator {
     // copy styles.scss
     this.fs.copyTpl(
       this.templatePath('_styles.scss'),
-      this.destinationPath(
-        `pages/${nameWithLowerCase}/${nameWithLowerCase}.scss`
-      ),
+      this.destinationPath(`pages/${nameWithLowerCase}/styles.scss`),
       {
         className,
       }
@@ -94,14 +92,14 @@ module.exports = class extends Generator {
 
     // update server.js to add the new namespace to the list
     this.fs.copy(
-      './components/global/layout.tsx',
-      '../components/global/layout.tsx',
+      './components/global/layout/index.tsx',
+      './components/global/layout/index.tsx',
       {
         process: function(content) {
           var regEx = new RegExp(/{\/\* new-menu-item \*\/}/, 'g');
           var newContent = content
             .toString()
-            .replace(regEx, `, '${linkItem}'\n\t\t\t\t\t{/* new-menu-item */}`);
+            .replace(regEx, `${linkItem}\n\t\t\t\t\t{/* new-menu-item */}`);
           return newContent;
         },
       }

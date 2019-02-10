@@ -1,52 +1,23 @@
 {
-  "env": {
-    "development": {
-      "presets": [
-        "next/babel"
-      ],
-      "plugins": [
-        [
-          "module-resolver",
-          {
-            "root": [
-              "./"
-            ],
-            "alias": {
-              "components": "./components",
-              "containers": "./containers",
-              "enums": "./enums",
-              "hocs": "./hocs",
-              "hooks": "./hooks",
-              "models": "./models",
-              "redux": "./redux"
-            }
-          }
-        ],
-        [
-          "@babel/plugin-proposal-decorators",
-          {
-            "decoratorsBeforeExport": true
-          }
-        ],
-        [
-          "import",
-          {
-            "libraryName": "antd",
-            "style": true
-          }
-        ]
-      ]
-    },
-    "production": {
-      "presets": [
-        "next/babel"
-      ]
-    },
-    "testing": {
-      "presets": [
-        "env",
-        "react"
-      ]
-    }
-  }
+  "presets": ["next/babel", "@zeit/next-typescript/babel"],
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": ["./"],
+        "alias": {
+          "components": "./components",
+          "constants": "./constants"
+        }
+      }
+    ],
+    ["@babel/plugin-proposal-decorators", { "decoratorsBeforeExport": true }],
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "style": true
+      }
+    ]
+  ]
 }

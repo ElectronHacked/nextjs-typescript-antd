@@ -4,20 +4,40 @@ const withTypescript = require('@zeit/next-typescript');
 const withCSS = require('@zeit/next-css');
 const withSass = require('@zeit/next-sass');
 const withLess = require('@zeit/next-less');
+const lessToJS = require('less-vars-to-js');
 const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
 const nextRuntimeDotenv = require('next-runtime-dotenv');
-
+const fs = require('fs');
 const path = require('path');
 
 const withConfig = nextRuntimeDotenv({
   public: ['API_URL'],
 });
 
+// Where your antd-custom.less file lives
+const themeVariables = lessToJS(
+  fs.readFileSync(path.resolve(__dirname, './styles/antd-custom.less'), 'utf8')
+);
+
+// fix: prevents error when .less files are required by node
+if (typeof require !== 'undefined') {
+  // eslint-disable-next-line node/no-deprecated-api
+  require.extensions['.less'] = file => {};
+}
+
 module.exports = withPlugins(
   [
     [withTypescript],
     [withCSS],
-    [withLess],
+    [
+      withLess,
+      {
+        lessLoaderOptions: {
+          javascriptEnabled: true,
+          modifyVars: themeVariables, // make your antd custom effective
+        },
+      },
+    ],
     [withSass],
     [withConfig],
     [withBundleAnalyzer],

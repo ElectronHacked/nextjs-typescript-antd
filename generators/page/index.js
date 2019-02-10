@@ -39,8 +39,10 @@ module.exports = class extends Generator {
     const nameWithLowerCase = name.charAt(0).toLowerCase() + name.slice(1);
     const className = `${nameWithLowerCase}-page`;
     const component = name.charAt(0).toUpperCase() + name.slice(1);
+
     // create folder project
     mkdirp(`pages/${nameWithLowerCase}`);
+
     // copy page into the pages folder
     this.fs.copyTpl(
       this.templatePath('_page.js'),
@@ -82,6 +84,29 @@ module.exports = class extends Generator {
       }
     );
 
+    const linkItem = `
+      <MenuItem key={uuid()}>
+        <Link href="/${nameWithLowerCase}">
+          <a>${title}</a>
+        </Link>
+      </MenuItem>
+    `;
+
+    // update server.js to add the new namespace to the list
+    this.fs.copy(
+      './components/global/layout.tsx',
+      '../components/global/layout.tsx',
+      {
+        process: function(content) {
+          var regEx = new RegExp(/{\/\* new-menu-item \*\/}/, 'g');
+          var newContent = content
+            .toString()
+            .replace(regEx, `, '${linkItem}'\n\t\t\t\t\t{/* new-menu-item */}`);
+          return newContent;
+        },
+      }
+    );
+
     // update server.js to add the new namespace to the list
     this.fs.copy('./server.js', './server.js', {
       process: function(content) {
@@ -91,20 +116,6 @@ module.exports = class extends Generator {
           .replace(
             regEx,
             `, '${nameWithLowerCase}'/* new-i18n-namespace-here */`
-          );
-        return newContent;
-      },
-    });
-
-    // update main.scss to add the new page stylesheet
-    this.fs.copy('./styles/main.scss', './styles/main.scss', {
-      process: function(content) {
-        var regEx = new RegExp(/\/\* new-page-stylesheet-goes-here \*\//, 'g');
-        var newContent = content
-          .toString()
-          .replace(
-            regEx,
-            `@import '~@root/pages/${nameWithLowerCase}/${nameWithLowerCase}.scss';\n/* new-page-stylesheet-goes-here */`
           );
         return newContent;
       },

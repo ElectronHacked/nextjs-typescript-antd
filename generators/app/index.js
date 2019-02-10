@@ -6,6 +6,7 @@ module.exports = class extends Generator {
   constructor(args, opts) {
     super(args, opts);
     this.log('Initializing...');
+
     // This makes `appname` a required argument.
     this.argument('appname', { type: String, required: false });
   }
@@ -17,6 +18,12 @@ module.exports = class extends Generator {
         name: 'name',
         message: 'Your project name',
         default: this.options.appname || 'create-next-app-reloaded',
+      },
+      {
+        type: 'input',
+        name: 'displayName',
+        message: 'Your project display name',
+        store: true,
       },
       {
         type: 'input',
@@ -33,6 +40,7 @@ module.exports = class extends Generator {
     ]).then(answers => {
       this.answers = {
         name: answers.name,
+        displayName: answers.displayName,
         fullName: answers.fullname,
         email: answers.email,
       };
@@ -40,11 +48,14 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    const { name, fullName, email } = this.answers;
+    const { name, displayName, fullName, email } = this.answers;
+
     // create folder project
     mkdirp(name);
+
     // change project root to the new folder
     this.destinationRoot(this.destinationPath(name));
+
     // copy package.json and update some values
     this.fs.copyTpl(
       this.templatePath('_package.json'),
@@ -55,10 +66,23 @@ module.exports = class extends Generator {
         email,
       }
     );
+
     // copy all files starting with .{whaetever} (like .eslintrc)
     this.fs.copy(this.templatePath('src/.*'), this.destinationPath('./'));
+
     // copy all folders and their contents
     this.fs.copy(this.templatePath('src'), this.destinationPath('./'));
+
+    // Update the footer to have the name of the Application, the year and the user who created it
+    this.fs.copyTpl(
+      this.templatePath('_layout.tsx'),
+      this.destinationPath(`./components/global/layout/index.tsx`),
+      {
+        displayName,
+        fullName,
+      }
+    );
+
     // save config file!
     this.config.save();
   }

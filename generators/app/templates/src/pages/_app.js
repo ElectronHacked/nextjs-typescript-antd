@@ -7,7 +7,7 @@ import {configureStore} from '../redux/createStore';
 
 const {store, persistor} = configureStore ();
 
-class MyApp extends App {
+export default class MyApp extends App {
   static async getInitialProps({Component, ctx}) {
     const pageProps = Component.getInitialProps
       ? await Component.getInitialProps (ctx)

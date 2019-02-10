@@ -45,24 +45,7 @@ module.exports = class extends Generator {
           .toString()
           .replace(
             regEx,
-            `import { ${interfaceName} } from './${nameWithLowerCase}';\n/* new-interface-import-goes-here */`
-          );
-        return newContent;
-      },
-    });
-
-    // update models/index.d.ts to add the new interface to a list of exports
-    this.fs.copy('./models/index.d.ts', './models/index.d.ts', {
-      process: function(content) {
-        var regEx = new RegExp(
-          /\/\* new-imported-interface-export-goes-here \*\//,
-          'g'
-        );
-        var newContent = content
-          .toString()
-          .replace(
-            regEx,
-            `${interfaceName},\n\t/* new-imported-interface-export-goes-here */`
+            `export { ${interfaceName} } from './${nameWithLowerCase}';\n/* new-interface-import-goes-here */`
           );
         return newContent;
       },

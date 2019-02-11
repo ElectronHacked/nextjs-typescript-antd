@@ -33,8 +33,8 @@ $ npm run dev
   * [yarn build](#yarn-build)
   * [yarn start](#yarn-start)
 * [Available Generators](#available-generators)
-  * [yo create-next-app-reloaded:page](#yo-create-next-app-reloadedpage)
-  * [yo create-next-app-reloaded:component](#yo-create-next-app-reloadedcomponent)
+  * [yo yo-nextjs-typescript-generator:page](#yo-yo-nextjs-typescript-generatorpage)
+  * [yo yo-nextjs-typescript-generator:component](#yo-yo-nextjs-typescript-generatorcomponent)
 * [Changelog](#changelog-generator)
 * [Release and Publish](#release-and-publish)
 
@@ -171,36 +171,77 @@ See the section in Next docs about [deployment](https://github.com/zeit/next.js/
 
 # Available Generators
 
-### `yo create-next-app-reloaded:page`
+### `yo yo-nextjs-typescript-generator:page`
 
 It will prompt you the name and the title for your new page.
 
 ```
-$ yo create-next-app-reloaded:page
-? Page name: contactUs
-? Page title: Contact Us Page
-   create pages/contactUs/contactUs.js
-   create pages/contactUs/index.js
-   create pages/contactUs/contactUs.scss
-   create static/locales/en/contactUs.json
-   create tests/units/pages/contactUs.test.js
- conflict server.js // This is because we are adding the new i18n namespace into the namespaces array.
-? Overwrite server.js? overwrite
+$ yo yo-nextjs-typescript-generator:page
+yo next-typescript-ant:page
+? Page name Products
+? Page title Our Products
+   create pages\products\index.tsx
+   create pages\products\styles.scss
+   create static\locales\en\products.json
+   create tests\units\pages\products.test.js
+ conflict components\global\layout\index.tsx
+? Overwrite components\global\layout\index.tsx? overwrite // This is because we are adding the link to the newly-created page to the nav bar, in the layout component
+    force components\global\layout\index.tsx
+ conflict server.js
+? Overwrite server.j // This is because we are adding the new i18n namespace into the namespaces array.
     force server.js
 ```
 
-### `yo create-next-app-reloaded:component`
+### `yo yo-nextjs-typescript-generator:component`
 
 It will prompt you the name for your new component.
 
 ```
-$ yo create-next-app-reloaded:component
-? Component name: myNav
-   create components/myNav/myNav.js
-   create components/myNav/index.js
-   create components/myNav/casa.scss
-   create static/locales/en/myNav.json
-   create tests/units/components/myNav.test.js
+$ yo yo-nextjs-typescript-generator:component
+? Component name User
+   create components\global\user\index.tsx
+   create components\global\user\styles.scss
+   create static\locales\en\user.json
+   create tests\units\components\user.test.js
+```
+
+### `yo yo-nextjs-typescript-generator:model`
+
+It will prompt you the name for your new interface.
+
+```
+$ yo yo-nextjs-typescript-generator:model
+? Model name UserInfo
+   create models\userInfo.d.ts
+ conflict models\index.d.ts
+? Overwrite models\index.d.ts? overwrite // Here we are adding our newly-created interface, IUserInfo, into index.d.ts, which exposes 'models' module
+    force models\index.d.ts
+```
+
+
+### `yo yo-nextjs-typescript-generator:reducer`
+
+It will prompt you the name for your new reducer.
+
+```
+$ yo yo-nextjs-typescript-generator:component
+? Reducer name Employees
+   create redux\employees\actions.ts
+   create redux\employees\constants.ts
+   create redux\employees\payloads.ts
+   create redux\employees\reducer.ts
+   create redux\employees\sagas.ts
+   create redux\employees\selectors.ts
+   create redux\employees\state.ts
+ conflict redux\rootReducer.ts
+? Overwrite redux\rootReducer.ts? overwrite // We are combining the current reducer with the new created Employees reducer
+    force redux\rootReducer.ts
+ conflict redux\rootSaga.ts
+? Overwrite redux\rootSaga.ts? overwrite // We are updating the root saga to include the Employees' sagas so that the can be run at together
+    force redux\rootSaga.ts
+ conflict redux\storeState.ts
+? Overwrite redux\storeState.ts? overwrite // We are updating the application state to include the IEmployeeState that just got created
+    force redux\storeState.ts
 ```
 
 # Changelog Generator
@@ -216,7 +257,7 @@ This yeoman generator will build different React components, creating a skeleton
 # Credits
 
 Damian Aruj <mailto:damian@analyticsfire.com>
-Github: https://github.com/analyticsfire/generator-create-next-app-reloaded
+Github: https://github.com/analyticsfire/generator-yo-nextjs-typescript-generator
 
 # Licence
 

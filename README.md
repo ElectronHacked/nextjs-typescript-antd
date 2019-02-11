@@ -1,6 +1,6 @@
 # A great component builder for ReactJs using NextJs
 
-This yeoman generator will build different React components, creating a skeleton for the different files.
+This yeoman generator will build different React components, creating a skeleton for the different files. 
 
 # Requirements
 
@@ -13,15 +13,15 @@ Second, install Yeoman. More information about Yeoman: http://yeoman.io/
 # Installation
 
 ```
-$ npm install -g generator-create-next-app-reloaded
+$ npm install -g yo-nextjs-typescript-generator
 ```
 
 # Usage
 
 ```
-$ yo create-next-app-reloaded
-$ cd create-next-app-reloaded
-$ yarn dev
+$ yo yo-nextjs-typescript-generator
+$ cd yo-nextjs-typescript-generator
+$ npm run dev
 ```
 
 # Table of Contents
@@ -48,18 +48,83 @@ After creating an app, it should look something like:
 
 ```
 my-app/
-  README.md
-  .gitignore
-  .prettierrc
-  i18n.js
-  .babelrc
-  .eslintrc
+  api/
+    postsApi.js
+  components/
+    global/
+    commentItem/
+      index.tsx
+      styles.scss
+    commentList/       
+      index.tsx
+      styles.scss
+    customNProgress/
+      index.tsx
+      styles.scss
+    layout/
+      index.tsx
+      styles.scss
+    postItem/
+      index.tsx
+      styles.scss
+    postList/
+      index.tsx
+      styles.scss
+  config/
+    custom-environment-variables.js
+    default.js
+    development.js
+    production.js
+    testing.js
+  constants/
+    index.ts
+  lib/
+    withI18next.js
+    config.shim.js
+  models/
+    comment.d.ts
+    post.d.ts
+    index.d.ts
+    loadable.d.ts
+    dispatchable.d.ts
+  pages/
+    about/
+      index.tsx
+      styles.scss
+    index/
+      index.tsx
+      styles.scss
+    post/
+      index.tsx
+      styles.scss
+    posts/
+      index.tsx
+      styles.scss
+    _app.js
+    _document.js
+  redux/
+    posts/
+      actions.ts
+      constants.ts
+      payloads.ts
+      sagas.ts
+      selectors.ts
+      state.ts
+    createStore.ts    
+    rootReducer.ts    
+    rootSaga.ts  
+    storeState.ts
   static/
     favicon.ico
     locales/
         en/
-            common.js
     images/
+  styles/
+    vendors/
+    _mixins.scss
+    _variables.scss
+    antd-custom.less
+    main.scss
   tests/
     units/
         components/
@@ -68,42 +133,17 @@ my-app/
         setup/
             index.js
             assetsTransformer.js
-  server.js
-  components/
-    activeLink/
-    footer/
-    header/
-    layout/
-    navLink/
-    characterInfo/
-    nav/
-  config/
-    custom-environment-variables.js
-    default.js
-    development.js
-    production.js
-  lib/
-    withI18next.js
-    config.shim.js
+  typings/
+    react-redux.d.ts
+  .babelrc
+  .eslintignore
+  .eslintrc
+  .gitignore
+  .prettierrc
+  README.md
+  i18n.js
+  .babelrc
   next.config.js
-  pages/
-    about/
-    index.js
-    _app.js
-    _document.js
-    home/
-    redux-example/
-  styles/
-    _mixins.scss
-    _variables.scss/
-    main.scss
-    vendors/
-        bootstrap-4.0.0-beta.2/
-  redux/
-    actions.js
-    epics.js
-    index.js
-    reducer.js
   package.json
 ```
 

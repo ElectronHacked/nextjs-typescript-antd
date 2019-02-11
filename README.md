@@ -13,14 +13,14 @@ Second, install Yeoman. More information about Yeoman: http://yeoman.io/
 # Installation
 
 ```
-$ npm install -g yo-nextjs-typescript-generator
+$ npm install -g next-typescript-ant
 ```
 
 # Usage
 
 ```
-$ yo yo-nextjs-typescript-generator
-$ cd yo-nextjs-typescript-generator
+$ yo next-typescript-ant
+$ cd next-typescript-ant
 $ npm run dev
 ```
 
@@ -33,16 +33,16 @@ $ npm run dev
   * [yarn build](#yarn-build)
   * [yarn start](#yarn-start)
 * [Available Generators](#available-generators)
-  * [yo yo-nextjs-typescript-generator:page](#yo-yo-nextjs-typescript-generatorpage)
-  * [yo yo-nextjs-typescript-generator:component](#yo-yo-nextjs-typescript-generatorcomponent)
-  * [yo yo-nextjs-typescript-generator:reducer](#yo-yo-nextjs-typescript-generatorreducer)
-  * [yo yo-nextjs-typescript-generator:model](#yo-yo-nextjs-typescript-generatormodel)
+  * [yo next-typescript-ant:page](#yo-next-typescript-antpage)
+  * [yo next-typescript-ant:component](#yo-next-typescript-antcomponent)
+  * [yo next-typescript-ant:reducer](#yo-next-typescript-antreducer)
+  * [yo next-typescript-ant:model](#yo-next-typescript-antmodel)
 * [Changelog](#changelog-generator)
 * [Release and Publish](#release-and-publish)
 
 # Questions? Feedback?
 
-Check out [Next.js FAQ & docs](https://github.com/zeit/next.js#faq) or [let us know](https://github.com/ElectronHacked/yo-nextjs-typescript-generator/issues) your feedback.
+Check out [Next.js FAQ & docs](https://github.com/zeit/next.js#faq) or [let us know](https://github.com/ElectronHacked/next-typescript-ant/issues) your feedback.
 
 # Folder Structure
 
@@ -167,7 +167,7 @@ It correctly bundles React in production mode and optimizes the build for the be
 ### `npm run start`
 
 Starts the application in production mode.
-The application should be compiled with \`next build\` first.
+The application should be compiled with `next build` first.
 
 See the section in Next docs about [deployment](https://github.com/zeit/next.js/wiki/Deployment) for more information.
 
@@ -175,18 +175,18 @@ See the section in Next docs about [deployment](https://github.com/zeit/next.js/
 
 Then you have a static version of your app in the out directory.
 
-You can also customize the output directory. For that run next export -h for the help.
+You can also customize the output directory. For that `run next export -h` for the help.
 
 Now you can deploy the out directory to any static hosting service. 
 
 # Available Generators
 
-### `yo yo-nextjs-typescript-generator:page`
+### `yo next-typescript-ant:page`
 
 It will prompt you the name and the title for your new page.
 
 ```
-$ yo yo-nextjs-typescript-generator:page
+$ yo next-typescript-ant:page
 yo next-typescript-ant:page
 ? Page name Products
 ? Page title Our Products
@@ -202,12 +202,12 @@ yo next-typescript-ant:page
     force server.js
 ```
 
-### `yo yo-nextjs-typescript-generator:component`
+### `yo next-typescript-ant:component`
 
 It will prompt you the name for your new component.
 
 ```
-$ yo yo-nextjs-typescript-generator:component
+$ yo next-typescript-ant:component
 ? Component name User
    create components\global\user\index.tsx
    create components\global\user\styles.scss
@@ -215,12 +215,12 @@ $ yo yo-nextjs-typescript-generator:component
    create tests\units\components\user.test.js
 ```
 
-### `yo yo-nextjs-typescript-generator:model`
+### `yo next-typescript-ant:model`
 
 It will prompt you the name for your new interface.
 
 ```
-$ yo yo-nextjs-typescript-generator:model
+$ yo next-typescript-ant:model
 ? Model name UserInfo
    create models\userInfo.d.ts
  conflict models\index.d.ts
@@ -228,12 +228,12 @@ $ yo yo-nextjs-typescript-generator:model
     force models\index.d.ts
 ```
 
-### `yo yo-nextjs-typescript-generator:reducer`
+### `yo next-typescript-ant:reducer`
 
 It will prompt you the name for your new reducer.
 
 ```
-$ yo yo-nextjs-typescript-generator:reducer
+$ yo next-typescript-ant:reducer
 ? Reducer name Employees
    create redux\employees\actions.ts
    create redux\employees\constants.ts
@@ -266,9 +266,9 @@ This yeoman generator will build different React components, creating a skeleton
 # Credits
 
 Electron Hacked
-Github: https://github.com/ElectronHacked/yo-nextjs-typescript-generator
+Github: https://github.com/ElectronHacked/next-typescript-ant
 
-Inspired by https://github.com/analyticsfire/generator-yo-nextjs-typescript-generator by Damian Aruj
+Inspired by https://github.com/AnalyticsFire/generator-create-next-app-reloaded by Damian Aruj
 
 # Licence
 

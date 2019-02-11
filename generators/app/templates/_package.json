@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "node server.js",
-    "build": "npm run test && next build",
+    "export": "next export",
+    "build": "next build",
     "start": "NODE_ENV=production node server.js",
     "test": "npm run test:units",
     "test:units": "NODE_ENV=testing jest --config tests/units/jest.config.js",

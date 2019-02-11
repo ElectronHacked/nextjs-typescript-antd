@@ -1,6 +1,6 @@
 {
   "name": "yo-nextjs-typescript-generator",
-  "version": "1.0.9",
+  "version": "1.0.0",
   "description": "Yoman Generator for yo-nextjs-typescript-generator",
   "scripts": {
     "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",

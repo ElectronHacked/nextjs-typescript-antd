@@ -26,16 +26,23 @@ module.exports = class extends Generator {
           return 'Please add a name for your new page';
         },
       },
+      {
+        type: 'confirm',
+        name: 'createReducer',
+        message: 'Would you like to create reducer for this page?',
+        default: false,
+      },
     ]).then(answers => {
       this.answers = {
         name: answers.name,
         title: answers.title,
+        createReducer: answers.createReducer,
       };
     });
   }
 
   writing() {
-    const { name, title } = this.answers;
+    const { name, title, createReducer } = this.answers;
     const nameWithLowerCase = name.charAt(0).toLowerCase() + name.slice(1);
     const className = `${nameWithLowerCase}-page`;
     const component = name.charAt(0).toUpperCase() + name.slice(1);
@@ -121,5 +128,21 @@ module.exports = class extends Generator {
         return newContent;
       },
     });
+
+    // Add reducer for this page
+    if (createReducer) {
+      this.composeWith(
+        'next-typescript-ant:reducer',
+        {
+          options: {
+            name: name,
+            appName: this.appName,
+          },
+        },
+        {
+          local: require.resolve('../reducer'),
+        }
+      );
+    }
   }
 };

@@ -10,7 +10,7 @@ import './styles.scss';
 import { fetchPostComments } from './../../redux/posts/actions';
 import { createSelector } from 'reselect';
 import { selectSelectedPost } from './../../redux/posts/selectors';
-import { getQueryStringValue } from './../../utils';
+import { getParameterByName } from './../../utils';
 
 interface Props extends SingletonRouter, IDispatchable {
   readonly post: IPost;
@@ -24,7 +24,7 @@ export const Post: React.SFC<Props> = ({ router, dispatch, post }) => {
     try {
       postId = router.query[key];
     } catch (error) {
-      postId = getQueryStringValue(key, window.document.location.search);
+      postId = getParameterByName(key, window.location.href);
     }
 
     if (postId && !Array.isArray(postId)) {

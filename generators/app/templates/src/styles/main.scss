@@ -12,3 +12,18 @@ main {
   font-weight: normal;
   letter-spacing: 1.1px;
 }
+
+.layout {
+  min-height: 100vh;
+  .ant-layout-content {
+    padding: 0 50px;
+  }
+  .content-body {
+    background: #fff;
+    padding: 24px;
+    height: 70vh;
+  }
+  .ant-layout-footer {
+    text-align: center;
+  }
+}

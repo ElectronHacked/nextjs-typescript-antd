@@ -74,17 +74,17 @@ const MainLayout: React.SFC<Props> = ({
             {/* new-menu-item */}
           </Menu>
         </Header>
-        <Content style={{ padding: '0 50px' }}>
+        <Content>
           <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>Home</Breadcrumb.Item>
             <Breadcrumb.Item>List</Breadcrumb.Item>
             <Breadcrumb.Item>App</Breadcrumb.Item>
           </Breadcrumb>
-          <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
+          <div className="content-body">
             {children}
           </div>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>
+        <Footer>
           <%= displayName %> @{new Date().getFullYear()} Created by <%= fullName %>
         </Footer>
       </Layout>

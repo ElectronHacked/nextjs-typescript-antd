@@ -1,4 +1,4 @@
-# A great component builder for ReactJs using NextJs
+# A great scaffolder for ReactJS using NextJS, TypeScript & Ant Design
 
 This yeoman generator will build different React components, creating a skeleton for the different files. 
 
@@ -13,15 +13,13 @@ Second, install Yeoman. More information about Yeoman: http://yeoman.io/
 # Installation
 
 ```
-$ npm install -g yo yeoman-generator
+$ npm install -g yo generator-next-typescript-ant
 ```
 
 # Usage
 
 ```
 $ yo next-typescript-ant
-$ cd next-typescript-ant
-$ npm link
 ```
 
 # Table of Contents
@@ -187,19 +185,27 @@ It will prompt you the name and the title for your new page.
 
 ```
 $ yo next-typescript-ant:page
-yo next-typescript-ant:page
-? Page name Products
-? Page title Our Products
-   create pages\products\index.tsx
-   create pages\products\styles.scss
-   create static\locales\en\products.json
-   create tests\units\pages\products.test.js
- conflict components\global\layout\index.tsx
-? Overwrite components\global\layout\index.tsx? overwrite // This is because we are adding the link to the newly-created page to the nav bar, in the layout component
+yo next-typescript-ant:page  --force
+? Page name User
+? Page title User Details
+? Would you like to create reducer for this page? Yes
+? Reducer name User
+   create pages\user\index.tsx
+   create pages\user\styles.scss
+   create static\locales\en\user.json
+   create tests\units\pages\user.test.js
     force components\global\layout\index.tsx
- conflict server.js
-? Overwrite server.j // This is because we are adding the new i18n namespace into the namespaces array.
     force server.js
+   create redux\user\actions.ts
+   create redux\user\constants.ts
+   create redux\user\payloads.ts
+   create redux\user\reducer.ts
+   create redux\user\sagas.ts
+   create redux\user\selectors.ts
+   create redux\user\state.ts
+    force redux\rootReducer.ts
+    force redux\rootSaga.ts
+    force redux\storeState.ts
 ```
 
 ### `yo next-typescript-ant:component`
@@ -208,11 +214,13 @@ It will prompt you the name for your new component.
 
 ```
 $ yo next-typescript-ant:component
-? Component name User
-   create components\global\user\index.tsx
-   create components\global\user\styles.scss
-   create static\locales\en\user.json
-   create tests\units\components\user.test.js
+? Component name UserDetails
+? Is this a page-specific component? Yes
+? Page name User
+   create components\global\pages\user\userDetails\index.tsx
+   create components\global\userDetails\styles.scss
+   create static\locales\en\userDetails.json
+   create tests\units\components\userDetails.test.js
 ```
 
 ### `yo next-typescript-ant:model`

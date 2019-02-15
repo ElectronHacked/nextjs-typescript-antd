@@ -17,7 +17,7 @@ module.exports = class extends Generator {
         type: 'input',
         name: 'name',
         message: 'Your project name',
-        default: this.options.appname || 'create-next-app-reloaded',
+        default: this.options.appname || 'nextjs-ts-ant-app',
       },
       {
         type: 'input',

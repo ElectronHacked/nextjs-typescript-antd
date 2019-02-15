@@ -13,7 +13,7 @@ Second, install Yeoman. More information about Yeoman: http://yeoman.io/
 # Installation
 
 ```
-$ npm install -g next-typescript-ant
+$ npm install -g yo yeoman-generator
 ```
 
 # Usage
@@ -21,7 +21,7 @@ $ npm install -g next-typescript-ant
 ```
 $ yo next-typescript-ant
 $ cd next-typescript-ant
-$ npm run dev
+$ npm link
 ```
 
 # Table of Contents

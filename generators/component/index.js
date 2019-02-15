@@ -15,25 +15,48 @@ module.exports = class extends Generator {
           return 'Please add a name for your new page';
         },
       },
+      {
+        name: 'pageSpecificComponent',
+        type: 'confirm',
+        message: 'Is this a page-specific component?',
+      },
+      {
+        when: function(response) {
+          return response.pageSpecificComponent;
+        },
+        name: 'pageName',
+        message: 'Page name',
+      },
     ]).then(answers => {
       this.answers = {
         name: answers.name,
+        pageSpecificComponent: answers.pageSpecificComponent,
+        pageName: answers.pageName,
       };
     });
   }
 
   writing() {
-    const { name, title } = this.answers;
+    const { name, title, pageSpecificComponent, pageName } = this.answers;
+
     const nameWithLowerCase = name.charAt(0).toLowerCase() + name.slice(1);
+
     const className = nameWithLowerCase;
     const component = name.charAt(0).toUpperCase() + name.slice(1);
+
+    let path = `components/global/${nameWithLowerCase}`;
+
+    if (pageSpecificComponent && !!pageName) {
+      path = `components/pages/${pageName.toLowerCase()}`;
+    }
+
     // create folder project
-    mkdirp(`components/global/${nameWithLowerCase}`);
+    mkdirp(path);
 
     // copy component into the components folder
     this.fs.copyTpl(
       this.templatePath('_component.js'),
-      this.destinationPath(`components/global/${nameWithLowerCase}/index.tsx`),
+      this.destinationPath(`${path}/${nameWithLowerCase}/index.tsx`),
       {
         component,
         className,
@@ -44,9 +67,7 @@ module.exports = class extends Generator {
     // copy styles.scss
     this.fs.copyTpl(
       this.templatePath('_styles.scss'),
-      this.destinationPath(
-        `components/global/${nameWithLowerCase}/styles.scss`
-      ),
+      this.destinationPath(`${path}/${nameWithLowerCase}/styles.scss`),
       {
         className,
       }

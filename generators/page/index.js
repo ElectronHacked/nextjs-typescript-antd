@@ -100,23 +100,23 @@ module.exports = class extends Generator {
       </MenuItem>
     `;
 
-    // update server.js to add the new namespace to the list
-    this.fs.copy(
-      './components/global/layout/index.tsx',
-      './components/global/layout/index.tsx',
-      {
-        process: function(content) {
-          var regEx = new RegExp(/{\/\* new-menu-item \*\/}/, 'g');
-          var newContent = content
-            .toString()
-            .replace(regEx, `${linkItem}\n\t\t\t\t\t{/* new-menu-item */}`);
-          return newContent;
-        },
-      }
-    );
+    const LAYOUT_PATH = './components/global/layout/index.tsx';
 
     // update server.js to add the new namespace to the list
-    this.fs.copy('./server.js', './server.js', {
+    this.fs.copy(LAYOUT_PATH, LAYOUT_PATH, {
+      process: function(content) {
+        var regEx = new RegExp(/{\/\* new-menu-item \*\/}/, 'g');
+        var newContent = content
+          .toString()
+          .replace(regEx, `${linkItem}\n\t\t\t\t\t{/* new-menu-item */}`);
+        return newContent;
+      },
+    });
+
+    // update server.js to add the new namespace to the list
+    const SERVER_PATH = './server.js';
+
+    this.fs.copy(SERVER_PATH, SERVER_PATH, {
       process: function(content) {
         var regEx = new RegExp(/\/\* new-i18n-namespace-here \*\//, 'g');
         var newContent = content

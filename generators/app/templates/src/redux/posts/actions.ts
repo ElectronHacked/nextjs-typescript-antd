@@ -8,40 +8,40 @@ import {
   FETCH_POST_COMMENTS_ERROR,
 } from './constants';
 import {
-  FetchDataErrorPayload,
-  FetchPostCommentsSuccessPayload,
-  FetchPostCommentsPayload,
-  FetchPostsSuccessPayload,
-  FetchPostsPayload,
+  IFetchDataErrorPayload,
+  IFetchPostCommentsSuccessPayload,
+  IFetchPostCommentsPayload,
+  IFetchPostsSuccessPayload,
+  IFetchPostsPayload,
 } from './payloads';
 import { IPost, IComment } from 'models';
 
-export const fetchPosts = createAction<FetchPostsPayload>(FETCH_POSTS, () => ({
+export const fetchPosts = createAction<IFetchPostsPayload>(FETCH_POSTS, () => ({
   isFetchingPosts: true,
 }));
 
 export const fetchPostsSuccess = createAction<
-  FetchPostsSuccessPayload,
+  IFetchPostsSuccessPayload,
   IPost[]
 >(FETCH_POSTS_SUCCESS, posts => ({ posts }));
 
-export const fetchPostsError = createAction<FetchDataErrorPayload, string>(
+export const fetchPostsError = createAction<IFetchDataErrorPayload, string>(
   FETCH_POSTS_ERROR,
   fetchDataErrorMessage => ({ fetchDataErrorMessage })
 );
 
-export const fetchPostComments = createAction<FetchPostCommentsPayload, string>(
-  FETCH_POST_COMMENTS,
-  selectedPostId => ({ selectedPostId })
-);
+export const fetchPostComments = createAction<
+  IFetchPostCommentsPayload,
+  string
+>(FETCH_POST_COMMENTS, selectedPostId => ({ selectedPostId }));
 
 export const fetchPostCommentsSuccess = createAction<
-  FetchPostCommentsSuccessPayload,
-  Comment[]
+  IFetchPostCommentsSuccessPayload,
+  IComment[]
 >(FETCH_POST_COMMENTS_SUCESS, comments => ({ comments }));
 
 export const fetchPostCommentsError = createAction<
-  FetchDataErrorPayload,
+  IFetchDataErrorPayload,
   string
 >(FETCH_POST_COMMENTS_ERROR, fetchDataErrorMessage => ({
   fetchDataErrorMessage,

@@ -9,10 +9,10 @@ import {
   FETCH_POST_COMMENTS_ERROR,
 } from './constants';
 import {
-  FetchPostsSuccessPayload,
-  FetchDataErrorPayload,
-  FetchPostsPayload,
-  FetchPostCommentsSuccessPayload,
+  IFetchPostsSuccessPayload,
+  IFetchDataErrorPayload,
+  IFetchPostsPayload,
+  IFetchPostCommentsSuccessPayload,
 } from './payloads';
 
 const initialState: IPostsState = {
@@ -26,25 +26,28 @@ const initialState: IPostsState = {
 
 export default handleActions<IPostsState>(
   {
-    [FETCH_POSTS]: (state, action: ReduxActions.Action<FetchPostsPayload>) => ({
+    [FETCH_POSTS]: (
+      state,
+      action: ReduxActions.Action<IFetchPostsPayload>
+    ) => ({
       ...state,
       ...action.payload,
     }),
     [FETCH_POSTS_SUCCESS]: (
       state,
-      action: ReduxActions.Action<FetchPostsSuccessPayload>
+      action: ReduxActions.Action<IFetchPostsSuccessPayload>
     ) => ({ ...state, isFetchingPosts: false, ...action.payload }),
     [FETCH_POSTS_ERROR]: (
       state,
-      action: ReduxActions.Action<FetchDataErrorPayload>
+      action: ReduxActions.Action<IFetchDataErrorPayload>
     ) => ({ ...state, isFetchingPosts: false, ...action.payload }),
     [FETCH_POST_COMMENTS]: (
       state,
-      action: ReduxActions.Action<FetchPostsSuccessPayload>
+      action: ReduxActions.Action<IFetchPostsSuccessPayload>
     ) => ({ ...state, isFetchingPosts: false, ...action.payload }),
     [FETCH_POST_COMMENTS_SUCESS]: (
       state,
-      action: ReduxActions.Action<FetchPostCommentsSuccessPayload>
+      action: ReduxActions.Action<IFetchPostCommentsSuccessPayload>
     ) => {
       const comments = action.payload ? action.payload.comments : [];
 
@@ -56,7 +59,7 @@ export default handleActions<IPostsState>(
     },
     [FETCH_POST_COMMENTS_ERROR]: (
       state,
-      action: ReduxActions.Action<FetchDataErrorPayload>
+      action: ReduxActions.Action<IFetchDataErrorPayload>
     ) => ({ ...state, isFetchingPostComments: false, ...action.payload }),
   },
   initialState

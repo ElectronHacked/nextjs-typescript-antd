@@ -1,7 +1,7 @@
 import {createSelector} from 'reselect';
-import {StoreState} from '../storeState';
+import {IStoreState} from '../storeState';
 
-export const <%= stateName %> = () => (state: StoreState) => state.<%= nameWithLowerCase %>;
+export const <%= stateName %> = () => (state: IStoreState) => state.<%= nameWithLowerCase %>;
 
 export const selectIsLoading = () =>
   createSelector(

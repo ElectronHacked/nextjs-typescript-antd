@@ -1,25 +1,25 @@
 import { IPost, IComment } from 'models';
 
-export interface ChangeTextPayload {
-  text: string;
+export interface IChangeTextPayload {
+  readonly text: string;
 }
 
-export interface FetchPostsPayload {
-  isFetchingPosts: boolean;
+export interface IFetchPostsPayload {
+  readonly isFetchingPosts: boolean;
 }
 
-export interface FetchPostsSuccessPayload {
-  posts: IPost[];
+export interface IFetchPostsSuccessPayload {
+  readonly posts: IPost[];
 }
 
-export interface FetchPostCommentsPayload {
-  selectedPostId: string;
+export interface IFetchPostCommentsPayload {
+  readonly selectedPostId: string;
 }
 
-export interface FetchPostCommentsSuccessPayload {
-  comments: IComment[];
+export interface IFetchPostCommentsSuccessPayload {
+  readonly comments: IComment[];
 }
 
-export interface FetchDataErrorPayload {
-  fetchDataErrorMessage: string;
+export interface IFetchDataErrorPayload {
+  readonly fetchDataErrorMessage: string;
 }

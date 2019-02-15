@@ -3,10 +3,10 @@ import uuid from 'uuid/v4';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import Link from 'next/link';
 import Head from './head';
-import '../../../styles/main.scss';
 import NProgress from 'components/global/customNProgress';
 import { compose } from 'recompose';
 import { withRouter, RouterProps } from 'next/router';
+import '../../../styles/main.scss';
 
 const { Header, Content, Footer } = Layout;
 const MenuItem = Menu.Item;
@@ -18,6 +18,7 @@ interface Props extends React.HTMLAttributes<any> {
   readonly url?: string;
   readonly router?: RouterProps;
 }
+
 const activeClass = 'ant-menu-item-selected';
 
 const MainLayout: React.SFC<Props> = ({

@@ -34,7 +34,7 @@ const MainLayout: React.SFC<Props> = ({
   return (
     <>
       {/* <NProgress /> */}
-      <Head title={title} description={description} ogImage={ogImage} url={url} />
+      <Head title={`<%= displayName %> | ${title}`} description={description} ogImage={ogImage} url={url} />
       <Layout className="layout">
         <Header>
           <div className="logo" />

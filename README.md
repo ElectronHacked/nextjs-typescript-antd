@@ -1,4 +1,4 @@
-# A great scaffolder for ReactJS using NextJS, TypeScript & Ant Design
+# A scaffolder for ReactJS using NextJS, TypeScript & Ant Design
 
 This yeoman generator will build different React components, creating a skeleton for the different files. 
 

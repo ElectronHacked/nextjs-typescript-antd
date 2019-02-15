@@ -13,13 +13,13 @@ Second, install Yeoman. More information about Yeoman: http://yeoman.io/
 # Installation
 
 ```
-$ npm install -g yo generator-next-typescript-ant
+$ npm install -g generator-nextjs-typescript-antd
 ```
 
 # Usage
 
 ```
-$ yo next-typescript-ant
+$ yo nextjs-typescript-antd
 ```
 
 # Table of Contents
@@ -31,16 +31,16 @@ $ yo next-typescript-ant
   * [yarn build](#yarn-build)
   * [yarn start](#yarn-start)
 * [Available Generators](#available-generators)
-  * [yo next-typescript-ant:page](#yo-next-typescript-antpage)
-  * [yo next-typescript-ant:component](#yo-next-typescript-antcomponent)
-  * [yo next-typescript-ant:reducer](#yo-next-typescript-antreducer)
-  * [yo next-typescript-ant:model](#yo-next-typescript-antmodel)
+  * [yo nextjs-typescript-antd:page](#yo-nextjs-typescript-antdpage)
+  * [yo nextjs-typescript-antd:component](#yo-nextjs-typescript-antdcomponent)
+  * [yo nextjs-typescript-antd:reducer](#yo-nextjs-typescript-antdreducer)
+  * [yo nextjs-typescript-antd:model](#yo-nextjs-typescript-antdmodel)
 * [Changelog](#changelog-generator)
 * [Release and Publish](#release-and-publish)
 
 # Questions? Feedback?
 
-Check out [Next.js FAQ & docs](https://github.com/zeit/next.js#faq) or [let us know](https://github.com/ElectronHacked/next-typescript-ant/issues) your feedback.
+Check out [Next.js FAQ & docs](https://github.com/zeit/next.js#faq) or [let us know](https://github.com/ElectronHacked/nextjs-typescript-antd/issues) your feedback.
 
 # Folder Structure
 
@@ -179,13 +179,12 @@ Now you can deploy the out directory to any static hosting service.
 
 # Available Generators
 
-### `yo next-typescript-ant:page`
+### `yo nextjs-typescript-antd:page`
 
-It will prompt you the name and the title for your new page.
+It will prompt you for the name and the title of your new page.
 
 ```
-$ yo next-typescript-ant:page
-yo next-typescript-ant:page  --force
+$ yo nextjs-typescript-antd:page --force
 ? Page name User
 ? Page title User Details
 ? Would you like to create reducer for this page? Yes
@@ -208,12 +207,12 @@ yo next-typescript-ant:page  --force
     force redux\storeState.ts
 ```
 
-### `yo next-typescript-ant:component`
+### `yo nextjs-typescript-antd:component`
 
 It will prompt you the name for your new component.
 
 ```
-$ yo next-typescript-ant:component
+$ yo nextjs-typescript-antd:component
 ? Component name UserDetails
 ? Is this a page-specific component? Yes
 ? Page name User
@@ -223,12 +222,12 @@ $ yo next-typescript-ant:component
    create tests\units\components\userDetails.test.js
 ```
 
-### `yo next-typescript-ant:model`
+### `yo nextjs-typescript-antd:model`
 
 It will prompt you the name for your new interface.
 
 ```
-$ yo next-typescript-ant:model
+$ yo nextjs-typescript-antd:model
 ? Model name UserInfo
    create models\userInfo.d.ts
  conflict models\index.d.ts
@@ -236,12 +235,12 @@ $ yo next-typescript-ant:model
     force models\index.d.ts
 ```
 
-### `yo next-typescript-ant:reducer`
+### `yo nextjs-typescript-antd:reducer`
 
 It will prompt you the name for your new reducer.
 
 ```
-$ yo next-typescript-ant:reducer
+$ yo nextjs-typescript-antd:reducer
 ? Reducer name Employees
    create redux\employees\actions.ts
    create redux\employees\constants.ts
@@ -274,7 +273,7 @@ This yeoman generator will build different React components, creating a skeleton
 # Credits
 
 Electron Hacked
-Github: https://github.com/ElectronHacked/next-typescript-ant
+Github: https://github.com/ElectronHacked/nextjs-typescript-antd
 
 Inspired by https://github.com/AnalyticsFire/generator-create-next-app-reloaded by Damian Aruj
 

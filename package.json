@@ -1,7 +1,7 @@
 {
-  "name": "generator-next-typescript-ant",
+  "name": "generator-nextjs-typescript-antd",
   "version": "1.0.0",
-  "description": "Yoman Generator for next-typescript-ant",
+  "description": "Yoman Generator for nextjs-typescript-antd",
   "scripts": {
     "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
     "precommit": "lint-staged",
@@ -26,7 +26,7 @@
     "yeoman-generator",
     "react",
     "typescript",
-    "next-typescript-ant",
+    "nextjs-typescript-antd",
     "redux-saga"
   ],
   "files": [
@@ -82,6 +82,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ElectronHacked/next-typescript-ant"
+    "url": "https://github.com/ElectronHacked/nextjs-typescript-antd"
   }
 }

@@ -30,6 +30,7 @@ $ yo nextjs-typescript-antd
   * [npm run dev](#npm-run-dev)
   * [npm run build](#npm-run-build)
   * [npm run build](#npm-run-build)
+  * [npm run export](#npm-run-export)
 * [Available Generators](#available-generators)
   * [yo nextjs-typescript-antd:page](#yo-nextjs-typescript-antdpage)
   * [yo nextjs-typescript-antd:component](#yo-nextjs-typescript-antdcomponent)

@@ -274,9 +274,10 @@ This yeoman generator will build different React components, creating a skeleton
 ### TODO List
 
 - [ ] Add Storybook Subgenerator
-- [ ] Generate Nested Pages
-- [ ] Allow The User To Choose A Preprocessor (LESS OR LESS)
-- [ ] Allow The User To Choose A Layout When Generating The Boilerplate
+- [ ] Allow The User To Generate Nested Pages
+- [ ] Allow The User To Choose A CSS Preprocessor (LESS OR LESS)
+- [ ] Allow The User To Specify CRUD Requirements When Generating The Page
+- [ ] Allow The User To Choose A [Layout](https://ant.design/components/layout/) When Generating The Boilerplate
 
 # Credits
 

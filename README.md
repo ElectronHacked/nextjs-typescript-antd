@@ -271,6 +271,13 @@ In order to release and publish we have created a npm script `npm run release-an
 
 This yeoman generator will build different React components, creating a skeleton for the different files.
 
+### TODO List
+
+- [ ] Add Storybook Subgenerator
+- [ ] Generate Nested Pages
+- [ ] Allow The User To Choose A Preprocessor (LESS OR LESS)
+- [ ] Allow The User To Choose A Layout When Generating The Boilerplate
+
 # Credits
 
 Electron Hacked

@@ -13,6 +13,10 @@ Second, install Yeoman. More information about Yeoman: http://yeoman.io/
 # Installation
 
 ```
+# install yo
+$ npm install -g yo
+
+# install a generator
 $ npm install -g generator-nextjs-typescript-antd
 ```
 

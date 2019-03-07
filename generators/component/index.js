@@ -44,7 +44,7 @@ module.exports = class extends Generator {
     const className = nameWithLowerCase;
     const component = name.charAt(0).toUpperCase() + name.slice(1);
 
-    let path = `components/global/${nameWithLowerCase}`;
+    let path = `components/global`;
 
     if (pageSpecificComponent && !!pageName) {
       path = `components/pages/${pageName.toLowerCase()}`;

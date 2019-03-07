@@ -217,7 +217,7 @@ $ yo nextjs-typescript-antd:page --force
 It will prompt you the name for your new component.
 
 ```
-$ yo nextjs-typescript-antd:component
+$ yo nextjs-typescript-antd:component --force
 ? Component name UserDetails
 ? Is this a page-specific component? Yes
 ? Page name User

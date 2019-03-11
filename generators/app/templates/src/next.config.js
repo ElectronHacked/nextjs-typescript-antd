@@ -9,6 +9,7 @@ const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
 const nextRuntimeDotenv = require('next-runtime-dotenv');
 const fs = require('fs');
 const path = require('path');
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 const withConfig = nextRuntimeDotenv({
   public: ['API_URL'],
@@ -65,7 +66,11 @@ module.exports = withPlugins(
         '@root': path.join(__dirname),
         config: path.resolve(__dirname, 'lib/config.shim'),
       };
-
+      if (config.mode === 'production') {
+        if (Array.isArray(config.optimization.minimizer)) {
+          config.optimization.minimizer.push(new OptimizeCSSAssetsPlugin({}));
+        }
+      }
       return config;
     },
   }

@@ -2,7 +2,7 @@ import * as React from 'react';
 import uuid from 'uuid/v4';
 import PostItem from '../postItem';
 import { createSelector } from 'reselect';
-import { selectAllPosts } from '../../../redux/posts/selectors';
+import { selectAllPosts } from 'redux-store/posts/selectors';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { IPost } from 'models';

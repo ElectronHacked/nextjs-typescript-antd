@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { IComment } from 'models';
-import { selectSelectedPostComments } from './../../../redux/posts/selectors';
+import { selectSelectedPostComments } from 'redux-store/posts/selectors';
 import './styles.scss';
 import CommentItem from './../commentItem';
 

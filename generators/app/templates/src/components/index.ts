@@ -1,4 +1,4 @@
-export { default as CommentItem } from './global/CommentItem';
+export { default as CommentItem } from './global/commentItem';
 export { default as CommentList } from './global/commentList';
 export { default as CustomNProgress } from './global/customNProgress';
 export { default as Layout } from './global/layout';

@@ -3,7 +3,7 @@ import { Layout, PostList } from 'components';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { IDispatchable } from 'models';
-import { fetchPosts } from './../../redux/posts/actions';
+import { fetchPosts } from 'redux-store/posts/actions';
 import './styles.scss';
 
 export const Posts: React.SFC<IDispatchable> = ({ dispatch }) => {

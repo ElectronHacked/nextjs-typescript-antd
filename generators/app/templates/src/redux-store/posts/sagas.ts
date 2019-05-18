@@ -1,12 +1,7 @@
 import { all, call, put, takeLatest, select } from 'redux-saga/effects';
 import { FETCH_POSTS, FETCH_POST_COMMENTS } from './constants';
-import {
-  fetchPostsSuccess,
-  fetchPostsError,
-  fetchPostCommentsSuccess,
-  fetchPostCommentsError,
-} from './actions';
-import { fetchAllPostsApi, fetchPostCommentsApi } from '../../api/postsApi';
+import { fetchPostsSuccess, fetchPostsError, fetchPostCommentsSuccess, fetchPostCommentsError } from './actions';
+import { fetchAllPostsApi, fetchPostCommentsApi } from 'api/postsApi';
 import { selectSelectedPostId } from './selectors';
 
 function* fetchPostsSaga() {
@@ -43,8 +38,5 @@ function* fetchPostCommentsSaga() {
 }
 
 export default function* rootSaga() {
-  yield all([
-    takeLatest(FETCH_POSTS, fetchPostsSaga),
-    takeLatest(FETCH_POST_COMMENTS, fetchPostCommentsSaga),
-  ]);
+  yield all([takeLatest(FETCH_POSTS, fetchPostsSaga), takeLatest(FETCH_POST_COMMENTS, fetchPostCommentsSaga)]);
 }

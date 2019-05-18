@@ -50,6 +50,11 @@ module.exports = class extends Generator {
       path = `components/pages/${pageName.toLowerCase()}`;
     }
 
+    const componentNamespace = `${path}/${nameWithLowerCase}`.replace(
+      'components',
+      '.'
+    );
+
     // create folder project
     mkdirp(path);
 
@@ -93,5 +98,21 @@ module.exports = class extends Generator {
         nameWithLowerCase,
       }
     );
+
+    // update ccomponents/index.ts to add the new namespace to the list
+    const indexPath = './components/index.ts';
+
+    this.fs.copy(indexPath, indexPath, {
+      process: function(content) {
+        var regEx = new RegExp(/\/\* new-component-import-goes-here \*\//, 'g');
+        var newContent = content
+          .toString()
+          .replace(
+            regEx,
+            `export { default as ${component} } from '${componentNamespace}';\n/* new-component-import-goes-here */`
+          );
+        return newContent;
+      },
+    });
   }
 };

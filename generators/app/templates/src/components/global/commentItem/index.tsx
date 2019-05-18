@@ -1,13 +1,13 @@
-import * as React from 'react';
+import React from 'react';
 import { Card } from 'antd';
 import { IComment } from 'models';
 import './styles.scss';
 
-interface Props {
+interface IProps {
   readonly comment: IComment;
 }
 
-const CommentItem: React.SFC<Props> = ({ comment }) => {
+const CommentItem: React.SFC<IProps> = ({ comment }) => {
   const { name, body } = comment;
 
   return (

@@ -1,15 +1,15 @@
-import * as React from 'react';
+import React from 'react';
 import { IPost } from 'models';
 import { Card } from 'antd';
 import Link from 'next/link';
 import './styles.scss';
 
-export interface Props {
+export interface IProps {
   readonly post: IPost;
   readonly hasViewCommentsLink?: boolean;
 }
 
-const PostItem: React.SFC<Props> = ({ post, hasViewCommentsLink = true }) => {
+const PostItem: React.SFC<IProps> = ({ post, hasViewCommentsLink = true }) => {
   const { id, title, body } = post;
 
   return (

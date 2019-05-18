@@ -3,13 +3,11 @@ import { compose } from 'recompose';
 import { withRouter, SingletonRouter } from 'next/router';
 import { connect } from 'react-redux';
 import { IDispatchable, IPost } from 'models';
-import Layout from 'components/global/layout';
-import PostItem from 'components/global/postItem';
-import CommentList from 'components/global/commentList';
+import { Layout, PostItem, CommentList } from 'components';
 import './styles.scss';
-import { fetchPostComments } from './../../redux/posts/actions';
+import { fetchPostComments } from 'redux-store/posts/actions';
 import { createSelector } from 'reselect';
-import { selectSelectedPost } from './../../redux/posts/selectors';
+import { selectSelectedPost } from 'redux-store/posts/selectors';
 import { getParameterByName } from './../../utils';
 
 interface Props extends SingletonRouter, IDispatchable {

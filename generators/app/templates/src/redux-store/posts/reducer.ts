@@ -8,12 +8,6 @@ import {
   FETCH_POST_COMMENTS_SUCESS,
   FETCH_POST_COMMENTS_ERROR,
 } from './constants';
-import {
-  IFetchPostsSuccessPayload,
-  IFetchDataErrorPayload,
-  IFetchPostsPayload,
-  IFetchPostCommentsSuccessPayload,
-} from './payloads';
 
 const initialState: IPostsState = {
   posts: [],
@@ -24,31 +18,30 @@ const initialState: IPostsState = {
   selectedPostId: '',
 };
 
+type PostAction = ReduxActions.Action<IFetchPostsPayload>;
+
 export default handleActions<IPostsState>(
   {
-    [FETCH_POSTS]: (
-      state,
-      action: ReduxActions.Action<IFetchPostsPayload>
-    ) => ({
+    [FETCH_POSTS]: (state, action: PostAction) => ({
       ...state,
       ...action.payload,
     }),
-    [FETCH_POSTS_SUCCESS]: (
-      state,
-      action: ReduxActions.Action<IFetchPostsSuccessPayload>
-    ) => ({ ...state, isFetchingPosts: false, ...action.payload }),
-    [FETCH_POSTS_ERROR]: (
-      state,
-      action: ReduxActions.Action<IFetchDataErrorPayload>
-    ) => ({ ...state, isFetchingPosts: false, ...action.payload }),
-    [FETCH_POST_COMMENTS]: (
-      state,
-      action: ReduxActions.Action<IFetchPostsSuccessPayload>
-    ) => ({ ...state, isFetchingPosts: false, ...action.payload }),
-    [FETCH_POST_COMMENTS_SUCESS]: (
-      state,
-      action: ReduxActions.Action<IFetchPostCommentsSuccessPayload>
-    ) => {
+    [FETCH_POSTS_SUCCESS]: (state, action: PostAction) => ({
+      ...state,
+      isFetchingPosts: false,
+      ...action.payload,
+    }),
+    [FETCH_POSTS_ERROR]: (state, action: PostAction) => ({
+      ...state,
+      isFetchingPosts: false,
+      ...action.payload,
+    }),
+    [FETCH_POST_COMMENTS]: (state, action: PostAction) => ({
+      ...state,
+      isFetchingPosts: false,
+      ...action.payload,
+    }),
+    [FETCH_POST_COMMENTS_SUCESS]: (state, action: PostAction) => {
       const comments = action.payload ? action.payload.comments : [];
 
       return {
@@ -57,10 +50,11 @@ export default handleActions<IPostsState>(
         comments: [...state.comments, ...comments],
       };
     },
-    [FETCH_POST_COMMENTS_ERROR]: (
-      state,
-      action: ReduxActions.Action<IFetchDataErrorPayload>
-    ) => ({ ...state, isFetchingPostComments: false, ...action.payload }),
+    [FETCH_POST_COMMENTS_ERROR]: (state, action: PostAction) => ({
+      ...state,
+      isFetchingPostComments: false,
+      ...action.payload,
+    }),
   },
   initialState
 );

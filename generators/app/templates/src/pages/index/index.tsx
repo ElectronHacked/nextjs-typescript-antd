@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Layout from 'components/global/layout';
-import './home.scss';
+import './styles.scss';
 
 export const Home = () => (
   <Layout title="Dashbord" description="This is the home page">

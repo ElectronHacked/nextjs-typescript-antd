@@ -6,8 +6,10 @@
       {
         "root": ["./"],
         "alias": {
+          "api": "./api",
           "components": "./components",
-          "constants": "./constants"
+          "constants": "./constants",
+          "redux-store": "./redux-store"
         }
       }
     ],

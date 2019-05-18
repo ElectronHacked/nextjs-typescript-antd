@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
-import Layout from 'components/global/layout';
-import PostList from 'components/global/postList';
-import './styles.scss';
+import { Layout, PostList } from 'components';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { IDispatchable } from 'models';
 import { fetchPosts } from './../../redux/posts/actions';
+import './styles.scss';
 
 export const Posts: React.SFC<IDispatchable> = ({ dispatch }) => {
   // Similar to componentDidMount and componentDidUpdate:

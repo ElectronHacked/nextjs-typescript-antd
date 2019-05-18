@@ -32,7 +32,7 @@
   "files": [
     "generators"
   ],
-  "author": "Phil (https://github.com/ElectronHacked)",
+  "author": "Electron (https://github.com/ElectronHacked)",
   "license": "MIT",
   "dependencies": {
     "babel-eslint": "^10.0.1",

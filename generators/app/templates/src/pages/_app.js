@@ -3,7 +3,7 @@ import React from 'react';
 import App, {Container} from 'next/app';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
-import {configureStore} from '../redux/createStore';
+import {configureStore} from 'redux-store/createStore';
 
 const {store, persistor} = configureStore ();
 

@@ -1,9 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import uuid from 'uuid/v4';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import Link from 'next/link';
 import Head from './head';
-import NProgress from 'components/global/customNProgress';
+// import {CustomNProgress} from 'components';
 import { compose } from 'recompose';
 import { withRouter, RouterProps } from 'next/router';
 import '../../../styles/main.scss';
@@ -33,7 +33,7 @@ const MainLayout: React.SFC<Props> = ({
 
   return (
     <>
-      {/* <NProgress /> */}
+      {/* <CustomNProgress /> */}
       <Head title={`<%= displayName %> | ${title}`} description={description} ogImage={ogImage} url={url} />
       <Layout className="layout">
         <Header>

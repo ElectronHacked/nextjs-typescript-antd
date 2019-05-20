@@ -1,8 +1,15 @@
 var Generator = require('yeoman-generator');
 var mkdirp = require('mkdirp');
 
+const humanizeString = require('humanize-string');
+const camelCase = require('camelcase');
+const decamelize = require('decamelize');
+
 module.exports = class extends Generator {
   prompting() {
+    const pages = this.config.get('pages');
+    const _pageOptions = pages.map(({ path }) => path).sort();
+
     return this.prompt([
       {
         type: 'input',
@@ -19,19 +26,22 @@ module.exports = class extends Generator {
         name: 'pageSpecificComponent',
         type: 'confirm',
         message: 'Is this a page-specific component?',
+        default: false,
       },
       {
-        when: function(response) {
-          return response.pageSpecificComponent;
+        when: function({ pageSpecificComponent }) {
+          return pageSpecificComponent;
         },
+        type: 'list',
         name: 'pageName',
         message: 'Page name',
+        choices: _pageOptions,
       },
-    ]).then(answers => {
+    ]).then(({ name, pageSpecificComponent, pageName }) => {
       this.answers = {
-        name: answers.name,
-        pageSpecificComponent: answers.pageSpecificComponent,
-        pageName: answers.pageName,
+        name: camelCase(name, { pascalCase: true }),
+        pageSpecificComponent,
+        pageName,
       };
     });
   }
@@ -39,18 +49,19 @@ module.exports = class extends Generator {
   writing() {
     const { name, title, pageSpecificComponent, pageName } = this.answers;
 
-    const nameWithLowerCase = name.charAt(0).toLowerCase() + name.slice(1);
+    const camelCasedName = camelCase(name);
 
-    const className = nameWithLowerCase;
-    const component = name.charAt(0).toUpperCase() + name.slice(1);
+    const decamelizedName = decamelize(name, '-');
+    const className = decamelizedName;
+    const component = camelCase(name, { pascalCase: true });
 
     let path = `components/global`;
 
     if (pageSpecificComponent && !!pageName) {
-      path = `components/pages/${pageName.toLowerCase()}`;
+      path = `components/pages/${pageName}`;
     }
 
-    const componentNamespace = `${path}/${nameWithLowerCase}`.replace(
+    const componentNamespace = `${path}/${camelCasedName}`.replace(
       'components',
       '.'
     );
@@ -61,18 +72,18 @@ module.exports = class extends Generator {
     // copy component into the components folder
     this.fs.copyTpl(
       this.templatePath('_component.js'),
-      this.destinationPath(`${path}/${nameWithLowerCase}/index.tsx`),
+      this.destinationPath(`${path}/${camelCasedName}/index.tsx`),
       {
         component,
         className,
-        i18n: nameWithLowerCase,
+        i18n: camelCasedName,
       }
     );
 
     // copy styles.scss
     this.fs.copyTpl(
       this.templatePath('_styles.scss'),
-      this.destinationPath(`${path}/${nameWithLowerCase}/styles.scss`),
+      this.destinationPath(`${path}/${camelCasedName}/styles.scss`),
       {
         className,
       }
@@ -81,7 +92,7 @@ module.exports = class extends Generator {
     // copy i18n.json
     this.fs.copyTpl(
       this.templatePath('_i18n.json'),
-      this.destinationPath(`static/locales/en/${nameWithLowerCase}.json`),
+      this.destinationPath(`static/locales/en/${camelCasedName}.json`),
       {
         title,
       }
@@ -90,12 +101,10 @@ module.exports = class extends Generator {
     // copy unit test.js
     this.fs.copyTpl(
       this.templatePath('_test.js'),
-      this.destinationPath(
-        `tests/units/components/${nameWithLowerCase}.test.js`
-      ),
+      this.destinationPath(`tests/units/components/${camelCasedName}.test.js`),
       {
         component,
-        nameWithLowerCase,
+        camelCasedName,
       }
     );
 

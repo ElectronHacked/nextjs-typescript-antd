@@ -1,6 +1,7 @@
 // Project variables and Mixins
 @import 'variables';
 @import 'mixins';
+
 // Main Styles
 main {
   min-height: 100vh;
@@ -13,16 +14,24 @@ main {
   letter-spacing: 1.1px;
 }
 
+#__next {
+  display: flex;
+  height: 100vh;
+}
+
 .layout {
   min-height: 100vh;
+
   .ant-layout-content {
     padding: 0 50px;
   }
+
   .content-body {
     background: #fff;
     padding: 24px;
     height: 70vh;
   }
+
   .ant-layout-footer {
     text-align: center;
   }

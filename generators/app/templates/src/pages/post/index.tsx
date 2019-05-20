@@ -33,7 +33,7 @@ export const Post: React.SFC<Props> = ({ router, dispatch, post }) => {
   return (
     <Layout title="Post Details" description="This is the Post Details Page">
       <h2>Post Details</h2>
-      <PostItem post={post} hasViewCommentsLink={false} />
+      {post && <PostItem post={post} hasViewCommentsLink={false} />}
       <CommentList comments={[]} />
     </Layout>
   );

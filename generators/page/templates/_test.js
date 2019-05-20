@@ -3,7 +3,7 @@
 import React from 'react';
 import toJson from 'enzyme-to-json';
 import { shallow } from 'enzyme';
-import { <%= component %> } from '@root/pages/<%= nameWithLowerCase %>';
+import { <%= component %> } from '@root/pages/<%= decamelizedName %>';
 
 const defaultComponent = <<%= component %> t={() => {}} />;
 

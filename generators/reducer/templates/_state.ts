@@ -1,3 +1,3 @@
-import { ILoadingPayload } from './payloads';
+import {ILoadable} from 'models';
 
-export interface <%= stateName %> extends ILoadingPayload {}
+export interface <%= stateName %> extends ILoadable {}

@@ -1,6 +1,8 @@
 var Generator = require('yeoman-generator');
 var mkdirp = require('mkdirp');
 var { defaultPages } = require('../../utils/config');
+const camelCase = require('camelcase');
+const decamelize = require('decamelize');
 
 module.exports = class extends Generator {
   // note: arguments and options should be defined in the constructor.
@@ -38,12 +40,12 @@ module.exports = class extends Generator {
         message: "What's your email address",
         store: true,
       },
-    ]).then(answers => {
+    ]).then(({ name, displayName, fullName, email }) => {
       this.answers = {
-        name: answers.name,
-        displayName: answers.displayName,
-        fullName: answers.fullname,
-        email: answers.email,
+        name: decamelize(camelCase(name), '-'),
+        displayName,
+        fullName,
+        email,
       };
     });
   }

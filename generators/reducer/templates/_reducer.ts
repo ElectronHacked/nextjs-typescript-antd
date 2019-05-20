@@ -1,7 +1,5 @@
 import {handleActions} from 'redux-actions';
 
-import { ILoadingPayload } from './payloads';
-
 import {DEFAULT_ACTION} from './constants';
 
 import { <%= stateName %> } from './state';
@@ -12,7 +10,7 @@ const initialState: <%= stateName %> = {
 
 export default handleActions<<%= stateName %>>(
   {
-    [DEFAULT_ACTION]: (state: <%= stateName %>, action: ReduxActions.Action<ILoadingPayload>) => ({
+    [DEFAULT_ACTION]: (state: <%= stateName %>, action: ReduxActions.Action<<%= stateName %>>) => ({
       ...state,
       ...action.payload,
     }),

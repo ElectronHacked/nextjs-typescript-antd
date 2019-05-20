@@ -36,6 +36,7 @@ $ yo nextjs-typescript-antd
   * [npm run build](#npm-run-build)
   * [npm run export](#npm-run-export)
 * [Available Generators](#available-generators)
+  * [yo nextjs-typescript-antd](#yo-nextjs-typescript-antd)
   * [yo nextjs-typescript-antd:page](#yo-nextjs-typescript-antdpage)
   * [yo nextjs-typescript-antd:component](#yo-nextjs-typescript-antdcomponent)
   * [yo nextjs-typescript-antd:reducer](#yo-nextjs-typescript-antdreducer)
@@ -184,6 +185,27 @@ Now you can deploy the out directory to any static hosting service.
 
 # Available Generators
 
+### `yo nextjs-typescript-antd
+
+It will prompt you for the details of your new project `nextjs-typescript-antd` project
+
+```
+$ yo nextjs-typescript-antd
+Initializing...
+? Your project name rect-next-project
+? Your project display name React Next Project
+? What's your full name User Name
+? What's your email address username@email.com
+   create package.json
+   create .babelrc
+   create .eslintignore
+   create .eslintrc
+   create .gitattributes
+   create .gitignore
+   create .prettierrc
+   ...
+```
+
 ### `yo nextjs-typescript-antd:page`
 
 It will prompt you for the name and the title of your new page.
@@ -211,6 +233,78 @@ $ yo nextjs-typescript-antd:page --force
     force redux\rootSaga.ts
     force redux\storeState.ts
 ```
+Sometimes you might want to have your page nested within another page. To achieve this, all you need to do is: 
+```
+$ yo nextjs-typescript-antd:page --force
+? Page name forgot password
+? Page title Forgot password
+? Is this a nested page? Yes
+? Select the parent page
+  about
+> account
+  index
+  people
+  post
+  posts
+(Move up and down to reveal more choices)
+```
+then after selecting `account` as the parent page, your`forgot password` will be generated within the `account` folder. (Please note that you would have created the `account`	 page earlier). Below is the final output: 
+
+
+
+```
+$ yo nextjs-typescript-antd:page --force
+? Page name forgot password
+? Page title Forgot password
+? Is this a nested page? Yes
+? Select the parent page account
+? Would you like to create reducer for this page? No
+   create pages\account\forgot-password\index.tsx
+   create pages\account\forgot-password\styles.scss
+   create static\locales\en\pages\account\forgot-password.json
+   create tests\units\pages\account\forgot-password.test.js
+    force components\global\layout\index.tsx
+    force server.js
+```
+
+Note how the page has been named `forgot-password` even though you would have entered 	`forgot password`. The same would have been the case even if you had entered something like `Forgot Password`, `forgotPassword` or 	`ForgotPassword` 
+
+You can choose that a  the redux `store` be created when you create  a page. To achieve this, just answer `y` to the question `Would you like to create reducer for this page?`. And the output would be something like below:
+```
+$ yo nextjs-typescript-antd:page --force
+? Page name Forgot Password
+? Page title Forgot password
+? Is this a nested page? Yes
+? Select the parent page account
+? Would you like to create reducer for this page? Yes
+? Reducer name (ForgotPassword)
+```
+Notice how the default reducer name is `ForgotPassword`. The same would have been the case even if you had entered something like `forgot Password`, `forgotPassword` or 	`forgot-password` for the name of the page . And the final output will be something like
+
+```
+$ yo nextjs-typescript-antd:page --force
+? Page name Forgot Password
+? Page title Forgot password
+? Is this a nested page? Yes
+? Select the parent page account
+? Would you like to create reducer for this page? Yes
+? Reducer name ForgotPassword
+    force pages\account\forgot-password\index.tsx
+    force pages\account\forgot-password\styles.scss
+    force static\locales\en\pages\account\forgot-password.json
+    force tests\units\pages\account\forgot-password.test.js
+    force components\global\layout\index.tsx
+    force server.js
+   create redux-store\forgotPassword\actions.ts
+   create redux-store\forgotPassword\constants.ts
+   create redux-store\forgotPassword\reducer.ts
+   create redux-store\forgotPassword\sagas.ts
+   create redux-store\forgotPassword\selectors.ts
+   create redux-store\forgotPassword\state.ts
+    force redux-store\rootReducer.ts
+    force redux-store\rootSaga.ts
+    force redux-store\storeState.ts
+```
 
 ### `yo nextjs-typescript-antd:component`
 
@@ -225,6 +319,102 @@ $ yo nextjs-typescript-antd:component --force
    create components\global\userDetails\styles.scss
    create static\locales\en\userDetails.json
    create tests\units\components\userDetails.test.js
+```
+Just as you can nest pages, you can also choose that your components be specific to pages which are nested. Below is the code sample:
+
+```
+$ yo nextjs-typescript-antd:component --force
+? Component name user avatar
+? Is this a page-specific component? Yes
+? Page name
+  about
+  account
+> account/forgot-password
+  index
+  people
+(Move up and down to reveal more choices)
+```
+
+And the final output:
+```
+$ yo nextjs-typescript-antd:component --force
+? Component name user avatar
+? Is this a page-specific component? Yes
+? Page name account/forgot-password
+   create components\pages\account\forgot-password\userAvatar\index.tsx
+   create components\pages\account\forgot-password\userAvatar\styles.scss
+    force static\locales\en\userAvatar.json
+    force tests\units\components\userAvatar.test.js
+    force components\index.ts
+```
+
+Note that for the component name we entered `user avatar` and we got `userAvatar`. This is because all the component files should be `camelCase`d and the component names should be `PascalCase`d. Below is the generated component:
+
+```jsx
+import  React, {FC} from  'react';
+import  './styles.scss';
+
+interface  IProps {};
+
+export  const  UserAvatar:  FC<IProps> = () => (
+	<div  className="user-avatar">
+		UserAvatar component
+	</div>
+);
+
+export  default  UserAvatar;
+```
+
+
+And the `components\index.ts` file looks something like
+
+```jsx
+export { default  as  CommentItem } from  './global/commentItem';
+export { default  as  CommentList } from  './global/commentList';
+export { default  as  CustomNProgress } from  './global/customNProgress';
+export { default  as  Layout } from  './global/layout';
+export { default  as  PostItem } from  './global/postItem';
+export { default  as  PostList } from  './global/postList';
+export { default  as  CustomErrorBoundary } from  './global/customErrorBoundary';
+export { default  as  UserAvatar } from  './pages/account/forgot-password/userAvatar';
+/* new-component-import-goes-here */
+```
+This will allow you to import the `UserAvatar`  component from anywhere in the project like below
+
+```jsx
+...
+import { UserAvatar } from 'components';
+...
+```
+
+This is possible because of the configuration in the `.babelrc` file, line `9`
+
+```json
+{
+  "presets": ["next/babel", "@zeit/next-typescript/babel"],
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": ["./"],
+        "alias": {
+          "api": "./api",
+          "components": "./components",
+          "constants": "./constants",
+          "redux-store": "./redux-store"
+        }
+      }
+    ],
+    ["@babel/plugin-proposal-decorators", { "decoratorsBeforeExport": true }],
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "style": true
+      }
+    ]
+  ]
+}
 ```
 
 ### `yo nextjs-typescript-antd:model`
@@ -278,7 +468,6 @@ This yeoman generator will build different React components, creating a skeleton
 ### TODO List
 
 - [ ] Add Storybook Subgenerator
-- [ ] Allow The User To Generate Nested Pages
 - [ ] Allow The User To Choose A CSS Preprocessor (LESS OR LESS)
 - [ ] Allow The User To Specify CRUD Requirements When Generating The Page
 - [ ] Allow The User To Choose A [Layout](https://ant.design/components/layout/) When Generating The Boilerplate

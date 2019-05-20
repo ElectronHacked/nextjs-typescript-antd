@@ -1,6 +1,6 @@
 {
   "name": "generator-nextjs-typescript-antd",
-  "version": "1.0.4",
+  "version": "2.0.0-alpha",
   "description": "Yoman Generator for nextjs-typescript-antd",
   "scripts": {
     "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",

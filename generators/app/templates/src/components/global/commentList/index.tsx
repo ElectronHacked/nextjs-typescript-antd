@@ -34,4 +34,4 @@ const mapStateToProps = createSelector(
 
 const withConnect = connect(mapStateToProps);
 
-export default compose<Props, Props>(withConnect)(CommentList);
+export default compose<IProps, IProps>(withConnect)(CommentList);

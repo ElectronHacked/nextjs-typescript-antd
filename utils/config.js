@@ -17,4 +17,6 @@ const defaultPages = [
   },
 ];
 
-module.exports = { defaultPages };
+const preProcessors = ['scss', 'less'];
+
+module.exports = { defaultPages, preProcessors };

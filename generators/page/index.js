@@ -1,8 +1,14 @@
 var Generator = require('yeoman-generator');
 var mkdirp = require('mkdirp');
+const humanizeString = require('humanize-string');
+const camelCase = require('camelcase');
+const decamelize = require('decamelize');
 
 module.exports = class extends Generator {
   prompting() {
+    const pages = this.config.get('pages');
+    const _pageOptions = pages.map(({ path }) => path).sort();
+
     return this.prompt([
       {
         type: 'input',
@@ -15,49 +21,86 @@ module.exports = class extends Generator {
           return 'Please add a name for your new page';
         },
       },
-      {
-        type: 'input',
-        name: 'title',
-        message: 'Page title',
-        validate: str => {
-          if (str.trim().length > 0) {
-            return true;
-          }
-          return 'Please add a name for your new page';
+    ]).then(({ name }) => {
+      return this.prompt([
+        {
+          type: 'input',
+          name: 'title',
+          message: 'Page title',
+          default: humanizeString(name),
+          validate: str => {
+            if (str.trim().length > 0) {
+              return true;
+            }
+            return 'Please add a name for your new page';
+          },
         },
-      },
-      {
-        type: 'confirm',
-        name: 'createReducer',
-        message: 'Would you like to create reducer for this page?',
-        default: false,
-      },
-    ]).then(answers => {
-      this.answers = {
-        name: answers.name,
-        title: answers.title,
-        createReducer: answers.createReducer,
-      };
+        {
+          type: 'confirm',
+          name: 'isNestedPage',
+          message: 'Is this a nested page?',
+          default: false,
+        },
+        {
+          when: function(response) {
+            return response.isNestedPage;
+          },
+          type: 'list',
+          name: 'parentPage',
+          message: 'Select the parent page',
+          choices: _pageOptions,
+        },
+        {
+          type: 'confirm',
+          name: 'createReducer',
+          message: 'Would you like to create reducer for this page?',
+          default: false,
+        },
+      ]).then(({ title, isNestedPage, parentPage, createReducer }) => {
+        this.answers = {
+          name: camelCase(name, { pascalCase: true }), // Make sure that there's no space between the characters
+          title,
+          isNestedPage,
+          parentPage:
+            isNestedPage && parentPage
+              ? pages.find(({ path }) => path === parentPage).name
+              : '',
+          createReducer,
+        };
+      });
     });
   }
 
   writing() {
-    const { name, title, createReducer } = this.answers;
-    const nameWithLowerCase = name.charAt(0).toLowerCase() + name.slice(1);
-    const className = `${nameWithLowerCase}-page`;
-    const component = name.charAt(0).toUpperCase() + name.slice(1);
+    const {
+      name,
+      title,
+      isNestedPage,
+      parentPage,
+      createReducer,
+    } = this.answers;
+
+    const decamelizedName = decamelize(name, '-'); // page-name
+    const pascalCasedName = camelCase(name, { pascalCase: true }); // page-name
+    const className = `${decamelizedName}-page`; // page-name-class
+
+    const pagePath = isNestedPage
+      ? `${parentPage}/${decamelizedName}`
+      : `${decamelizedName}`;
+
+    const pagePageWithRoot = `pages/${pagePath}`;
 
     // create folder project
-    mkdirp(`pages/${nameWithLowerCase}`);
+    mkdirp(pagePageWithRoot);
 
     // copy page into the pages folder
     this.fs.copyTpl(
       this.templatePath('_page.js'),
-      this.destinationPath(`pages/${nameWithLowerCase}/index.tsx`),
+      this.destinationPath(`${pagePageWithRoot}/index.tsx`),
       {
-        component,
+        component: pascalCasedName,
         className,
-        i18n: nameWithLowerCase,
+        i18n: decamelizedName,
         title,
       }
     );
@@ -65,7 +108,7 @@ module.exports = class extends Generator {
     // copy styles.scss
     this.fs.copyTpl(
       this.templatePath('_styles.scss'),
-      this.destinationPath(`pages/${nameWithLowerCase}/styles.scss`),
+      this.destinationPath(`${pagePageWithRoot}/styles.scss`),
       {
         className,
       }
@@ -74,7 +117,7 @@ module.exports = class extends Generator {
     // copy i18n.json
     this.fs.copyTpl(
       this.templatePath('_i18n.json'),
-      this.destinationPath(`static/locales/en/${nameWithLowerCase}.json`),
+      this.destinationPath(`static/locales/en/${pagePageWithRoot}.json`),
       {
         title,
       }
@@ -82,19 +125,19 @@ module.exports = class extends Generator {
     // copy unit test.js
     this.fs.copyTpl(
       this.templatePath('_test.js'),
-      this.destinationPath(`tests/units/pages/${nameWithLowerCase}.test.js`),
+      this.destinationPath(`tests/units/${pagePageWithRoot}.test.js`),
       {
-        component,
-        nameWithLowerCase,
+        component: pascalCasedName,
+        decamelizedName,
       }
     );
 
     const linkItem = `
       <MenuItem
         key={uuid()}
-        className={asPath === '/${nameWithLowerCase}' ? activeClass : ''}
+        className={asPath === '/${decamelizedName}' ? activeClass : ''}
       >
-        <Link href="/${nameWithLowerCase}">
+        <Link href="/${decamelizedName}">
           <a>${title}</a>
         </Link>
       </MenuItem>
@@ -123,7 +166,7 @@ module.exports = class extends Generator {
           .toString()
           .replace(
             regEx,
-            `, '${nameWithLowerCase}'/* new-i18n-namespace-here */`
+            `, '${decamelizedName}'/* new-i18n-namespace-here */`
           );
         return newContent;
       },
@@ -144,5 +187,17 @@ module.exports = class extends Generator {
         }
       );
     }
+
+    // Save this page in the config file
+    // const _pages = this.config.get('pages').map(({ name }) => name);
+    const _pages = this.config.get('pages');
+
+    this.config.set('pages', [
+      ..._pages,
+      {
+        name: decamelizedName,
+        path: pagePath,
+      },
+    ]);
   }
 };

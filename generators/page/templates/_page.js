@@ -1,8 +1,10 @@
-import * as React from 'react';
+import React, {FC} from 'react';
 import Layout from 'components/global/layout';
 import './styles.scss';
 
-export const <%= component %> = () => (
+interface IProps {};
+
+export const <%= component %>: FC<IProps> = () => (
   <Layout title="<%= title %>" description="This is the <%= title %> Page">
     <div className="<%= className %>">
       <p>

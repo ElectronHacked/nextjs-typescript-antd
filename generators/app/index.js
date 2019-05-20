@@ -1,5 +1,6 @@
 var Generator = require('yeoman-generator');
 var mkdirp = require('mkdirp');
+var { defaultPages } = require('../../utils/config');
 
 module.exports = class extends Generator {
   // note: arguments and options should be defined in the constructor.
@@ -82,6 +83,9 @@ module.exports = class extends Generator {
         fullName,
       }
     );
+
+    // Save the page
+    this.config.set('pages', defaultPages);
 
     // save config file!
     this.config.save();

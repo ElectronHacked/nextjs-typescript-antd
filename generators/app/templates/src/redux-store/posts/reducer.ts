@@ -1,4 +1,4 @@
-import { handleActions } from 'redux-actions';
+import { handleActions, Action } from 'redux-actions';
 import { IPostsState } from './state';
 import {
   FETCH_POSTS,
@@ -18,7 +18,7 @@ const initialState: IPostsState = {
   selectedPostId: '',
 };
 
-type PostAction = ReduxActions.Action<IFetchPostsPayload>;
+type PostAction = Action<IPostsState>;
 
 export default handleActions<IPostsState>(
   {

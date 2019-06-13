@@ -13,7 +13,6 @@
         }
       }
     ],
-    ["@babel/plugin-proposal-decorators", { "decoratorsBeforeExport": true }],
     [
       "import",
       {

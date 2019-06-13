@@ -1,21 +1,21 @@
-var Generator = require('yeoman-generator');
-var mkdirp = require('mkdirp');
-var { defaultPages } = require('../../utils/config');
-const camelCase = require('camelcase');
-const decamelize = require('decamelize');
+var Generator = require ('yeoman-generator');
+var mkdirp = require ('mkdirp');
+var {defaultPages} = require ('../../utils/config');
+const camelCase = require ('camelcase');
+const decamelize = require ('decamelize');
 
 module.exports = class extends Generator {
   // note: arguments and options should be defined in the constructor.
-  constructor(args, opts) {
-    super(args, opts);
-    this.log('Initializing...');
+  constructor (args, opts) {
+    super (args, opts);
+    this.log ('Initializing...');
 
     // This makes `appname` a required argument.
-    this.argument('appname', { type: String, required: false });
+    this.argument ('appname', {type: String, required: false});
   }
 
-  prompting() {
-    return this.prompt([
+  prompting () {
+    return this.prompt ([
       {
         type: 'input',
         name: 'name',
@@ -40,9 +40,9 @@ module.exports = class extends Generator {
         message: "What's your email address",
         store: true,
       },
-    ]).then(({ name, displayName, fullName, email }) => {
+    ]).then (({name, displayName, fullName, email}) => {
       this.answers = {
-        name: decamelize(camelCase(name), '-'),
+        name: decamelize (camelCase (name), '-'),
         displayName,
         fullName,
         email,
@@ -50,19 +50,19 @@ module.exports = class extends Generator {
     });
   }
 
-  writing() {
-    const { name, displayName, fullName, email } = this.answers;
+  writing () {
+    const {name, displayName, fullName, email} = this.answers;
 
     // create folder project
-    mkdirp(name);
+    mkdirp (name);
 
     // change project root to the new folder
-    this.destinationRoot(this.destinationPath(name));
+    this.destinationRoot (this.destinationPath (name));
 
     // copy package.json and update some values
-    this.fs.copyTpl(
-      this.templatePath('_package.json'),
-      this.destinationPath('package.json'),
+    this.fs.copyTpl (
+      this.templatePath ('_package.json'),
+      this.destinationPath ('package.json'),
       {
         name,
         fullName,
@@ -71,15 +71,21 @@ module.exports = class extends Generator {
     );
 
     // copy all files starting with .{whaetever} (like .eslintrc)
-    this.fs.copy(this.templatePath('src/.*'), this.destinationPath('./'));
+    this.fs.copy (this.templatePath ('src/.*'), this.destinationPath ('./'));
 
     // copy all folders and their contents
-    this.fs.copy(this.templatePath('src'), this.destinationPath('./'));
+    this.fs.copy (this.templatePath ('src'), this.destinationPath ('./'));
+
+    // copy the contents storybook folder as well
+    this.fs.copy (
+      this.templatePath ('_storybook/'),
+      this.destinationPath ('./.storybook')
+    );
 
     // Update the footer to have the name of the Application, the year and the user who created it
-    this.fs.copyTpl(
-      this.templatePath('_layout.tsx'),
-      this.destinationPath(`./components/global/layout/index.tsx`),
+    this.fs.copyTpl (
+      this.templatePath ('_layout.tsx'),
+      this.destinationPath (`./components/global/layout/index.tsx`),
       {
         displayName,
         fullName,
@@ -87,25 +93,25 @@ module.exports = class extends Generator {
     );
 
     // Save the page
-    this.config.set('pages', defaultPages);
+    this.config.set ('pages', defaultPages);
 
     // save config file!
-    this.config.save();
+    this.config.save ();
   }
-  install() {
+  install () {
     // install all dependencies
-    this.npmInstall().then(
+    this.npmInstall ().then (
       () => {
-        this.log('Dependencies Installed.');
+        this.log ('Dependencies Installed.');
       },
       () =>
-        this.log(
+        this.log (
           'We could not finish to install the node dependencies, please try again manually'
         )
     );
   }
-  end() {
-    this.log(`Open your new project: cd ${this.answers.name}`);
-    this.log('To run in dev mode use: yarn dev');
+  end () {
+    this.log (`Open your new project: cd ${this.answers.name}`);
+    this.log ('To run in dev mode use: yarn dev');
   }
 };

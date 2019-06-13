@@ -1,20 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, FC } from 'react';
 import { compose } from 'recompose';
 import { withRouter, SingletonRouter } from 'next/router';
 import { connect } from 'react-redux';
 import { IDispatchable, IPost } from 'models';
 import { Layout, PostItem, CommentList } from 'components';
-import './styles.scss';
 import { fetchPostComments } from 'redux-store/posts/actions';
 import { createSelector } from 'reselect';
 import { selectSelectedPost } from 'redux-store/posts/selectors';
 import { getParameterByName } from './../../utils';
+import './styles.scss';
 
-interface Props extends SingletonRouter, IDispatchable {
+interface IProps extends SingletonRouter, IDispatchable {
   readonly post: IPost;
 }
 
-export const Post: React.SFC<Props> = ({ router, dispatch, post }) => {
+export const Post: FC<IProps> = ({ router, dispatch, post }) => {
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     const key = 'id';
@@ -44,7 +44,7 @@ const mapStateToProps = createSelector(
   post => ({ post })
 );
 
-export default compose(
+export default compose<IProps, IProps>(
   connect(mapStateToProps),
   withRouter
 )(Post);

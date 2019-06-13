@@ -1,20 +1,13 @@
 {
-  "extends": [
-    "tslint-config-standard",
-    "tslint:latest",
-    "tslint-react"
-  ],
+  "extends": ["tslint:recommended", "tslint-config-standard", "tslint:latest", "tslint-react"],
+  "linterOptions": {
+    "exclude": ["node_modules/**"]
+  },
   "rules": {
     "quotemark": false,
     "ordered-imports": false,
-    "indent": [
-      true,
-      "spaces"
-    ],
-    "interface-name": [
-      true,
-      "always-prefix"
-    ],
+    "indent": [true, "spaces"],
+    "interface-name": [true, "always-prefix"],
     "jsx-no-lambda": false,
     "jsx-no-multiline-js": false,
     "max-line-length": false,
@@ -25,19 +18,20 @@
     "space-before-function-paren": false,
     "no-implicit-dependencies": false,
     "jsx-boolean-value": false,
-    "ter-indent": [
-      true,
-      2
-    ],
+    "object-literal-sort-keys": false,
+    "ter-indent": [true, 2],
+    "trailing-comma": true,
+    "arrow-parens": false,
+    "curly": false,
     "typedef-whitespace": [
       true,
       {
         "call-signature": "nospace",
-        "index-signature": "nospace",
+        "index-signature": "nospace"
       },
       {
         "call-signature": "nospace",
-        "index-signature": "nospace",
+        "index-signature": "nospace"
       }
     ],
     "whitespace": [

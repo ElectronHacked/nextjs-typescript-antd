@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, FC } from 'react';
 import { Layout, PostList } from 'components';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
@@ -6,7 +6,7 @@ import { IDispatchable } from 'models';
 import { fetchPosts } from 'redux-store/posts/actions';
 import './styles.scss';
 
-export const Posts: React.SFC<IDispatchable> = ({ dispatch }) => {
+export const Posts: FC<IDispatchable> = ({ dispatch }) => {
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     dispatch(fetchPosts());
@@ -19,4 +19,4 @@ export const Posts: React.SFC<IDispatchable> = ({ dispatch }) => {
   );
 };
 
-export default compose(connect())(Posts);
+export default compose<IDispatchable, IDispatchable>(connect())(Posts);

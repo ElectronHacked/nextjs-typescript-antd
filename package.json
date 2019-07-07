@@ -12,14 +12,9 @@
     "release-and-publish": "npm run release && npm publish"
   },
   "lint-staged": {
-    "linters": {
-      "*.{js,jsx,json,css}": [
-        "prettier --single-quote --write",
-        "git add"
-      ]
-    },
-    "ignore": [
-      "_*.js"
+    "*.{js,jsx,json,css}": [
+      "prettier --single-quote --write",
+      "git add"
     ]
   },
   "keywords": [
@@ -42,6 +37,7 @@
     "decamelize": "^3.2.0",
     "humanize-string": "^2.1.0",
     "husky": "^0.14.3",
+    "lint-staged": "9.1.0",
     "mkdirp": "^0.5.1",
     "prettier": "^1.12.1",
     "uppercamelcase": "^3.0.0",

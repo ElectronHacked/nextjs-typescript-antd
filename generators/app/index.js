@@ -12,12 +12,13 @@ module.exports = class extends Generator {
     // This makes `appname` a required argument.
     this.argument('appname', {
       type: String,
-      required: false
+      required: false,
     });
   }
 
   prompting() {
-    return this.prompt([{
+    return this.prompt([
+      {
         type: 'input',
         name: 'name',
         message: 'Your project name',
@@ -41,12 +42,7 @@ module.exports = class extends Generator {
         message: "What's your email address",
         store: true,
       },
-    ]).then(({
-      name,
-      displayName,
-      fullName,
-      email
-    }) => {
+    ]).then(({ name, displayName, fullName, email }) => {
       this.answers = {
         name: decamelize(camelCase(name), '-'),
         displayName,
@@ -57,11 +53,7 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    const {
-      name,
-      fullName,
-      email
-    } = this.answers;
+    const { name, fullName, email } = this.answers;
 
     // create folder project
     mkdirp(name);
@@ -70,14 +62,11 @@ module.exports = class extends Generator {
     this.destinationRoot(this.destinationPath(name));
 
     // copy package.json and update some values
-    this.fs.copyTpl(
-      this.templatePath('_package.json'),
-      this.destinationPath('package.json'), {
-        name,
-        fullName,
-        email,
-      }
-    );
+    this.fs.copyTpl(this.templatePath('_package.json'), this.destinationPath('package.json'), {
+      name,
+      fullName,
+      email,
+    });
 
     // copy all files starting with .{whaetever} (like .eslintrc)
     this.fs.copy(this.templatePath('src/.*'), this.destinationPath('./'));
@@ -86,29 +75,23 @@ module.exports = class extends Generator {
     this.fs.copy(this.templatePath('src'), this.destinationPath('./'));
 
     // copy the contents storybook folder as well
-    this.fs.copy(
-      this.templatePath('_storybook/'),
-      this.destinationPath('./.storybook')
-    );
+    this.fs.copy(this.templatePath('_storybook/'), this.destinationPath('./.storybook'));
 
     // Update the footer to have the name of the Application, the year and the user who created it
-    // try {
-    //   this.fs.copyTpl (
-    //     this.templatePath ('_layout.tsx'),
-    //     this.destinationPath (`./components/global/layout/index.tsx`),
-    //     {
-    //       displayName,
-    //       fullName,
-    //     }
-    //   );
-    // } catch (error) {
-    //   if (error && error.error) {
-    //     this.log (error.message);
-    //   }
-    // }
+    try {
+      this.fs.copyTpl(this.templatePath('_layout.tsx'), this.destinationPath(`./components/global/layout/index.tsx`), {
+        displayName,
+        fullName,
+      });
+    } catch (error) {
+      if (error && error.error) {
+        this.log(error.message);
+      }
+    }
 
     // Save the page
-    this.config.set('pages', [{
+    this.config.set('pages', [
+      {
         name: 'about',
         path: 'about',
       },
@@ -135,10 +118,7 @@ module.exports = class extends Generator {
       () => {
         this.log('Dependencies Installed.');
       },
-      () =>
-      this.log(
-        'We could not finish to install the node dependencies, please try again manually'
-      )
+      () => this.log('We could not finish to install the node dependencies, please try again manually')
     );
   }
   end() {

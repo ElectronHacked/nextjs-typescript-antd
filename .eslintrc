@@ -18,8 +18,12 @@
     "node": true
   },
   "rules": {
-    "prettier/prettier": ["error", { "singleQuote": true }],
+    "prettier/prettier": ["error", {
+      "singleQuote": true
+    }],
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "warn",
+    "no-unused-vars": "error",
+    "no-unused-expressions": "error"
   }
 }

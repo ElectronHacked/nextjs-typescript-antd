@@ -5,9 +5,9 @@
   "scripts": {
     "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check",
     "precommit": "lint-staged",
-    "changelog:major": "changelog -M && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md' && npm version major && git push origin",
-    "changelog:minor": "changelog -m && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md' && npm version minor && git push origin",
-    "changelog:patch": "changelog -p && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md' && npm version patch && git push origin",
+    "changelog:major": "changelog -M && git add CHANGELOG.md && git commit -m \"updated CHANGELOG.md\" && npm version major && git push origin",
+    "changelog:minor": "changelog -m && git add CHANGELOG.md && git commit -m \"updated CHANGELOG.md\" && npm version minor && git push origin",
+    "changelog:patch": "changelog -p && git add CHANGELOG.md && git commit -m \"updated CHANGELOG.md\" && npm version patch && git push origin",
     "release": "git push origin --tags",
     "release-and-publish": "npm run release && npm publish"
   },
@@ -54,7 +54,7 @@
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.1.0",
-    "generate-changelog": "^1.7.1"
+    "generate-changelog": "^1.8.0"
   },
   "repository": {
     "type": "git",

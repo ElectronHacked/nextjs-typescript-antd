@@ -44,7 +44,7 @@ module.exports = class extends Generator {
         var regEx = new RegExp(/\/\* new-hoc-import-goes-here \*\//, 'g');
         var newContent = content
           .toString()
-          .replace(regEx, `export { ${hocName} } from './${hocName}';\n/* new-hoc-import-goes-here */`);
+          .replace(regEx, `export { default as ${hocName} } from './${hocName}';\n/* new-hoc-import-goes-here */`);
         return newContent;
       },
     });

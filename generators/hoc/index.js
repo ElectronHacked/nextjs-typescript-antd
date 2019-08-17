@@ -32,7 +32,7 @@ module.exports = class extends Generator {
     const hocName = camelCase(name);
 
     // copy page into the pages folder
-    this.fs.copyTpl(this.templatePath('_hoc.ts'), this.destinationPath(`hocs/${hocName}.ts`), {
+    this.fs.copyTpl(this.templatePath('_hoc.ts'), this.destinationPath(`hocs/${hocName}.tsx`), {
       hocName,
     });
 

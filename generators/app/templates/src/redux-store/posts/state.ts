@@ -1,11 +1,20 @@
 import { IPost, IComment } from 'models';
 
+export type PostsErrable = 'fetchPostsErrorMsg' | 'fetchPostCommentsErrorMsg';
+
+export type PostsBooleanable = 'isFetchingPosts' | 'isFetchingPostComments';
+
+export type PostsSuccessIble = 'fetchPostsSuccessMsg' | 'fetchPostCommentsSuccessMsg';
+
 export interface IPostsState {
   readonly posts?: IPost[];
   readonly comments?: IComment[];
-  readonly isFetchingPosts?: boolean;
   readonly selectedPostId?: string;
-  readonly isFetchingPostComments?: boolean;
-  readonly fetchDataErrorMessage?: string;
   readonly text?: string;
+
+  //#region Doables
+  readonly errable?: { [key in PostsErrable]?: string };
+  readonly booleanable?: { [key in PostsBooleanable]?: boolean };
+  readonly successible?: { [key in PostsSuccessIble]?: string };
+  //#endregion
 }

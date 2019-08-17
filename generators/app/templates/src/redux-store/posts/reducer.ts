@@ -1,6 +1,7 @@
 import { handleActions, Action } from 'redux-actions';
 import { IPostsState } from './state';
 import {
+  RESET_POSTS_DOABLES,
   FETCH_POSTS,
   FETCH_POSTS_SUCCESS,
   FETCH_POSTS_ERROR,
@@ -8,53 +9,42 @@ import {
   FETCH_POST_COMMENTS_SUCESS,
   FETCH_POST_COMMENTS_ERROR,
 } from './constants';
+import { reducerPayloadDoableHelper } from 'redux-store/rootReducer';
 
 const initialState: IPostsState = {
   posts: [],
   comments: [],
-  isFetchingPosts: false,
-  isFetchingPostComments: false,
-  fetchDataErrorMessage: '',
+  errable: {},
+  booleanable: {},
+  successible: {},
   selectedPostId: '',
 };
 
-type PostAction = Action<IPostsState>;
+export default (
+  state: IPostsState = initialState,
+  { type, payload: incomingPayload }: ReduxActions.Action<IPostsState>
+) => {
+  const payload =
+    type === RESET_POSTS_DOABLES
+      ? incomingPayload
+      : (reducerPayloadDoableHelper(state, incomingPayload) as IPostsState);
 
-export default handleActions<IPostsState>(
-  {
-    [FETCH_POSTS]: (state, action: PostAction) => ({
-      ...state,
-      ...action.payload,
-    }),
-    [FETCH_POSTS_SUCCESS]: (state, action: PostAction) => ({
-      ...state,
-      isFetchingPosts: false,
-      ...action.payload,
-    }),
-    [FETCH_POSTS_ERROR]: (state, action: PostAction) => ({
-      ...state,
-      isFetchingPosts: false,
-      ...action.payload,
-    }),
-    [FETCH_POST_COMMENTS]: (state, action: PostAction) => ({
-      ...state,
-      isFetchingPosts: false,
-      ...action.payload,
-    }),
-    [FETCH_POST_COMMENTS_SUCESS]: (state, action: PostAction) => {
-      const comments = action.payload ? action.payload.comments : [];
+  switch (FETCH_POSTS) {
+    case FETCH_POSTS:
+    case FETCH_POSTS_SUCCESS:
+    case FETCH_POSTS_ERROR:
+    case FETCH_POST_COMMENTS:
+    case FETCH_POST_COMMENTS_ERROR:
+    case FETCH_POST_COMMENTS_SUCESS: {
+      const comments = payload ? payload.comments : [];
 
       return {
         ...state,
         isFetchingPostComments: false,
         comments: [...state.comments, ...comments],
       };
-    },
-    [FETCH_POST_COMMENTS_ERROR]: (state, action: PostAction) => ({
-      ...state,
-      isFetchingPostComments: false,
-      ...action.payload,
-    }),
-  },
-  initialState
-);
+    }
+    default:
+      break;
+  }
+};

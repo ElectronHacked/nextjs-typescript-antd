@@ -48,7 +48,7 @@ module.exports = class extends Generator {
         var regEx = new RegExp(/\/\* new-enum-import-goes-here \*\//, 'g');
         var newContent = content
           .toString()
-          .replace(regEx, `export { ${enumName} } from './${enumName}';\n/* new-enum-import-goes-here */`);
+          .replace(regEx, `export { ${enumName} } from './${fileName}';\n/* new-enum-import-goes-here */`);
         return newContent;
       },
     });

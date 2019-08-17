@@ -17,9 +17,11 @@ module.exports = class extends Generator {
           return 'Please add a name for your new context';
         },
       },
-    ]).then(answers => {
+    ]).then(({ name }) => {
+      const contextName = `${name}`.toLowerCase().endsWith('context') ? name : `${name}Context`;
+
       this.answers = {
-        name: camelCase(answers.name, {
+        name: camelCase(contextName, {
           pascalCase: true,
         }),
       };

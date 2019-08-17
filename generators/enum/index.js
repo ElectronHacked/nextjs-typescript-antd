@@ -9,7 +9,7 @@ module.exports = class extends Generator {
       {
         type: 'input',
         name: 'name',
-        message: 'Context name',
+        message: 'Enum name',
         validate: str => {
           if (str.trim().length > 0) {
             return true;
@@ -19,7 +19,7 @@ module.exports = class extends Generator {
       },
     ]).then(({ name }) => {
       this.answers = {
-        name: camelCase(enumName, {
+        name: camelCase(name, {
           pascalCase: true,
         }),
       };

@@ -1,5 +1,5 @@
-var Generator = require('yeoman-generator');
-var mkdirp = require('mkdirp');
+const Generator = require('yeoman-generator');
+const mkdirp = require('mkdirp');
 
 module.exports = class extends Generator {
   prompting() {
@@ -47,16 +47,16 @@ module.exports = class extends Generator {
     this.fs.copyTpl(
       this.templatePath('_actions.ts'),
       this.destinationPath(`${reduxStorePath}/${nameWithLowerCase}/actions.ts`),
-      { stateName }
+      {
+        stateName,
+      },
     );
 
     // copy constants
     this.fs.copyTpl(
       this.templatePath('_constants.ts'),
-      this.destinationPath(
-        `${reduxStorePath}/${nameWithLowerCase}/constants.ts`
-      ),
-      {}
+      this.destinationPath(`${reduxStorePath}/${nameWithLowerCase}/constants.ts`),
+      {},
     );
 
     // copy reducer
@@ -65,7 +65,7 @@ module.exports = class extends Generator {
       this.destinationPath(`${reduxStorePath}/${nameWithLowerCase}/reducer.ts`),
       {
         stateName,
-      }
+      },
     );
 
     // copy saga
@@ -74,19 +74,17 @@ module.exports = class extends Generator {
       this.destinationPath(`${reduxStorePath}/${nameWithLowerCase}/sagas.ts`),
       {
         sagaName,
-      }
+      },
     );
 
     // copy selector
     this.fs.copyTpl(
       this.templatePath('_selectors.ts'),
-      this.destinationPath(
-        `${reduxStorePath}/${nameWithLowerCase}/selectors.ts`
-      ),
+      this.destinationPath(`${reduxStorePath}/${nameWithLowerCase}/selectors.ts`),
       {
         stateName: selectorState,
         nameWithLowerCase,
-      }
+      },
     );
 
     // copy state
@@ -95,20 +93,20 @@ module.exports = class extends Generator {
       this.destinationPath(`${reduxStorePath}/${nameWithLowerCase}/state.ts`),
       {
         stateName,
-      }
+      },
     );
 
     // update rootReducer.ts to add the new namespace to the list
     const rootReducerPath = `./${reduxStorePath}/rootReducer.ts`;
 
     this.fs.copy(rootReducerPath, rootReducerPath, {
-      process: function(content) {
-        var regEx = new RegExp(/\/\* new-imported-reducer-goes-here \*\//, 'g');
-        var newContent = content
+      process(content) {
+        const regEx = new RegExp(/\/\* new-imported-reducer-goes-here \*\//, 'g');
+        const newContent = content
           .toString()
           .replace(
             regEx,
-            `import ${nameWithLowerCase} from './${nameWithLowerCase}/reducer';\n/* new-imported-reducer-goes-here */`
+            `import ${nameWithLowerCase} from './${nameWithLowerCase}/reducer';\n/* new-imported-reducer-goes-here */`,
           );
         return newContent;
       },
@@ -116,17 +114,11 @@ module.exports = class extends Generator {
 
     // update rootReducer.ts to add the new reducer to the rootReducer object
     this.fs.copy(rootReducerPath, rootReducerPath, {
-      process: function(content) {
-        var regEx = new RegExp(
-          /\/\* new-tranformed-reducer-export-goes-here \*\//,
-          'g'
-        );
-        var newContent = content
+      process(content) {
+        const regEx = new RegExp(/\/\* new-tranformed-reducer-export-goes-here \*\//, 'g');
+        const newContent = content
           .toString()
-          .replace(
-            regEx,
-            `${nameWithLowerCase},\n/* new-tranformed-reducer-export-goes-here */`
-          );
+          .replace(regEx, `${nameWithLowerCase},\n/* new-tranformed-reducer-export-goes-here */`);
         return newContent;
       },
     });
@@ -135,13 +127,13 @@ module.exports = class extends Generator {
     const rootSagaPath = `./${reduxStorePath}/rootSaga.ts`;
 
     this.fs.copy(rootSagaPath, rootSagaPath, {
-      process: function(content) {
-        var regEx = new RegExp(/\/\* new-imported-saga-goes-here \*\//, 'g');
-        var newContent = content
+      process(content) {
+        const regEx = new RegExp(/\/\* new-imported-saga-goes-here \*\//, 'g');
+        const newContent = content
           .toString()
           .replace(
             regEx,
-            `import ${nameWithLowerCase} from './${nameWithLowerCase}/sagas';\n/* new-imported-saga-goes-here */`
+            `import ${nameWithLowerCase} from './${nameWithLowerCase}/sagas';\n/* new-imported-saga-goes-here */`,
           );
         return newContent;
       },
@@ -149,17 +141,11 @@ module.exports = class extends Generator {
 
     // update rootSaga.ts to add the new reducer to the rootSaga object
     this.fs.copy(rootSagaPath, rootSagaPath, {
-      process: function(content) {
-        var regEx = new RegExp(
-          /\/\* new-imported-saga-element-goes-here \*\//,
-          'g'
-        );
-        var newContent = content
+      process(content) {
+        const regEx = new RegExp(/\/\* new-imported-saga-element-goes-here \*\//, 'g');
+        const newContent = content
           .toString()
-          .replace(
-            regEx,
-            `${nameWithLowerCase},\n/* new-imported-saga-element-goes-here */`
-          );
+          .replace(regEx, `${nameWithLowerCase},\n/* new-imported-saga-element-goes-here */`);
         return newContent;
       },
     });
@@ -168,13 +154,13 @@ module.exports = class extends Generator {
     const rootStatePath = `./${reduxStorePath}/storeState.ts`;
 
     this.fs.copy(rootStatePath, rootStatePath, {
-      process: function(content) {
-        var regEx = new RegExp(/\/\* new-imported-state-goes-here \*\//, 'g');
-        var newContent = content
+      process(content) {
+        const regEx = new RegExp(/\/\* new-imported-state-goes-here \*\//, 'g');
+        const newContent = content
           .toString()
           .replace(
             regEx,
-            `import { ${stateName} } from './${nameWithLowerCase}/state';\n/* new-imported-state-goes-here */`
+            `import { ${stateName} } from './${nameWithLowerCase}/state';\n/* new-imported-state-goes-here */`,
           );
         return newContent;
       },
@@ -182,17 +168,11 @@ module.exports = class extends Generator {
 
     // update storeState.ts to add the new reducer to the storeState object
     this.fs.copy(rootStatePath, rootStatePath, {
-      process: function(content) {
-        var regEx = new RegExp(
-          /\/\* new-imported-state-key-goes-here \*\//,
-          'g'
-        );
-        var newContent = content
+      process(content) {
+        const regEx = new RegExp(/\/\* new-imported-state-key-goes-here \*\//, 'g');
+        const newContent = content
           .toString()
-          .replace(
-            regEx,
-            `readonly ${nameWithLowerCase}: ${stateName};\n\t/* new-imported-state-key-goes-here */`
-          );
+          .replace(regEx, `readonly ${nameWithLowerCase}: ${stateName};\n\t/* new-imported-state-key-goes-here */`);
         return newContent;
       },
     });

@@ -1,16 +1,12 @@
 {
   "extends": [
-    "standard",
-    "plugin:react/recommended",
-    "prettier",
-    "prettier/react",
-    "prettier/standard"
+    "airbnb",
   ],
   "plugins": ["react", "prettier", "standard", "react-hooks"],
   "parserOptions": {
     "sourceType": "module",
     "ecmaFeatures": {
-      "jsx": true
+      "jsx": false,
     }
   },
   "env": {
@@ -19,11 +15,15 @@
   },
   "rules": {
     "prettier/prettier": ["error", {
-      "singleQuote": true
+      "singleQuote": true,
     }],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "no-unused-vars": "error",
-    "no-unused-expressions": "error"
+    "no-unused-expressions": "error",
+    "no-undef": "error",
+    "no-undefined": "error",
+    "comma-dangle": [2, "always-multiline"],
+    "max-classes-per-file": ["error", 1]
   }
 }

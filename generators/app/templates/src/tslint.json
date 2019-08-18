@@ -1,8 +1,5 @@
 {
-  "extends": ["tslint:recommended", "tslint-config-standard", "tslint:latest", "tslint-react"],
-  "linterOptions": {
-    "exclude": ["node_modules/**"]
-  },
+  "extends": ["tslint-config-standard", "tslint:latest", "tslint-react"],
   "rules": {
     "quotemark": false,
     "ordered-imports": false,
@@ -11,6 +8,7 @@
     "jsx-no-lambda": false,
     "jsx-no-multiline-js": false,
     "max-line-length": false,
+    "member-access": [true, "no-public"],
     "no-console": false,
     "no-object-literal-type-assertion": false,
     "no-submodule-imports": false,
@@ -18,19 +16,22 @@
     "space-before-function-paren": false,
     "no-implicit-dependencies": false,
     "jsx-boolean-value": false,
+    "jsx-curly-spacing": false,
     "object-literal-sort-keys": false,
-    "ter-indent": [true, 2],
-    "trailing-comma": true,
     "arrow-parens": false,
     "curly": false,
+    "ter-indent": false,
+    "comment-format": false,
+    "trailing-comma": false,
+    "no-empty-interface": false,
+    "no-floating-promises": false,
+    "no-parameter-reassignment": true,
     "typedef-whitespace": [
       true,
       {
-        "call-signature": "nospace",
         "index-signature": "nospace"
       },
       {
-        "call-signature": "nospace",
         "index-signature": "nospace"
       }
     ],

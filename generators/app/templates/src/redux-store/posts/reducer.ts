@@ -1,4 +1,4 @@
-import { handleActions, Action } from 'redux-actions';
+import { Action } from 'redux-actions';
 import { IPostsState } from './state';
 import {
   RESET_POSTS_DOABLES,
@@ -24,17 +24,18 @@ export default (
   state: IPostsState = initialState,
   { type, payload: incomingPayload }: ReduxActions.Action<IPostsState>
 ) => {
-  const payload =
-    type === RESET_POSTS_DOABLES
-      ? incomingPayload
-      : (reducerPayloadDoableHelper(state, incomingPayload) as IPostsState);
+  const payload = type === RESET_POSTS_DOABLES ? incomingPayload : reducerPayloadDoableHelper(state, incomingPayload);
 
-  switch (FETCH_POSTS) {
+  switch (type) {
     case FETCH_POSTS:
     case FETCH_POSTS_SUCCESS:
     case FETCH_POSTS_ERROR:
     case FETCH_POST_COMMENTS:
     case FETCH_POST_COMMENTS_ERROR:
+      return {
+        ...state,
+        ...payload,
+      };
     case FETCH_POST_COMMENTS_SUCESS: {
       const comments = payload ? payload.comments : [];
 
@@ -45,6 +46,6 @@ export default (
       };
     }
     default:
-      break;
+      return state;
   }
 };

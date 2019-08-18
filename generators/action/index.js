@@ -158,7 +158,7 @@ module.exports = class extends Generator {
       
       export const ${successToCamelCase(
         actionNameToCamelCase,
-      )} = createAction<I${reducerName}State, I${reducerName}State>(${successToUpper(CONSTANT_NAME)}, (state) => ({
+      )} = createAction<I${reducerName}State, I${reducerName}State>(${successToUpper(CONSTANT_NAME)}, state => ({
         booleanable: { ${booleanable}: false },
         successible: { ${successible}: '${CONSTANT_NAME} action fullfilled!' },
         state,
@@ -166,12 +166,12 @@ module.exports = class extends Generator {
       
       export const ${errorToCamelCase(
         actionNameToCamelCase,
-      )} = createAction<I${reducerName}State, string>(${errorToUpper(CONSTANT_NAME)}, (${errable}) => ({
+      )} = createAction<I${reducerName}State, string>(${errorToUpper(CONSTANT_NAME)}, ${errable} => ({
         booleanable: { ${booleanable}: false },
         errable: { ${errable} },
       }));`;
     } else {
-      ACTIONS = `export const ${actionNameToCamelCase} = createAction<I${reducerName}State, I${reducerName}State>(${CONSTANT_NAME}, (state) => ({ state })); // Make sure you pass a proper payload!!!`;
+      ACTIONS = `export const ${actionNameToCamelCase} = createAction<I${reducerName}State, I${reducerName}State>(${CONSTANT_NAME}, state => ({ state })); // Make sure you pass a proper payload!!!`;
     }
 
     // update constsntstss to export the newly-created actions

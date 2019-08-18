@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "target": "esnext",
+    "target": "es6",
     "baseUrl": ".",
     "module": "esnext",
     "jsx": "preserve",
@@ -15,6 +14,15 @@
     "preserveConstEnums": true,
     "sourceMap": true,
     "experimentalDecorators": true,
-    "typeRoots": ["typings", "node_modules/@types"]
-  }
+    "typeRoots": ["typings", "node_modules/@types"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
+  },
+  "exclude": ["node_modules"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }

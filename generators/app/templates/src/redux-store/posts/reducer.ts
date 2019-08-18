@@ -1,4 +1,3 @@
-import { Action } from 'redux-actions';
 import { IPostsState } from './state';
 import {
   RESET_POSTS_DOABLES,
@@ -32,10 +31,7 @@ export default (
     case FETCH_POSTS_ERROR:
     case FETCH_POST_COMMENTS:
     case FETCH_POST_COMMENTS_ERROR:
-      return {
-        ...state,
-        ...payload,
-      };
+
     case FETCH_POST_COMMENTS_SUCESS: {
       const comments = payload ? payload.comments : [];
 

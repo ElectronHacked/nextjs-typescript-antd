@@ -44,42 +44,48 @@ module.exports = class extends Generator {
 
   writing() {
     const { name, reducerName, isFulfillable } = this.answers;
+    const actionNameToCamelCase = camelCase(name);
+    const actionNameToPascalCase = camelCase(name, {
+      pascalCase: true,
+    });
 
     const regionnify = (content, region) => `//#region ${region}\n${content}\n//#endregion\n`;
 
     const successToUpper = ACTION_NAME => `${ACTION_NAME}_SUCCESS`;
     const errorToUpper = ACTION_NAME => `${ACTION_NAME}_ERROR`;
 
-    const successToCamelCase = ACTION_NAME => `${ACTION_NAME}_SUCCESS`;
-    const errorToCamelCase = ACTION_NAME => `${ACTION_NAME}_ERROR`;
+    const successToCamelCase = ACTION_NAME => `${ACTION_NAME}Success`;
+    const errorToCamelCase = ACTION_NAME => `${ACTION_NAME}Error`;
 
     const REDUX_STORE_BASE_PATH = `./redux-store/${reducerName.toLowerCase()}`;
 
     // #region Export from the `./actions` file
 
-    const ACTION_NAME = decamelize(name, '_').toUpperCase();
+    const CONSTANT_NAME = decamelize(name, '_').toUpperCase();
 
-    let ACTION_EXPORT_STATEMENT = `export const ${ACTION_NAME} = '${ACTION_NAME}';`;
+    let CONSTANT_EXPORT_STATEMENT = `export const ${CONSTANT_NAME} = '${CONSTANT_NAME}';`;
 
-    let CONSTANTS_IMPORT_STATEMENTS = `${ACTION_NAME},`;
+    let CONSTANTS_IMPORT_STATEMENTS = `${CONSTANT_NAME},`;
 
-    let CONSTANTS_CASE_STATEMENTS = `case ${ACTION_NAME}:`;
+    let CONSTANTS_CASE_STATEMENTS = `case ${CONSTANT_NAME}:`;
 
     if (isFulfillable) {
-      ACTION_EXPORT_STATEMENT += `\nexport const ${successToUpper(ACTION_NAME)} = '${successToUpper(
-        ACTION_NAME,
-      )}';\nexport const ${errorToUpper(ACTION_NAME)} = '${errorToUpper(ACTION_NAME)}';`;
+      CONSTANT_EXPORT_STATEMENT += `\nexport const ${successToUpper(CONSTANT_NAME)} = '${successToUpper(
+        CONSTANT_NAME,
+      )}';\nexport const ${errorToUpper(CONSTANT_NAME)} = '${errorToUpper(CONSTANT_NAME)}';`;
 
-      CONSTANTS_IMPORT_STATEMENTS += `\n\t${successToUpper(ACTION_NAME)},\n\t${errorToUpper(ACTION_NAME)},`;
+      CONSTANTS_IMPORT_STATEMENTS += `\n\t${successToUpper(CONSTANT_NAME)},\n\t${errorToUpper(CONSTANT_NAME)},`;
 
-      CONSTANTS_CASE_STATEMENTS += `\n\t\tcase ${successToUpper(ACTION_NAME)}:\n\t\tcase ${errorToUpper(ACTION_NAME)}:`;
+      CONSTANTS_CASE_STATEMENTS += `\n\t\tcase ${successToUpper(CONSTANT_NAME)}:\n\t\tcase ${errorToUpper(
+        CONSTANT_NAME,
+      )}:`;
     }
 
     // Export the constants
-    const ACTIONS_PATH = `${REDUX_STORE_BASE_PATH}/constants.ts`;
+    const CONSTANTS_PATH = `${REDUX_STORE_BASE_PATH}/constants.ts`;
 
     // update constsntstss to export the newly-created actions
-    this.fs.copy(ACTIONS_PATH, ACTIONS_PATH, {
+    this.fs.copy(CONSTANTS_PATH, CONSTANTS_PATH, {
       process(content) {
         const regEx = new RegExp(/\/\* new-constant-export-goes-here \*\//, 'g');
         const newContent = content
@@ -87,8 +93,8 @@ module.exports = class extends Generator {
           .replace(
             regEx,
             `${regionnify(
-              ACTION_EXPORT_STATEMENT,
-              `${ACTION_NAME}-related constants`,
+              CONSTANT_EXPORT_STATEMENT,
+              `${CONSTANT_NAME}-related constants`,
             )}\n\n/* new-constant-export-goes-here */`,
           );
         return newContent;
@@ -122,121 +128,65 @@ module.exports = class extends Generator {
     });
     // #endregion
 
-    // const decamelizedName = decamelize(name, '-'); // page-name
-    // const pascalCasedName = camelCase(name, {
-    //   pascalCase: true,
+    // #region Actions file
+    // Import the constants
+    const ACTIONS_PATH = `${REDUX_STORE_BASE_PATH}/actions.ts`;
 
-    // }); // page-name
-    // const className = `${decamelizedName}-page`; // page-name-class
+    // Import the constants
+    this.fs.copy(ACTIONS_PATH, ACTIONS_PATH, {
+      process(content) {
+        const regEx = new RegExp(/\/\* new-constant-import-goes-here \*\//, 'g');
+        const newContent = content
+          .toString()
+          .replace(regEx, `${CONSTANTS_IMPORT_STATEMENTS}\n\t/* new-constant-import-goes-here */`);
+        return newContent;
+      },
+    });
 
-    // const pagePath = isNestedPage ?
-    //   `${parentPage}/${decamelizedName}` :
-    //   `${decamelizedName}`;
+    let ACTIONS = '';
+    const booleanable = `is${actionNameToPascalCase}`;
+    const errable = `${actionNameToCamelCase}ErrorMsg`;
+    const successible = `${actionNameToCamelCase}SuccessMsg`;
 
-    // const pagePageWithRoot = `pages/${pagePath}`;
+    if (isFulfillable) {
+      ACTIONS = `
+      export const ${actionNameToCamelCase} = createAction<I${reducerName}State>(${CONSTANT_NAME}, () => ({
+        booleanable: { ${booleanable}: true },
+        errable: { ${errable}: null },
+        successible: { ${successible}: null },
+      }));
+      
+      export const ${successToCamelCase(
+        actionNameToCamelCase,
+      )} = createAction<I${reducerName}State, I${reducerName}State>(${successToUpper(CONSTANT_NAME)}, (state) => ({
+        booleanable: { ${booleanable}: false },
+        successible: { ${successible}: '${CONSTANT_NAME} action fullfilled!' },
+        state,
+      }));
+      
+      export const ${errorToCamelCase(
+        actionNameToCamelCase,
+      )} = createAction<I${reducerName}State, string>(${errorToUpper(CONSTANT_NAME)}, (${errable}) => ({
+        booleanable: { ${booleanable}: false },
+        errable: { ${errable} },
+      }));`;
+    } else {
+      ACTIONS = `export const ${actionNameToCamelCase} = createAction<I${reducerName}State, I${reducerName}State>(${CONSTANT_NAME}, (state) => ({ state })); // Make sure you pass a proper payload!!!`;
+    }
 
-    // // create folder project
-    // mkdirp(pagePageWithRoot);
-
-    // // copy page into the pages folder
-    // this.fs.copyTpl(
-    //   this.templatePath('_page.js'),
-    //   this.destinationPath(`${pagePageWithRoot}/index.tsx`), {
-    //     component: pascalCasedName,
-    //     className,
-    //     i18n: decamelizedName,
-    //     title,
-    //   }
-    // );
-
-    // // copy styles.scss
-    // this.fs.copyTpl(
-    //   this.templatePath('_styles.scss'),
-    //   this.destinationPath(`${pagePageWithRoot}/styles.scss`), {
-    //     className,
-    //   }
-    // );
-
-    // // copy i18n.json
-    // this.fs.copyTpl(
-    //   this.templatePath('_i18n.json'),
-    //   this.destinationPath(`static/locales/en/${pagePageWithRoot}.json`), {
-    //     title,
-    //   },
-    // );
-    // // copy unit test.js
-    // this.fs.copyTpl(
-    //   this.templatePath('_test.js'),
-    //   this.destinationPath(`tests/units/${pagePageWithRoot}.test.js`), {
-    //     component: pascalCasedName,
-    //     decamelizedName,
-    //   }
-    // );
-
-    // const linkItem = `
-    //   <MenuItem
-    //     key={uuid()}
-    //     className={asPath === '/${decamelizedName}' ? activeClass : ''}
-    //   >
-    //     <Link href="/${decamelizedName}">
-    //       <a>${title}</a>
-    //     </Link>
-    //   </MenuItem>
-    // `;
-
-    // const LAYOUT_PATH = './components/global/layout/index.tsx';
-
-    // // update server.js to add the new namespace to the list
-    // this.fs.copy(LAYOUT_PATH, LAYOUT_PATH, {
-    //   process(content) {
-    //     let regEx = new RegExp(/{\/\* new-menu-item \*\/}/, 'g');
-    //     let newContent = content
-    //       .toString()
-    //       .replace(regEx, `${linkItem}\n\t\t\t\t\t{/* new-menu-item */}`);
-    //     return newContent;
-    //   },
-    // });
-
-    // // update server.js to add the new namespace to the list
-    // const SERVER_PATH = './server.js';
-
-    // this.fs.copy(SERVER_PATH, SERVER_PATH, {
-    //   process(content) {
-    //     let regEx = new RegExp(/\/\* new-i18n-namespace-here \*\//, 'g');
-    //     let newContent = content
-    //       .toString()
-    //       .replace(
-    //         regEx,
-    //         `, '${decamelizedName}'/* new-i18n-namespace-here */`
-    //       );
-    //     return newContent;
-    //   },
-    // });
-
-    // // Add reducer for this page
-    // if (createReducer) {
-    //   this.composeWith(
-    //     'nextjs-typescript-antd:reducer', {
-    //       options: {
-    //         name,
-    //         appName: this.appName,
-    //       },
-    //     }, {
-    //       local: require.resolve('../reducer'),
-    //     },
-    //   );
-    // }
-
-    // // Save this page in the config file
-    // // const _pages = this.config.get('pages').map(({ name }) => name);
-    // const _pages = this.config.get('pages');
-
-    // this.config.set('pages', [
-    //   ..._pages,
-    //   {
-    //     name: decamelizedName,
-    //     path: pagePath,
-    //   },
-    // ]);
+    // update constsntstss to export the newly-created actions
+    this.fs.copy(ACTIONS_PATH, ACTIONS_PATH, {
+      process(content) {
+        const regEx = new RegExp(/\/\* new-actions-go-here \*\//, 'g');
+        const newContent = content
+          .toString()
+          .replace(
+            regEx,
+            `${regionnify(ACTIONS, `${actionNameToCamelCase}-related constants`)}\n\n/* new-actions-go-here */`,
+          );
+        return newContent;
+      },
+    });
+    // #endregion
   }
 };

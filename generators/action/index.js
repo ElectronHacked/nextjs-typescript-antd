@@ -188,5 +188,38 @@ module.exports = class extends Generator {
       },
     });
     // #endregion
+
+    // #region Do the things in the state.ts
+    if (isFulfillable) {
+      const STATE_PATH = `${REDUX_STORE_BASE_PATH}/state.ts`;
+
+      // Booleanable
+      this.fs.copy(STATE_PATH, STATE_PATH, {
+        process(content) {
+          const regEx = new RegExp(/\/\* new-booleanable-goes-here \*\//, 'g');
+          const newContent = content.toString().replace(regEx, `| '${booleanable}' /* new-booleanable-goes-here */`);
+          return newContent;
+        },
+      });
+
+      // Errable
+      this.fs.copy(STATE_PATH, STATE_PATH, {
+        process(content) {
+          const regEx = new RegExp(/\/\* new-errable-goes-here \*\//, 'g');
+          const newContent = content.toString().replace(regEx, `| '${errable}' /* new-errable-goes-here */`);
+          return newContent;
+        },
+      });
+
+      // Successible
+      this.fs.copy(STATE_PATH, STATE_PATH, {
+        process(content) {
+          const regEx = new RegExp(/\/\* new-successible-goes-here \*\//, 'g');
+          const newContent = content.toString().replace(regEx, `| '${successible}' /* new-successible-goes-here */`);
+          return newContent;
+        },
+      });
+    }
+    // #endregion
   }
 };

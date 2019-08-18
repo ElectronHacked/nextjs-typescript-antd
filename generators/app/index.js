@@ -1,5 +1,5 @@
-var Generator = require('yeoman-generator');
-var mkdirp = require('mkdirp');
+const Generator = require('yeoman-generator');
+const mkdirp = require('mkdirp');
 const camelCase = require('camelcase');
 const decamelize = require('decamelize');
 
@@ -79,7 +79,7 @@ module.exports = class extends Generator {
 
     // Update the footer to have the name of the Application, the year and the user who created it
     try {
-      this.fs.copyTpl(this.templatePath('_layout.tsx'), this.destinationPath(`./components/global/layout/index.tsx`), {
+      this.fs.copyTpl(this.templatePath('_layout.tsx'), this.destinationPath('./components/global/layout/index.tsx'), {
         displayName,
         fullName,
       });
@@ -89,7 +89,7 @@ module.exports = class extends Generator {
       }
     }
 
-    // Save the page
+    // Create the page
     this.config.set('pages', [
       {
         name: 'about',
@@ -109,18 +109,23 @@ module.exports = class extends Generator {
       },
     ]);
 
+    // Create the page
+    this.config.set('reducers', ['Posts']);
+
     // save config file!
     this.config.save();
   }
+
   install() {
     // install all dependencies
     this.npmInstall().then(
       () => {
         this.log('Dependencies Installed.');
       },
-      () => this.log('We could not finish to install the node dependencies, please try again manually')
+      () => this.log('We could not finish to install the node dependencies, please try again manually'),
     );
   }
+
   end() {
     this.log(`Open your new project: cd ${this.answers.name}`);
     this.log('To run in dev mode use: yarn dev');

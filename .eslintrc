@@ -24,6 +24,7 @@
     "no-undef": "error",
     "no-undefined": "error",
     "comma-dangle": [2, "always-multiline"],
-    "max-classes-per-file": ["error", 1]
+    "max-classes-per-file": ["warn", 1],
+    "arrow-parens": "off"
   }
 }

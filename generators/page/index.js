@@ -1,5 +1,5 @@
-var Generator = require('yeoman-generator');
-var mkdirp = require('mkdirp');
+const Generator = require('yeoman-generator');
+const mkdirp = require('mkdirp');
 const humanizeString = require('humanize-string');
 const camelCase = require('camelcase');
 const decamelize = require('decamelize');
@@ -21,8 +21,8 @@ module.exports = class extends Generator {
           return 'Please add a name for your new page';
         },
       },
-    ]).then(({ name }) => {
-      return this.prompt([
+    ]).then(({ name }) =>
+      this.prompt([
         {
           type: 'input',
           name: 'title',
@@ -42,7 +42,7 @@ module.exports = class extends Generator {
           default: false,
         },
         {
-          when: function(response) {
+          when(response) {
             return response.isNestedPage;
           },
           type: 'list',
@@ -58,35 +58,28 @@ module.exports = class extends Generator {
         },
       ]).then(({ title, isNestedPage, parentPage, createReducer }) => {
         this.answers = {
-          name: camelCase(name, { pascalCase: true }), // Make sure that there's no space between the characters
+          name: camelCase(name, {
+            pascalCase: true,
+          }), // Make sure that there's no space between the characters
           title,
           isNestedPage,
-          parentPage:
-            isNestedPage && parentPage
-              ? pages.find(({ path }) => path === parentPage).name
-              : '',
+          parentPage: isNestedPage && parentPage ? pages.find(({ path }) => path === parentPage).name : '',
           createReducer,
         };
-      });
-    });
+      }),
+    );
   }
 
   writing() {
-    const {
-      name,
-      title,
-      isNestedPage,
-      parentPage,
-      createReducer,
-    } = this.answers;
+    const { name, title, isNestedPage, parentPage, createReducer } = this.answers;
 
     const decamelizedName = decamelize(name, '-'); // page-name
-    const pascalCasedName = camelCase(name, { pascalCase: true }); // page-name
+    const pascalCasedName = camelCase(name, {
+      pascalCase: true,
+    }); // page-name
     const className = `${decamelizedName}-page`; // page-name-class
 
-    const pagePath = isNestedPage
-      ? `${parentPage}/${decamelizedName}`
-      : `${decamelizedName}`;
+    const pagePath = isNestedPage ? `${parentPage}/${decamelizedName}` : `${decamelizedName}`;
 
     const pagePageWithRoot = `pages/${pagePath}`;
 
@@ -94,25 +87,17 @@ module.exports = class extends Generator {
     mkdirp(pagePageWithRoot);
 
     // copy page into the pages folder
-    this.fs.copyTpl(
-      this.templatePath('_page.js'),
-      this.destinationPath(`${pagePageWithRoot}/index.tsx`),
-      {
-        component: pascalCasedName,
-        className,
-        i18n: decamelizedName,
-        title,
-      }
-    );
+    this.fs.copyTpl(this.templatePath('_page.js'), this.destinationPath(`${pagePageWithRoot}/index.tsx`), {
+      component: pascalCasedName,
+      className,
+      i18n: decamelizedName,
+      title,
+    });
 
     // copy styles.scss
-    this.fs.copyTpl(
-      this.templatePath('_styles.scss'),
-      this.destinationPath(`${pagePageWithRoot}/styles.scss`),
-      {
-        className,
-      }
-    );
+    this.fs.copyTpl(this.templatePath('_styles.scss'), this.destinationPath(`${pagePageWithRoot}/styles.scss`), {
+      className,
+    });
 
     // copy i18n.json
     this.fs.copyTpl(
@@ -120,17 +105,13 @@ module.exports = class extends Generator {
       this.destinationPath(`static/locales/en/${pagePageWithRoot}.json`),
       {
         title,
-      }
+      },
     );
     // copy unit test.js
-    this.fs.copyTpl(
-      this.templatePath('_test.js'),
-      this.destinationPath(`tests/units/${pagePageWithRoot}.test.js`),
-      {
-        component: pascalCasedName,
-        decamelizedName,
-      }
-    );
+    this.fs.copyTpl(this.templatePath('_test.js'), this.destinationPath(`tests/units/${pagePageWithRoot}.test.js`), {
+      component: pascalCasedName,
+      decamelizedName,
+    });
 
     const linkItem = `
       <MenuItem
@@ -147,11 +128,9 @@ module.exports = class extends Generator {
 
     // update server.js to add the new namespace to the list
     this.fs.copy(LAYOUT_PATH, LAYOUT_PATH, {
-      process: function(content) {
-        var regEx = new RegExp(/{\/\* new-menu-item \*\/}/, 'g');
-        var newContent = content
-          .toString()
-          .replace(regEx, `${linkItem}\n\t\t\t\t\t{/* new-menu-item */}`);
+      process(content) {
+        const regEx = new RegExp(/{\/\* new-menu-item \*\/}/, 'g');
+        const newContent = content.toString().replace(regEx, `${linkItem}\n\t\t\t\t\t{/* new-menu-item */}`);
         return newContent;
       },
     });
@@ -160,14 +139,9 @@ module.exports = class extends Generator {
     const SERVER_PATH = './server.js';
 
     this.fs.copy(SERVER_PATH, SERVER_PATH, {
-      process: function(content) {
-        var regEx = new RegExp(/\/\* new-i18n-namespace-here \*\//, 'g');
-        var newContent = content
-          .toString()
-          .replace(
-            regEx,
-            `, '${decamelizedName}'/* new-i18n-namespace-here */`
-          );
+      process(content) {
+        const regEx = new RegExp(/\/\* new-i18n-namespace-here \*\//, 'g');
+        const newContent = content.toString().replace(regEx, `, '${decamelizedName}'/* new-i18n-namespace-here */`);
         return newContent;
       },
     });
@@ -178,13 +152,13 @@ module.exports = class extends Generator {
         'nextjs-typescript-antd:reducer',
         {
           options: {
-            name: name,
+            name,
             appName: this.appName,
           },
         },
         {
           local: require.resolve('../reducer'),
-        }
+        },
       );
     }
 

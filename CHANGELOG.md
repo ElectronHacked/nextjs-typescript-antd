@@ -1,3 +1,10 @@
+#### 2.1.1 (2019-08-19)
+
+##### Other Changes
+
+* hoc subgenerator ([657f24ba](https://github.com/ElectronHacked/nextjs-typescript-antd/commit/657f24ba25d2f422e2055d9c332bc01e437eef47))
+* context subgenerator ([4a277008](https://github.com/ElectronHacked/nextjs-typescript-antd/commit/4a277008a45b814a8b45576cfd4246520357ee4a))
+
 ### 2.1.0 (2019-08-17)
 
 ##### Other Changes

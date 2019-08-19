@@ -8,12 +8,6 @@ import {
 
 export const <%= stateName %> = () => (state: IStoreState) => state.<%= nameWithLowerCase %>;
 
-export const selectIsLoading = () =>
-  createSelector(
-    <%= stateName %>(),
-    state => state.isLoading,
-  );
-
 //#region Doables
 /**
  * Returns true if the evaluation of a booleanable state of a given key(s) is true

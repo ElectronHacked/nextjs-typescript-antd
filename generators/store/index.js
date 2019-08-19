@@ -6,8 +6,6 @@ const mkdirp = require('mkdirp');
 module.exports = class extends Generator {
   prompting() {
     const { options } = this.options;
-    // const stores = this.config.get('stores');
-
     return this.prompt([
       {
         type: 'input',
@@ -15,11 +13,6 @@ module.exports = class extends Generator {
         message: 'Store name',
         validate: str => {
           if (str.trim().length > 0) {
-            // const storeName = str.trim().toLowecase();
-
-            // if (stores.find(store => store.toLowecase().trim() === storeName)) {
-            //   return 'Sorry! Store exists. Enter a different name.';
-            // }
             return true;
           }
           return 'Please add a name for your new store';

@@ -11,16 +11,22 @@ module.exports = class extends Generator {
       {
         type: 'input',
         name: 'name',
-        message: 'Reducer name',
+        message: 'Store name',
         validate: str => {
           if (str.trim().length > 0) {
+            const storeName = str.trim().toLowecase();
+
+            const stores = this.config.get('stores');
+            if (stores.find(reducer => reducer.toLowecase().trim() === storeName)) {
+              return 'Sorry! Store exists. Enter a different name.';
+            }
             return true;
           }
-          return 'Please add a name for your new reducer';
+          return 'Please add a name for your new store';
         },
         default: options ? options.name : null,
       },
-    ]).then(answers => {
+   ]).then(answers => {
       this.answers = {
         name: answers.name,
       };
@@ -32,29 +38,29 @@ module.exports = class extends Generator {
 
     const STATE_NAME = decamelize(name, '_').toUpperCase();
 
-    const nameWithLowerCase = camelCase(name);
+    const nameToCamelCase = camelCase(name);
 
-    const nameToUpper = camelCase(name, {
+    const nameToPascalCase = camelCase(name, {
       pascalCase: true,
     });
 
-    const stateShortName = nameToUpper;
+    const stateShortName = nameToPascalCase;
 
-    const stateName = `I${nameToUpper}State`;
+    const stateName = `I${nameToPascalCase}State`;
 
-    const selectorState = `${nameWithLowerCase}State`;
+    const selectorState = `${nameToCamelCase}State`;
 
-    const sagaName = `${nameWithLowerCase}Saga`;
+    const sagaName = `${nameToCamelCase}Saga`;
 
     const reduxStorePath = this.fs.exists('redux') ? 'redux' : 'redux-store';
 
     // create folder project
-    mkdirp(`${reduxStorePath}/${nameWithLowerCase}`);
+    mkdirp(`${reduxStorePath}/${nameToCamelCase}`);
 
     // copy actions into the redux folder
     this.fs.copyTpl(
       this.templatePath('_actions.ts'),
-      this.destinationPath(`${reduxStorePath}/${nameWithLowerCase}/actions.ts`),
+      this.destinationPath(`${reduxStorePath}/${nameToCamelCase}/actions.ts`),
       {
         stateName,
         STATE_NAME,
@@ -65,7 +71,7 @@ module.exports = class extends Generator {
     // copy constants
     this.fs.copyTpl(
       this.templatePath('_constants.ts'),
-      this.destinationPath(`${reduxStorePath}/${nameWithLowerCase}/constants.ts`),
+      this.destinationPath(`${reduxStorePath}/${nameToCamelCase}/constants.ts`),
       {
         STATE_NAME,
       },
@@ -74,7 +80,7 @@ module.exports = class extends Generator {
     // copy reducer
     this.fs.copyTpl(
       this.templatePath('_reducer.ts'),
-      this.destinationPath(`${reduxStorePath}/${nameWithLowerCase}/reducer.ts`),
+      this.destinationPath(`${reduxStorePath}/${nameToCamelCase}/reducer.ts`),
       {
         stateName,
         STATE_NAME,
@@ -84,7 +90,7 @@ module.exports = class extends Generator {
     // copy saga
     this.fs.copyTpl(
       this.templatePath('_sagas.ts'),
-      this.destinationPath(`${reduxStorePath}/${nameWithLowerCase}/sagas.ts`),
+      this.destinationPath(`${reduxStorePath}/${nameToCamelCase}/sagas.ts`),
       {
         sagaName,
         stateShortName,
@@ -94,10 +100,10 @@ module.exports = class extends Generator {
     // copy selector
     this.fs.copyTpl(
       this.templatePath('_selectors.ts'),
-      this.destinationPath(`${reduxStorePath}/${nameWithLowerCase}/selectors.ts`),
+      this.destinationPath(`${reduxStorePath}/${nameToCamelCase}/selectors.ts`),
       {
         stateName: selectorState,
-        nameWithLowerCase,
+        nameWithLowerCase: nameToCamelCase,
         stateShortName,
       },
     );
@@ -105,7 +111,7 @@ module.exports = class extends Generator {
     // copy state
     this.fs.copyTpl(
       this.templatePath('_state.ts'),
-      this.destinationPath(`${reduxStorePath}/${nameWithLowerCase}/state.ts`),
+      this.destinationPath(`${reduxStorePath}/${nameToCamelCase}/state.ts`),
       {
         stateName,
         stateShortName,
@@ -122,7 +128,7 @@ module.exports = class extends Generator {
           .toString()
           .replace(
             regEx,
-            `import ${nameWithLowerCase} from './${nameWithLowerCase}/reducer';\n/* new-imported-reducer-goes-here */`,
+            `import ${nameToCamelCase} from './${nameToCamelCase}/reducer';\n/* new-imported-reducer-goes-here */`,
           );
         return newContent;
       },
@@ -134,7 +140,7 @@ module.exports = class extends Generator {
         const regEx = new RegExp(/\/\* new-tranformed-reducer-export-goes-here \*\//, 'g');
         const newContent = content
           .toString()
-          .replace(regEx, `${nameWithLowerCase},\n/* new-tranformed-reducer-export-goes-here */`);
+          .replace(regEx, `${nameToCamelCase},\n/* new-tranformed-reducer-export-goes-here */`);
         return newContent;
       },
     });
@@ -149,7 +155,7 @@ module.exports = class extends Generator {
           .toString()
           .replace(
             regEx,
-            `import ${nameWithLowerCase} from './${nameWithLowerCase}/sagas';\n/* new-imported-saga-goes-here */`,
+            `import ${nameToCamelCase} from './${nameToCamelCase}/sagas';\n/* new-imported-saga-goes-here */`,
           );
         return newContent;
       },
@@ -161,7 +167,7 @@ module.exports = class extends Generator {
         const regEx = new RegExp(/\/\* new-imported-saga-element-goes-here \*\//, 'g');
         const newContent = content
           .toString()
-          .replace(regEx, `${nameWithLowerCase},\n/* new-imported-saga-element-goes-here */`);
+          .replace(regEx, `${nameToCamelCase},\n/* new-imported-saga-element-goes-here */`);
         return newContent;
       },
     });
@@ -176,7 +182,7 @@ module.exports = class extends Generator {
           .toString()
           .replace(
             regEx,
-            `import { ${stateName} } from './${nameWithLowerCase}/state';\n/* new-imported-state-goes-here */`,
+            `import { ${stateName} } from './${nameToCamelCase}/state';\n/* new-imported-state-goes-here */`,
           );
         return newContent;
       },
@@ -188,15 +194,16 @@ module.exports = class extends Generator {
         const regEx = new RegExp(/\/\* new-imported-state-key-goes-here \*\//, 'g');
         const newContent = content
           .toString()
-          .replace(regEx, `readonly ${nameWithLowerCase}: ${stateName};\n\t/* new-imported-state-key-goes-here */`);
+          .replace(regEx, `readonly ${nameToCamelCase}: ${stateName};\n\t/* new-imported-state-key-goes-here */`);
         return newContent;
       },
     });
 
     // Save this reducer in the config file
     // const _pages = this.config.get('pages').map(({ name }) => name);
-    const reducers = this.config.get('reducers');
+    const stores = this.config.get('stores');
 
-    this.config.set('reducers', [...reducers, nameToUpper]);
+    this.config.set('stores', [...stores, nameToPascalCase]);
   }
 };
+

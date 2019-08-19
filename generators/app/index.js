@@ -110,7 +110,7 @@ module.exports = class extends Generator {
     ]);
 
     // Create the page
-    this.config.set('reducers', ['Posts']);
+    this.config.set('stores', ['Posts']);
 
     // save config file!
     this.config.save();

@@ -7,8 +7,11 @@
         "root": ["./"],
         "alias": {
           "api": "./api",
+          "app-constants": "./app-constants",
+          "enums": "./enums",
+          "hocs": "./hocs",
+          "hooks": "./hooks",
           "components": "./components",
-          "constants": "./constants",
           "redux-store": "./redux-store"
         }
       }

@@ -53,7 +53,7 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    const { name, fullName, email } = this.answers;
+    const { name, fullName, email, displayName } = this.answers;
 
     // create folder project
     mkdirp(name);

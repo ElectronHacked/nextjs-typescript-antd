@@ -6,6 +6,7 @@ const mkdirp = require('mkdirp');
 module.exports = class extends Generator {
   prompting() {
     const { options } = this.options;
+    // const stores = this.config.get('stores');
 
     return this.prompt([
       {
@@ -14,19 +15,18 @@ module.exports = class extends Generator {
         message: 'Store name',
         validate: str => {
           if (str.trim().length > 0) {
-            const storeName = str.trim().toLowecase();
+            // const storeName = str.trim().toLowecase();
 
-            const stores = this.config.get('stores');
-            if (stores.find(reducer => reducer.toLowecase().trim() === storeName)) {
-              return 'Sorry! Store exists. Enter a different name.';
-            }
+            // if (stores.find(store => store.toLowecase().trim() === storeName)) {
+            //   return 'Sorry! Store exists. Enter a different name.';
+            // }
             return true;
           }
           return 'Please add a name for your new store';
         },
         default: options ? options.name : null,
       },
-   ]).then(answers => {
+    ]).then(answers => {
       this.answers = {
         name: answers.name,
       };
@@ -206,4 +206,3 @@ module.exports = class extends Generator {
     this.config.set('stores', [...stores, nameToPascalCase]);
   }
 };
-

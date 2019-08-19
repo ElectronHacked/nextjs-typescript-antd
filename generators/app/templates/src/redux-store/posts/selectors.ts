@@ -18,7 +18,7 @@ export const selectSelectedPostComments = () =>
       const allComments = state.comments;
 
       if (selectedPostId) {
-        let foundComments = allComments.filter(({ postId }) => postId == selectedPostId);
+        const foundComments = allComments.filter(({ postId }) => postId === selectedPostId);
 
         return foundComments ? foundComments : [];
       }
@@ -40,7 +40,7 @@ export const selectSelectedPost = () =>
       const selectedPostId = state.selectedPostId;
 
       if (selectedPostId) {
-        let foundPost = state.posts.find(({ id }) => id == selectedPostId);
+        const foundPost = state.posts.find(({ id }) => id === selectedPostId);
 
         return foundPost ? foundPost : null;
       }
@@ -77,6 +77,6 @@ export const selectPostsErrableState = (key: PostsErrable | PostsErrable[]) =>
 export const selectPostsSuccessiblebleState = (key: PostsSuccessible | PostsSuccessible[]) =>
   createSelector(
     postState(),
-    ({ successeable }) => (Array.isArray(key) ? !!key.filter(k => successeable[k]).length : successeable[key])
+    ({ successible }) => (Array.isArray(key) ? !!key.filter(k => successible[k]).length : successible[key])
   );
 //#endregion

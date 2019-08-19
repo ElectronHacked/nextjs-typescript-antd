@@ -20,7 +20,7 @@ export default (
   const payload =
     type === RESET_<%= STATE_NAME %>_DOABLES
       ? incomingPayload
-      : reducerPayloadDoableHelper(state, incomingPayload);
+      : (reducerPayloadDoableHelper(state, incomingPayload) as <%= stateName %>);
 
   switch (type) {
     /* new-constant-cases-go-here */

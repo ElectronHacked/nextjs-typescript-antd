@@ -67,6 +67,18 @@ module.exports = class extends Generator {
 
     let CONSTANTS_IMPORT_STATEMENTS = `${CONSTANT_NAME},`;
 
+    const importConstantsHelper = path => {
+      this.fs.copy(path, path, {
+        process(content) {
+          const regEx = new RegExp(/\/\* new-constant-import-goes-here \*\//, 'g');
+          const newContent = content
+            .toString()
+            .replace(regEx, `${CONSTANTS_IMPORT_STATEMENTS}\n\t/* new-constant-import-goes-here */`);
+          return newContent;
+        },
+      });
+    };
+
     let CONSTANTS_CASE_STATEMENTS = `case ${CONSTANT_NAME}:`;
 
     if (isFulfillable) {
@@ -106,15 +118,7 @@ module.exports = class extends Generator {
     const REDUCER_PATH = `${REDUX_STORE_BASE_PATH}/reducer.ts`;
 
     // Import the constants
-    this.fs.copy(REDUCER_PATH, REDUCER_PATH, {
-      process(content) {
-        const regEx = new RegExp(/\/\* new-constant-import-goes-here \*\//, 'g');
-        const newContent = content
-          .toString()
-          .replace(regEx, `${CONSTANTS_IMPORT_STATEMENTS}\n\t/* new-constant-import-goes-here */`);
-        return newContent;
-      },
-    });
+    importConstantsHelper(REDUCER_PATH);
 
     // Add constants in the case statemnts
     this.fs.copy(REDUCER_PATH, REDUCER_PATH, {
@@ -133,18 +137,10 @@ module.exports = class extends Generator {
     const ACTIONS_PATH = `${REDUX_STORE_BASE_PATH}/actions.ts`;
 
     // Import the constants
-    this.fs.copy(ACTIONS_PATH, ACTIONS_PATH, {
-      process(content) {
-        const regEx = new RegExp(/\/\* new-constant-import-goes-here \*\//, 'g');
-        const newContent = content
-          .toString()
-          .replace(regEx, `${CONSTANTS_IMPORT_STATEMENTS}\n\t/* new-constant-import-goes-here */`);
-        return newContent;
-      },
-    });
+    importConstantsHelper(ACTIONS_PATH);
 
     let ACTIONS = '';
-    const booleanable = `is${actionNameToPascalCase}`;
+    const booleanable = `is${actionNameToPascalCase}InProgress`;
     const errable = `${actionNameToCamelCase}ErrorMsg`;
     const successible = `${actionNameToCamelCase}SuccessMsg`;
 
@@ -219,6 +215,83 @@ module.exports = class extends Generator {
           return newContent;
         },
       });
+    }
+    // #endregion
+
+    // #region Sagas
+    if (isFulfillable) {
+      const SAGAS_PATH = `${REDUX_STORE_BASE_PATH}/sagas.ts`;
+
+      // Import the constant
+      this.fs.copy(SAGAS_PATH, SAGAS_PATH, {
+        process(content) {
+          const regEx = new RegExp(/\/\* new-constant-import-goes-here \*\//, 'g');
+          const newContent = content
+            .toString()
+            .replace(regEx, `${CONSTANT_NAME},\n\t/* new-constant-import-goes-here */`);
+          return newContent;
+        },
+      });
+
+      // Import the actions
+      const ACTIONS_IMPORT_STATEMENTS = `${successToCamelCase(actionNameToCamelCase)},\n\t${errorToCamelCase(
+        actionNameToCamelCase,
+      )},`;
+
+      this.fs.copy(SAGAS_PATH, SAGAS_PATH, {
+        process(content) {
+          const regEx = new RegExp(/\/\* new-action-import-goes-here \*\//, 'g');
+          const newContent = content
+            .toString()
+            .replace(regEx, `${ACTIONS_IMPORT_STATEMENTS}\n\t/* new-action-import-goes-here */`);
+          return newContent;
+        },
+      });
+
+      // Create a saga
+      const ERROR_MSG = '"Sorry, An error occured! Please try again later!"';
+      const SAGA_NAME = `${actionNameToCamelCase}Saga`;
+
+      const SAGA = `
+    function* ${SAGA_NAME}() {
+      const BOOL_VALUE = Math.random() >= 0.5;
+
+      yield delay(500); // Just sleep for half a sec just to look real. A saga requires a yield because it's a generator
+
+      try {    
+        if (BOOL_VALUE) {
+          yield put(${successToCamelCase(actionNameToCamelCase)}({}));
+        } else {
+          yield put(${errorToCamelCase(actionNameToCamelCase)}(${ERROR_MSG}));
+        }
+      } catch (error) {
+        yield put(${errorToCamelCase(actionNameToCamelCase)}(${ERROR_MSG}));
+      }
+    }
+    `;
+
+      // Add a saga
+      this.fs.copy(SAGAS_PATH, SAGAS_PATH, {
+        process(content) {
+          const regEx = new RegExp(/\/\* new-saga-goes-here \*\//, 'g');
+          const newContent = content.toString().replace(regEx, `${SAGA}\n\n/* new-saga-goes-here */`);
+          return newContent;
+        },
+      });
+
+      // Register the saga
+      const SAGA_REGISTRATION = `takeLatest(${CONSTANT_NAME}, ${SAGA_NAME}),`;
+
+      this.fs.copy(SAGAS_PATH, SAGAS_PATH, {
+        process(content) {
+          const regEx = new RegExp(/\/\* new-saga-registration-goes-here \*\//, 'g');
+          const newContent = content
+            .toString()
+            .replace(regEx, `${SAGA_REGISTRATION}\n\t\t/* new-saga-registration-goes-here */`);
+          return newContent;
+        },
+      });
+      // #endregion
     }
     // #endregion
   }

@@ -15,9 +15,9 @@ import {
 } from './state';
 
 export const defaultAction = createAction<<%= stateName %>>(DEFAULT_ACTION, () => ({
-  errable: { initializingError: null },
-  booleanable: { isInitializing: true },
-  successible: { intiializeSuccess: 'Successfully initialized!' },
+  errable: { __errable__: null },
+  booleanable: { __booleanable__: true },
+  successible: { __successible__: 'Successfully initialized!' },
 }));
 
 //#region Doables

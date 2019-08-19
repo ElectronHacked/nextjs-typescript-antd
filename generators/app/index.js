@@ -74,9 +74,6 @@ module.exports = class extends Generator {
     // copy all folders and their contents
     this.fs.copy(this.templatePath('src'), this.destinationPath('./'));
 
-    // copy the contents storybook folder as well
-    this.fs.copy(this.templatePath('_storybook/'), this.destinationPath('./.storybook'));
-
     // Update the footer to have the name of the Application, the year and the user who created it
     try {
       this.fs.copyTpl(this.templatePath('_layout.tsx'), this.destinationPath('./components/global/layout/index.tsx'), {

@@ -1,13 +1,13 @@
 export type <%= stateShortName %>Errable =
-  | 'initializingError'
+  | '__errable__' // Remove this. It's just a placeholder
   /* new-errable-goes-here */;
 
 export type <%= stateShortName %>Booleanable =
-  | 'isInitializing'
+  | '__booleanable__' // Remove this. It's just a placeholder
   /* new-booleanable-goes-here */;
 
 export type <%= stateShortName %>Successible =
-  | 'intiializeSuccess'
+  | '__successible__' // Remove this. It's just a placeholder
   /* new-successible-goes-here */;
 
 export interface <%= stateName %>{

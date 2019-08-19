@@ -67,7 +67,7 @@ export const togglePostsErrableState = createAction<IPostsState, { [key in Posts
   })
 );
 
-export const togglePostsSuccessIbleState = createAction<IPostsState, { [key in PostsSuccessible]?: string }>(
+export const togglePostsSuccessibleState = createAction<IPostsState, { [key in PostsSuccessible]?: string }>(
   TOGGLE_POSTS_SUCCESSIBLE_STATE,
   key => ({
     successible: key,

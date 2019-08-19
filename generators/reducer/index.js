@@ -1,4 +1,6 @@
 const Generator = require('yeoman-generator');
+const camelCase = require('camelcase');
+const decamelize = require('decamelize');
 const mkdirp = require('mkdirp');
 
 module.exports = class extends Generator {
@@ -28,9 +30,15 @@ module.exports = class extends Generator {
   writing() {
     const { name } = this.answers;
 
-    const nameWithLowerCase = name.charAt(0).toLowerCase() + name.slice(1);
+    const STATE_NAME = decamelize(name, '_').toUpperCase();
 
-    const nameToUpper = name.charAt(0).toUpperCase() + name.slice(1);
+    const nameWithLowerCase = camelCase(name);
+
+    const nameToUpper = camelCase(name, {
+      pascalCase: true,
+    });
+
+    const stateShortName = nameToUpper;
 
     const stateName = `I${nameToUpper}State`;
 
@@ -49,6 +57,8 @@ module.exports = class extends Generator {
       this.destinationPath(`${reduxStorePath}/${nameWithLowerCase}/actions.ts`),
       {
         stateName,
+        STATE_NAME,
+        stateShortName,
       },
     );
 
@@ -56,7 +66,9 @@ module.exports = class extends Generator {
     this.fs.copyTpl(
       this.templatePath('_constants.ts'),
       this.destinationPath(`${reduxStorePath}/${nameWithLowerCase}/constants.ts`),
-      {},
+      {
+        STATE_NAME,
+      },
     );
 
     // copy reducer
@@ -65,6 +77,7 @@ module.exports = class extends Generator {
       this.destinationPath(`${reduxStorePath}/${nameWithLowerCase}/reducer.ts`),
       {
         stateName,
+        STATE_NAME,
       },
     );
 
@@ -74,6 +87,7 @@ module.exports = class extends Generator {
       this.destinationPath(`${reduxStorePath}/${nameWithLowerCase}/sagas.ts`),
       {
         sagaName,
+        stateShortName,
       },
     );
 
@@ -84,6 +98,7 @@ module.exports = class extends Generator {
       {
         stateName: selectorState,
         nameWithLowerCase,
+        stateShortName,
       },
     );
 
@@ -93,6 +108,7 @@ module.exports = class extends Generator {
       this.destinationPath(`${reduxStorePath}/${nameWithLowerCase}/state.ts`),
       {
         stateName,
+        stateShortName,
       },
     );
 
@@ -176,5 +192,11 @@ module.exports = class extends Generator {
         return newContent;
       },
     });
+
+    // Save this reducer in the config file
+    // const _pages = this.config.get('pages').map(({ name }) => name);
+    const reducers = this.config.get('reducers');
+
+    this.config.set('reducers', [...reducers, nameToUpper]);
   }
 };

@@ -5,8 +5,14 @@ import {
   TOGGLE_<%= STATE_NAME %>_BOOLEANABLE_STATE,
   TOGGLE_<%= STATE_NAME %>_ERRABLE_STATE,
   TOGGLE_<%= STATE_NAME %>_SUCCESSIBLE_STATE,
+  /* new-constant-import-goes-here */
 } from './constants';
-import { <%= stateName %> } from './state';
+import {
+  <%= stateName %>,
+  <%= stateShortName %>Errable,
+  <%= stateShortName %>Booleanable,
+  <%= stateShortName %>Successible,
+} from './state';
 
 export const defaultAction = createAction<<%= stateName %>>(DEFAULT_ACTION, () => ({
   errable: { initializingError: null },
@@ -35,10 +41,12 @@ export const toggle<%= stateShortName %>ErrableState = createAction<<%= stateNam
   })
 );
 
-export const toggle<%= stateShortName %>SuccessIbleState = createAction<
+export const toggle<%= stateShortName %>SuccessibleState = createAction<
   <%= stateName %>,
-  { [key in <%= stateShortName %>SuccessIble]?: string }
+  { [key in <%= stateShortName %>Successible]?: string }
 >(TOGGLE_<%= STATE_NAME %>_SUCCESSIBLE_STATE, key => ({
   successible: key,
 }));
 //#endregion
+
+/* new-actions-go-here */

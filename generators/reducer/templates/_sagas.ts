@@ -1,5 +1,11 @@
-import { all, select, takeLatest } from 'redux-saga/effects';
-import { DEFAULT_ACTION } from './constants';
+import { all, select, takeLatest, delay } from 'redux-saga/effects';
+import {
+  DEFAULT_ACTION,
+/* new-constant-import-goes-here */
+} from './constants';
+import {
+  /* new-action-import-goes-here */
+} from './actions';
 import { select<%= stateShortName %>BooleanableState } from './selectors';
 
 export function* intializeSaga() {
@@ -8,6 +14,11 @@ export function* intializeSaga() {
   console.log('<%= sagaName %> has been initialized properly isInitializing:', isInitializing);
 }
 
+/* new-saga-goes-here */
+
 export default function* <%= sagaName %>() {
-  yield all([takeLatest(DEFAULT_ACTION, intializeSaga)]);
+  yield all([
+    takeLatest(DEFAULT_ACTION, intializeSaga),
+    /* new-saga-registration-goes-here */
+  ]);
 }

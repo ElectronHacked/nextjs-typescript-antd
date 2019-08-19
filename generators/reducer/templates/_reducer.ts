@@ -1,9 +1,16 @@
-import { DEFAULT_ACTION, RESET_<%= STATE_NAME %>_DOABLES } from './constants';
+import { 
+  DEFAULT_ACTION,
+  RESET_<%= STATE_NAME %>_DOABLES,
+  /* new-constant-import-goes-here */
+} from './constants';
 
 import { <%= stateName %> } from './state';
+import { reducerPayloadDoableHelper } from 'redux-store/rootReducer';
 
 const initialState: <%= stateName %> = {
-  isLoading: false,
+  errable: {},
+  booleanable: {},
+  successible: {},
 };
 
 export default (
@@ -16,8 +23,12 @@ export default (
       : reducerPayloadDoableHelper(state, incomingPayload);
 
   switch (type) {
+    /* new-constant-cases-go-here */
     case DEFAULT_ACTION:
-    /* new-imported-state-goes-here */
+      return {
+        ...state, 
+        ...payload,
+      }
     default:
       return state;
   }

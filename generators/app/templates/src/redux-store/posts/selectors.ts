@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { IStoreState } from '../storeState';
+import { PostsErrable, PostsSuccessible, PostsBooleanable } from './state';
 
 export const postState = () => (state: IStoreState) => state.posts;
 
@@ -17,9 +18,7 @@ export const selectSelectedPostComments = () =>
       const allComments = state.comments;
 
       if (selectedPostId) {
-        let foundComments = allComments.filter(
-          ({ postId }) => postId == selectedPostId
-        );
+        let foundComments = allComments.filter(({ postId }) => postId == selectedPostId);
 
         return foundComments ? foundComments : [];
       }
@@ -50,14 +49,34 @@ export const selectSelectedPost = () =>
     }
   );
 
-export const selectIsFetchingComments = () =>
+//#region Doables
+/**
+ * Returns true if the evaluation of a booleanable state of a given key(s) is true
+ * @param key the key to compare to
+ */
+export const selectPostsBooleanState = (key: PostsBooleanable | PostsBooleanable[]) =>
   createSelector(
     postState(),
-    state => state.isFetchingPostComments
+    ({ booleanable }) => (Array.isArray(key) ? !!key.filter(k => booleanable[k]).length : booleanable[key])
   );
 
-export const selectIsFetchingPosts = () =>
+/**
+ * Returns the errable state of a given key(s) is true
+ * @param key the key to compare to
+ */
+export const selectPostsErrableState = (key: PostsErrable | PostsErrable[]) =>
   createSelector(
     postState(),
-    state => state.isFetchingPosts
+    ({ errable }) => (Array.isArray(key) ? !!key.filter(k => errable[k]).length : errable[key])
   );
+
+/**
+ * Returns the successible state of a given key(s) is true
+ * @param key the key to compare to
+ */
+export const selectPostsSuccessiblebleState = (key: PostsSuccessible | PostsSuccessible[]) =>
+  createSelector(
+    postState(),
+    ({ successeable }) => (Array.isArray(key) ? !!key.filter(k => successeable[k]).length : successeable[key])
+  );
+//#endregion

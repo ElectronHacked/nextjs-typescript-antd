@@ -4,7 +4,7 @@ export type PostsErrable = 'fetchPostsErrorMsg' | 'fetchPostCommentsErrorMsg';
 
 export type PostsBooleanable = 'isFetchingPosts' | 'isFetchingPostComments';
 
-export type PostsSuccessIble = 'fetchPostsSuccessMsg' | 'fetchPostCommentsSuccessMsg';
+export type PostsSuccessible = 'fetchPostsSuccessMsg' | 'fetchPostCommentsSuccessMsg';
 
 export interface IPostsState {
   readonly posts?: IPost[];
@@ -15,6 +15,6 @@ export interface IPostsState {
   //#region Doables
   readonly errable?: { [key in PostsErrable]?: string };
   readonly booleanable?: { [key in PostsBooleanable]?: boolean };
-  readonly successible?: { [key in PostsSuccessIble]?: string };
+  readonly successible?: { [key in PostsSuccessible]?: string };
   //#endregion
 }

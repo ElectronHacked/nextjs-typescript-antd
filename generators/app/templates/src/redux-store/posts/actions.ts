@@ -12,7 +12,7 @@ import {
   RESET_POSTS_DOABLES,
 } from './constants';
 import { IPost, IComment } from 'models';
-import { IPostsState, PostsBooleanable, PostsErrable, PostsSuccessIble } from './state';
+import { IPostsState, PostsBooleanable, PostsErrable, PostsSuccessible } from './state';
 
 export const fetchPosts = createAction<IPostsState>(FETCH_POSTS, () => ({
   booleanable: { isFetchingPosts: true },
@@ -67,7 +67,7 @@ export const togglePostsErrableState = createAction<IPostsState, { [key in Posts
   })
 );
 
-export const togglePostsSuccessIbleState = createAction<IPostsState, { [key in PostsSuccessIble]?: string }>(
+export const togglePostsSuccessIbleState = createAction<IPostsState, { [key in PostsSuccessible]?: string }>(
   TOGGLE_POSTS_SUCCESSIBLE_STATE,
   key => ({
     successible: key,

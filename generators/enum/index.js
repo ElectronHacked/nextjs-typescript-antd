@@ -1,6 +1,4 @@
 const Generator = require('yeoman-generator');
-
-const humanizeString = require('humanize-string');
 const camelCase = require('camelcase');
 
 module.exports = class extends Generator {
@@ -45,8 +43,8 @@ module.exports = class extends Generator {
     // update enums/index.d.ts to add the new namespace to the list
     this.fs.copy(enumsPath, enumsPath, {
       process(content) {
-        let regEx = new RegExp(/\/\* new-enum-import-goes-here \*\//, 'g');
-        let newContent = content
+        const regEx = new RegExp(/\/\* new-enum-import-goes-here \*\//, 'g');
+        const newContent = content
           .toString()
           .replace(regEx, `export { ${enumName} } from './${fileName}';\n/* new-enum-import-goes-here */`);
         return newContent;

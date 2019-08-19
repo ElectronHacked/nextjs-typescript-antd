@@ -1,13 +1,11 @@
 const Generator = require('yeoman-generator');
-const mkdirp = require('mkdirp');
-const humanizeString = require('humanize-string');
 const camelCase = require('camelcase');
 const decamelize = require('decamelize');
 
 module.exports = class extends Generator {
   prompting() {
-    const reducers = this.config.get('reducers');
-    const _reducerOptions = reducers.sort();
+    const stores = this.config.get('stores');
+    const storeOptions = stores.sort();
 
     return this.prompt([
       {
@@ -25,7 +23,7 @@ module.exports = class extends Generator {
         type: 'list',
         name: 'reducerName',
         message: 'Select the reducer',
-        choices: _reducerOptions,
+        choices: storeOptions,
       },
       {
         type: 'confirm',

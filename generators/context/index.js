@@ -1,6 +1,4 @@
-var Generator = require('yeoman-generator');
-
-const humanizeString = require('humanize-string');
+const Generator = require('yeoman-generator');
 const camelCase = require('camelcase');
 
 module.exports = class extends Generator {
@@ -46,11 +44,11 @@ module.exports = class extends Generator {
 
     // update contexts/index.d.ts to add the new namespace to the list
     this.fs.copy(contextsPath, contextsPath, {
-      process: function(content) {
-        var regEx = new RegExp(/\/\* new-context-import-goes-here \*\//, 'g');
-        var newContent = content
+      process(content) {
+        const regEx = new RegExp(/\/\* new-context-import-goes-here \*\//, 'g');
+        const newContent = content
           .toString()
-          .replace(regEx, `export { ${contextName} } from './${contextName}';\n/* new-context-import-goes-here */`);
+          .replace(regEx, `export { ${contextName} } from './${fileName}';\n/* new-context-import-goes-here */`);
         return newContent;
       },
     });

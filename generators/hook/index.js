@@ -1,9 +1,4 @@
-var Generator = require('yeoman-generator');
-var mkdirp = require('mkdirp');
-
-const humanizeString = require('humanize-string');
-const camelCase = require('camelcase');
-const decamelize = require('decamelize');
+const Generator = require('yeoman-generator');
 
 module.exports = class extends Generator {
   prompting() {
@@ -38,9 +33,9 @@ module.exports = class extends Generator {
 
     // update models/index.d.ts to add the new namespace to the list
     this.fs.copy(hooksPath, hooksPath, {
-      process: function(content) {
-        var regEx = new RegExp(/\/\* new-hook-import-goes-here \*\//, 'g');
-        var newContent = content
+      process(content) {
+        const regEx = new RegExp(/\/\* new-hook-import-goes-here \*\//, 'g');
+        const newContent = content
           .toString()
           .replace(regEx, `export { ${hookName} } from './${hookName}';\n/* new-hook-import-goes-here */`);
         return newContent;

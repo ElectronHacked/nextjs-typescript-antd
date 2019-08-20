@@ -1,6 +1,9 @@
 import { 
   DEFAULT_ACTION,
   RESET_<%= STATE_NAME %>_DOABLES,
+  TOGGLE_<%= STATE_NAME %>_BOOLEANABLE_STATE,
+  TOGGLE_<%= STATE_NAME %>_ERRABLE_STATE,
+  TOGGLE_<%= STATE_NAME %>_SUCCESSIBLE_STATE,
   /* new-constant-import-goes-here */
 } from './constants';
 
@@ -23,6 +26,9 @@ export default (
       : (reducerPayloadDoableHelper(state, incomingPayload) as <%= stateName %>);
 
   switch (type) {
+    case TOGGLE_<%= STATE_NAME %>_BOOLEANABLE_STATE:
+    case TOGGLE_<%= STATE_NAME %>_ERRABLE_STATE:
+    case TOGGLE_<%= STATE_NAME %>_SUCCESSIBLE_STATE:
     /* new-constant-cases-go-here */
     case DEFAULT_ACTION:
       return {

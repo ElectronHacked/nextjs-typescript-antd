@@ -10,11 +10,11 @@ import {
 import { select<%= stateShortName %>BooleanableState } from './selectors';
 
 export function* intializeSaga() {
-  const __booleanable__ = yield select(select<%= stateShortName %>BooleanableState('__booleanable__'));
+  const booleanable = yield select(select<%= stateShortName %>BooleanableState('__booleanable__'));
 
-  yield put(toggle<%= stateShortName %>SuccessibleState(!__booleanable__));
+  yield put(toggle<%= stateShortName %>SuccessibleState({ __booleanable__: !booleanable }));
 
-  console.log('<%= sagaName %> has been initialized properly __booleanable__:', __booleanable__);
+  console.log('<%= sagaName %> has been initialized properly __booleanable__:', booleanable );
 }
 
 /* new-saga-goes-here */

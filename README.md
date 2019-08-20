@@ -1,4 +1,5 @@
 
+
 # A scaffolder for ReactJS using NextJS, TypeScript & Ant Design
 
 This yeoman generator will build different React components, creating a skeleton for the different files. 
@@ -465,11 +466,11 @@ export  interface  IPeopleState{
 ```
 As you can see, we have 3 `type`s, namely `PeopleErrable`, `PeopleBooleanable` & `PeopleSuccessible` and they are initialized with default values which the comments state that they should be removed as soon as you start creating your own.
 
-The reason I introduced these 3 `type` in a newly-created store is to allow the user to define the state for all the actions that are `fullfillable` and by this, I simply mean the situation where an action can be dispatched and we wait for it finish (by either succeeding or failing). If we use fetching users as an example, we would normally have three properties in the state: `isFetchingUsers`: `boolean`, `fetchUsersError`: `string` and (sometimes `fetchUserSuccess`: `string` - which, for the purpose of this example, would be a string like `"Successfully fetched the user!"`. 
+The reason I introduced these 3 `type` in a newly-created store is to allow the user to define the state for all the actions that are `fullfillable` and by this, I simply mean the situation where an action can be dispatched and we wait for it finish (by either succeeding or failing). If we use fetching users as an example, we would normally have three properties in the state: `isFetchUsersInProgress`: `boolean`, `fetchUsersError`: `string` and (sometimes `fetchUserSuccess`: `string` - which, for the purpose of this example, would be a string like `"Successfully fetched the user!"`. 
 
-This approach seem to work properly, except for when you have to create a selector to read them. You would have something like `selectIsFetchingUsers`, `fetchUserErrorMessage` and, finally, `fetchUserSuccess`. This creates a problem because for every `fullfilable` action, that would mean you would need a new selector. 
+This approach seem to work properly, except for when you have to create a selector to read them. You would have something like `selectisFetchUsersInProgress`, `fetchUserErrorMessage` and, finally, `fetchUserSuccess`. This creates a problem because for every `fullfilable` action, that would mean you would need a new selector. 
 
-Another problem is when you need an action to set each of those. The old approach means you would need 3 actions, namely: `setIsfetchingUsers`, 	`setFetchUserErrorMessage` and `fetchUserSuccess`. That's not cool! So, to avoid having to do this, I just thought I could get away with these `doable` `type`s and define, in them, what can be doable. This allows me to create just one selector that allows me to select anything  that can be `booleanable`, such as `isFetchingUsers`, `isUpdatingTheUser`, `isSigningOut`, `showDeleteModal`, etc. with just one selector like the one below
+Another problem is when you need an action to set each of those. The old approach means you would need 3 actions, namely: `setisFetchUsersInProgress`, 	`setFetchUserErrorMessage` and `fetchUserSuccess`. That's not cool! So, to avoid having to do this, I just thought I could get away with these `doable` `type`s and define, in them, what can be doable. This allows me to create just one selector that allows me to select anything  that can be `booleanable`, such as `isFetchUsersInProgress`, `isUpdateUserInProgress`, `isSigningOutInProgress`, `showDeleteModal`, etc. with just one selector like the one below
 
 ```jsx
 export  const  selectPeopleBooleanableState  = (key:  PeopleBooleanable  |  PeopleBooleanable[]) =>
@@ -483,15 +484,15 @@ As you can see, I can simply do something like
 
 ```jsx
 const mapStateToProps = createStructuredSelector({
-	isFetchingUsers= selectPeopleBooleanableState('isFetchingUsers')
-	isUpdatingTheUser= selectPeopleBooleanableState('isUpdatingTheUser')
-	isSigningOut= selectPeopleBooleanableState('isSigningOut')
+	isFetchUsersInProgress= selectPeopleBooleanableState('isFetchUsersInProgress')
+	isUpdateUserInProgress= selectPeopleBooleanableState('isUpdateUserInProgress')
+	isSigningOutInProgress= selectPeopleBooleanableState('isSigningOutInProgress')
 	showDeleteModal= selectPeopleBooleanableState('showDeleteModal')
-})
+});
 
 // Or the one that returns true if any of the above is true, like
 const mapStateToProps = createStructuredSelector({
-	showloader= selectPeopleBooleanableState(['isFetchingUsers', 'isUpdatingTheUser', 'isSigningOut'])
+	showloader= selectPeopleBooleanableState(['isFetchUsersInProgress', 'isUpdateUserInProgress', 'isSigningOutInProgress'])
 })
 ```
 
@@ -560,9 +561,7 @@ const  initialState:  IPeopleState  = {
 	booleanable: {},
 	successible: {},
 };
-
-  
-
+ 
 export  default (
 state: IPeopleState  =  initialState,
 { type, payload: incomingPayload }: ReduxActions.Action<IPeopleState>
@@ -571,7 +570,6 @@ const  payload  =
 	type  ===  RESET_PEOPLE_DOABLES
 	?  incomingPayload
 	: (reducerPayloadDoableHelper(state, incomingPayload) as  IPeopleState);
-	  
 
 switch (type) {
 	/* new-constant-cases-go-here */
@@ -585,23 +583,87 @@ switch (type) {
 	}
 };
 ```
+Inside the reducer, the first line ensures that if the action being performed is `RESET_PEOPLE_DOABLES`, we make make use of `./rootReducer/reducerPayloadDoableHelper` which ensures that the current `errable`, `successible` and `boolean` are not overridden by the incoming values. A good example of when that can be the case is if our current state has something like this:
+
+```jsx
+{
+	booleanable: {
+		isFetchUsersInProgress: true,
+		isUpdateUserInProgress: false,
+	}
+}
+```
+
+if we were to `togglePeopleBooleanableState` like below
+```jsx
+dispatch(togglePeopleBooleanableState({
+	isSigningOutInProgress: false, showDeleteModal: false
+}));
+```
+
+this would have resulted in a new state being 
+```jsx
+{
+	booleanable: {
+		isSigningOutInProgress: false,
+		showDeleteModal: false,
+	}
+}
+```
+but what we are looking for is 
+```jsx
+{
+	booleanable: {
+		isFetchUsersInProgress: true,
+		isUpdateUserInProgress: false,
+		isSigningOutInProgress: false,
+		showDeleteModal: false,
+	}
+}
+```
+
+but the `reducerPayloadDoableHelper` function solves that problem.
+
+I will skip`sagas.ts` file.
+
+#### `selectors.ts`
+This is initialized with 3 selectors that are used to select the `errable`, `successible` or `booleanable` states of a given sub-state. and they are, in the case of `People` state, `selectPeopleBooleanableState`,  `selectPeopleErrableState` and `selectPeopleSuccessibleState`. All these will be generated for you when you use the `:store` subgenerator. 
 
 ### `yo nextjs-typescript-antd:action`
 
-It will prompt you the name for your new reducer.
+It will prompt you the name for your new action.
 
+Below is an example of creating a `action`. The first question you are asked is t select the name of the state under which the action will be created. In our case, that will be a `People` state.
 ```
 $ $ yo nextjs-typescript-antd:action --force
 ? Action name jump
-? Select the reducer (Use arrow keys)
+? Select the store (Use arrow keys)
 > People 
   Posts 
 ```
 
+In case you are wondering, the list of states is contained in the `.yo-rc.json` file and it's updated each time you use a generator to generate a state. Currently, it looks like below
+```jsx
+{
+  "generator-nextjs-typescript-antd": {
+    "pages": [
+      ...
+    ],
+    "stores": [
+      "Posts",
+      "People"
+    ]
+  }
+}
+```
+
+As you can see, there are two stores in our project.
+
+After that, you are asked if your action will can be fullfillable or not. An example of such can be one that triggers an API call, such as `fetchUsers` because an API can return either success or error in which case you might want to react to that by dispatching a success (`fetchUsersSuccess`) an error (`fetchUsersError`) action. 
 ```
 $ yo nextjs-typescript-antd:action --force
-? Action name jump
-? Select the reducer People
+? Action name fetchUsers
+? Select the store People
 ? Is it fullfillable? (Does it have SUCCESS & ERROR?) Yes
     force redux-store\people\constants.ts
     force redux-store\people\reducer.ts
@@ -609,6 +671,181 @@ $ yo nextjs-typescript-antd:action --force
     force redux-store\people\state.ts
     force redux-store\people\sagas.ts
 ```
+
+As you can see 5 files were updated. Let's see how they were all affected.
+
+```jsx
+// redux-store\people\constants.ts
+  
+...
+//#region FETCH_USERS-related constants
+export  const  FETCH_USERS  =  'FETCH_USERS';
+export  const  FETCH_USERS_SUCCESS  =  'FETCH_USERS_SUCCESS';
+export  const  FETCH_USERS_ERROR  =  'FETCH_USERS_ERROR';
+//#endregion
+...
+```
+
+```jsx
+// redux-store\people\actions.ts
+  
+...
+//#region fetchUsers-related constants
+export  const  fetchUsers  =  createAction<IPeopleState>(FETCH_USERS, () => ({
+booleanable: { isFetchUsersInProgress: true },
+errable: { fetchUsersErrorMsg: null },
+successible: { fetchUsersSuccessMsg: null },
+}));
+ 
+export  const  fetchUsersSuccess  =  createAction<IPeopleState, IPeopleState>(FETCH_USERS_SUCCESS, state  => ({
+booleanable: { isFetchUsersInProgress: false },
+successible: { fetchUsersSuccessMsg: 'FETCH_USERS action fullfilled!' },
+state,
+}));
+
+export  const  fetchUsersError  =  createAction<IPeopleState, string>(FETCH_USERS_ERROR, fetchUsersErrorMsg  => ({
+booleanable: { isFetchUsersInProgress: false },
+errable: { fetchUsersErrorMsg },
+}));
+//#endregion
+...
+```
+
+```jsx
+// redux-store\people\reducer.ts
+  
+import {
+	...
+	FETCH_USERS,
+	FETCH_USERS_SUCCESS,
+	FETCH_USERS_ERROR,
+	/* new-constant-import-goes-here */
+} from  './constants';
+
+...
+
+export  default (
+state: IPeopleState  =  initialState,
+{ type, payload: incomingPayload }: ReduxActions.Action<IPeopleState>
+) => {
+const  payload  = ...
+
+	switch (type) {
+		...
+		case  FETCH_USERS:
+		case  FETCH_USERS_SUCCESS:
+		case  FETCH_USERS_ERROR:
+		/* new-constant-cases-go-here */
+		case  DEFAULT_ACTION:
+		return {
+			...state,
+			...payload,
+		};
+		default:
+			return  state;
+	}
+};
+```
+
+```jsx
+// redux-store\people\sagas.ts
+  
+...
+import {
+  ...
+  FETCH_USERS,
+  /* new-constant-import-goes-here */
+} from './constants';
+import {
+  ...
+  fetchUsersSuccess,
+  fetchUsersError,
+  /* new-action-import-goes-here */
+} from './actions';
+...
+function* fetchUsersSaga() {
+  const BOOL_VALUE = Math.random() >= 0.5;
+
+  yield delay(500); // Just sleep for half a sec just to look real. A saga requires a yield because it's a generator
+
+  try {
+    if (BOOL_VALUE) {
+      yield put(fetchUsersSuccess({}));
+    } else {
+      yield put(fetchUsersError('Sorry, An error occured! Please try again later!'));
+    }
+  } catch (error) {
+    yield put(fetchUsersError('Sorry, An error occured! Please try again later!'));
+  }
+}
+
+export default function* peopleSaga() {
+  yield all([
+    ...
+    takeLatest(FETCH_USERS, fetchUsersSaga),
+    /* new-saga-registration-goes-here */
+  ]);
+}
+
+```
+
+```jsx
+// redux-store\people\state.ts
+...
+export  type  PeopleErrable  = 'fetchUsersErrorMsg'  /* new-errable-goes-here */;
+export  type  PeopleBooleanable  = 'isFetchUsersInProgress'  /* new-booleanable-goes-here */;
+export  type  PeopleSuccessible  = 'fetchUsersSuccessMsg'  /* new-successible-goes-here */;
+...
+```
+
+As you can see, it's too much code... but it's too much code that you don't get to write.
+
+In a case where you do not want to have your action that has `_ERROR` and `_SUCCESS`, you would have only three files updated such as below
+
+```jsx
+$ yo nextjs-typescript-antd:action --force
+? Action name jump
+? Select the reducer People
+? Is it fullfillable? (Does it have SUCCESS & ERROR?) No
+    force redux-store\people\constants.ts
+    force redux-store\people\reducer.ts
+    force redux-store\people\actions.ts
+```
+
+And below is how each would have been affected
+```jsx
+// redux-store\people\constants.ts
+...
+//#region JUMP-related constants
+export  const  JUMP  =  'JUMP';
+//#endregion
+...
+
+// redux-store\people\reducer.ts
+...
+switch (type) {
+	...
+	case  JUMP:
+	/* new-constant-cases-go-here */
+	case  DEFAULT_ACTION:
+		return {
+			...state,
+			...payload,
+		};
+	default:
+		return  state;
+}
+
+...
+// redux-store\people\actions.ts
+...
+//#region jump-related constants
+export  const  jump  =  createAction<IPeopleState, IPeopleState>(JUMP, 	state  =>  state); // Make sure you pass a proper payload!!!
+//#endregion
+...
+```
+
+As you can see, there was nothing updated with regards to `errable`, `successible` and `booleanable` states because the action is not `async` and  can't fail.
 
 ### `yo nextjs-typescript-antd:enum`
 

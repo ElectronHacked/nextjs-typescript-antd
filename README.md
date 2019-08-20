@@ -1,3 +1,4 @@
+
 # A scaffolder for ReactJS using NextJS, TypeScript & Ant Design
 
 This yeoman generator will build different React components, creating a skeleton for the different files. 
@@ -39,7 +40,12 @@ $ yo nextjs-typescript-antd
   * [yo nextjs-typescript-antd](#yo-nextjs-typescript-antd)
   * [yo nextjs-typescript-antd:page](#yo-nextjs-typescript-antdpage)
   * [yo nextjs-typescript-antd:component](#yo-nextjs-typescript-antdcomponent)
-  * [yo nextjs-typescript-antd:reducer](#yo-nextjs-typescript-antdreducer)
+  * [yo nextjs-typescript-antd:store](#yo-nextjs-typescript-antdstore)
+  * [yo nextjs-typescript-antd:action](#yo-nextjs-typescript-antdaction)
+  * [yo nextjs-typescript-antd:enum](#yo-nextjs-typescript-antdenum)
+  * [yo nextjs-typescript-antd:hoc](#yo-nextjs-typescript-antdhoc)
+  * [yo nextjs-typescript-antd:hook](#yo-nextjs-typescript-antdhook)
+  * [yo nextjs-typescript-antd:context](#yo-nextjs-typescript-antdcontext)
   * [yo nextjs-typescript-antd:model](#yo-nextjs-typescript-antdmodel)
 * [Changelog](#changelog-generator)
 * [Release and Publish](#release-and-publish)
@@ -416,43 +422,246 @@ This is possible because of the configuration in the `.babelrc` file, line `9`
   ]
 }
 ```
+### `yo nextjs-typescript-antd:store`
+
+It will prompt you the name for your new store.
+
+```
+$ $ yo nextjs-typescript-antd:store --force
+? Store name People
+   create redux-store\people\actions.ts
+   create redux-store\people\constants.ts
+   create redux-store\people\reducer.ts
+   create redux-store\people\sagas.ts
+   create redux-store\people\selectors.ts
+   create redux-store\people\state.ts
+    force redux-store\rootReducer.ts
+    force redux-store\rootSaga.ts
+    force redux-store\storeState.ts
+```
+As you can see, there were 6 new files which were created. Let's have a look at each and explain what's happening in those.
+
+#### `state.ts`
+```jsx
+export  type  PeopleErrable  =
+	|  '__errable__'  // Remove this. It's just a placeholder
+	/* new-errable-goes-here */; 
+
+export  type  PeopleBooleanable  =
+	|  '__booleanable__'  // Remove this. It's just a placeholder
+	/* new-booleanable-goes-here */;  
+
+export  type  PeopleSuccessible  =
+	|  '__successible__'  // Remove this. It's just a placeholder
+	/* new-successible-goes-here */;  
+
+export  interface  IPeopleState{ 
+	//#region Doables
+	readonly errable?: { [key  in  PeopleErrable]?:  string };
+	readonly booleanable?: { [key  in  PeopleBooleanable]?:  boolean };
+	readonly successible?: { [key  in  PeopleSuccessible]?:  string };
+	//#endregion
+}
+```
+As you can see, we have 3 `type`s, namely `PeopleErrable`, `PeopleBooleanable` & `PeopleSuccessible` and they are initialized with default values which the comments state that they should be removed as soon as you start creating your own.
+
+The reason I introduced these 3 `type` in a newly-created store is to allow the user to define the state for all the actions that are `fullfillable` and by this, I simply mean the situation where an action can be dispatched and we wait for it finish (by either succeeding or failing). If we use fetching users as an example, we would normally have three properties in the state: `isFetchingUsers`: `boolean`, `fetchUsersError`: `string` and (sometimes `fetchUserSuccess`: `string` - which, for the purpose of this example, would be a string like `"Successfully fetched the user!"`. 
+
+This approach seem to work properly, except for when you have to create a selector to read them. You would have something like `selectIsFetchingUsers`, `fetchUserErrorMessage` and, finally, `fetchUserSuccess`. This creates a problem because for every `fullfilable` action, that would mean you would need a new selector. 
+
+Another problem is when you need an action to set each of those. The old approach means you would need 3 actions, namely: `setIsfetchingUsers`, 	`setFetchUserErrorMessage` and `fetchUserSuccess`. That's not cool! So, to avoid having to do this, I just thought I could get away with these `doable` `type`s and define, in them, what can be doable. This allows me to create just one selector that allows me to select anything  that can be `booleanable`, such as `isFetchingUsers`, `isUpdatingTheUser`, `isSigningOut`, `showDeleteModal`, etc. with just one selector like the one below
+
+```jsx
+export  const  selectPeopleBooleanableState  = (key:  PeopleBooleanable  |  PeopleBooleanable[]) =>
+
+createSelector(
+	peopleState(),
+	({ booleanable }) => (Array.isArray(key) ?  !!key.filter(k  =>  		booleanable[k]).length  :  booleanable[key])
+);
+```
+As you can see, I can simply do something like
+
+```jsx
+const mapStateToProps = createStructuredSelector({
+	isFetchingUsers= selectPeopleBooleanableState('isFetchingUsers')
+	isUpdatingTheUser= selectPeopleBooleanableState('isUpdatingTheUser')
+	isSigningOut= selectPeopleBooleanableState('isSigningOut')
+	showDeleteModal= selectPeopleBooleanableState('showDeleteModal')
+})
+
+// Or the one that returns true if any of the above is true, like
+const mapStateToProps = createStructuredSelector({
+	showloader= selectPeopleBooleanableState(['isFetchingUsers', 'isUpdatingTheUser', 'isSigningOut'])
+})
+```
+
+Please be sure to remove the default `doable`s like `__errable__`, `__booleanable__` & `__successible__` once you have added your own.
+
+Another example of creating an action that can set either of them, is in the `redux-store\people\actions.ts`
+
+```jsx
+export  const  togglePeopleErrableState  =  createAction<IPeopleState, { [key  in  PeopleErrable]?:  string }>(
+	TOGGLE_PEOPLE_ERRABLE_STATE,
+	key  => ({
+		errable: key,
+	})
+);
+```
+
+This allows you to what is shown below. (This assumes you have `errable` states such as `fetcUserErrorMsg`, `updateUserErrorMsg`, `signInErrorMsg`, etc.
+
+```jsx
+dispatch(togglePeopleErrableState({ fetcUserErrorMsg: '' )); 
+dispatch(togglePeopleErrableState({ updateUserErrorMsg: 'Could not update the user!' ));
+dispatch(togglePeopleErrableState({ signInErrorMsg: '' ));
+
+// Or even
+dispatch(togglePeopleErrableState({ 
+	fetcUserErrorMsg: '',
+	updateUserErrorMsg: 'Could not update the user!',
+	signInErrorMsg: '' 
+})); 
+
+```
+
+All with just one action.
+
+### `constants.ts`
+```jsx
+export  const  DEFAULT_ACTION  =  'DEFAULT_ACTION';
+
+  
+
+//#region Reset doable for this state
+export  const  RESET_PEOPLE_DOABLES  =  'RESET_PEOPLE_DOABLES';
+export  const  TOGGLE_PEOPLE_BOOLEANABLE_STATE  =  'TOGGLE_PEOPLE_BOOLEANABLE_STATE';
+export  const  TOGGLE_PEOPLE_ERRABLE_STATE  =  'TOGGLE_PEOPLE_ERRABLE_STATE';
+export  const  TOGGLE_PEOPLE_SUCCESSIBLE_STATE  =  'TOGGLE_PEOPLE_SUCCESSIBLE_STATE';
+//#endregion
+
+/* new-constant-export-goes-here */
+```
+This contains the constants to set the `doable`s and reset them. Please do not remove the line that says `/* new-constant-export-goes-here */` as that is where the generated code will seat.
+
+#### `reducer.ts`
+
+```jsx
+import {
+	DEFAULT_ACTION,
+	RESET_PEOPLE_DOABLES,
+	/* new-constant-import-goes-here */
+} from  './constants';
+  
+import { IPeopleState } from  './state';
+import { reducerPayloadDoableHelper } from  'redux-store/rootReducer';
+  
+const  initialState:  IPeopleState  = {
+	errable: {},
+	booleanable: {},
+	successible: {},
+};
+
+  
+
+export  default (
+state: IPeopleState  =  initialState,
+{ type, payload: incomingPayload }: ReduxActions.Action<IPeopleState>
+) => {
+const  payload  =
+	type  ===  RESET_PEOPLE_DOABLES
+	?  incomingPayload
+	: (reducerPayloadDoableHelper(state, incomingPayload) as  IPeopleState);
+	  
+
+switch (type) {
+	/* new-constant-cases-go-here */
+	case  DEFAULT_ACTION:
+		return {
+			...state,
+			...payload,
+		}
+	default:
+		return  state;
+	}
+};
+```
+
+### `yo nextjs-typescript-antd:action`
+
+It will prompt you the name for your new reducer.
+
+```
+$ $ yo nextjs-typescript-antd:action --force
+? Action name jump
+? Select the reducer (Use arrow keys)
+> People 
+  Posts 
+```
+
+```
+$ yo nextjs-typescript-antd:action --force
+? Action name jump
+? Select the reducer People
+? Is it fullfillable? (Does it have SUCCESS & ERROR?) Yes
+    force redux-store\people\constants.ts
+    force redux-store\people\reducer.ts
+    force redux-store\people\actions.ts
+    force redux-store\people\state.ts
+    force redux-store\people\sagas.ts
+```
+
+### `yo nextjs-typescript-antd:enum`
+
+It will prompt you the name for your new reducer.
+
+```
+$ yo nextjs-typescript-antd:enum --force
+? Enum name UserRoles
+   create enums\userRoles.ts
+    force enums\index.ts
+```
+### `yo nextjs-typescript-antd:antdhoc`
+
+It will prompt you the name for your new reducer.
+
+```
+$ yo nextjs-typescript-antd:hoc --force
+? HOC name withUserRoles
+   create hocs\withUserRoles.tsx
+    force hocs\index.ts
+```
+
+### `yo nextjs-typescript-antd:antdhook`
+
+It will prompt you the name for your new reducer.
+
+```
+$ yo nextjs-typescript-antd:hook --force
+? Hook name (Should start with use) useUserRoles
+   create hooks\useUserRoles.ts
+    force hooks\index.ts
+```
+
+### `yo nextjs-typescript-antd:antdcontext`
+
+It will prompt you the name for your new reducer.
+
+```
+$ yo nextjs-typescript-antd:context --force
+? Context name UserContext
+   create contexts\userContext.ts
+    force contexts\index.ts
+```
 
 ### `yo nextjs-typescript-antd:model`
 
 It will prompt you the name for your new interface.
 
 ```
-$ yo nextjs-typescript-antd:model
-? Model name UserInfo
-   create models\userInfo.d.ts
- conflict models\index.d.ts
-? Overwrite models\index.d.ts? overwrite // Here we are adding our newly-created interface, IUserInfo, into index.d.ts, which exposes 'models' module
+$ yo nextjs-typescript-antd:model --force
+? Model name User
+   create models\user.d.ts
     force models\index.d.ts
-```
-
-### `yo nextjs-typescript-antd:reducer`
-
-It will prompt you the name for your new reducer.
-
-```
-$ yo nextjs-typescript-antd:reducer
-? Reducer name Employees
-   create redux\employees\actions.ts
-   create redux\employees\constants.ts
-   create redux\employees\payloads.ts
-   create redux\employees\reducer.ts
-   create redux\employees\sagas.ts
-   create redux\employees\selectors.ts
-   create redux\employees\state.ts
- conflict redux\rootReducer.ts
-? Overwrite redux\rootReducer.ts? overwrite // We are combining the current reducer with the new created Employees reducer
-    force redux\rootReducer.ts
- conflict redux\rootSaga.ts
-? Overwrite redux\rootSaga.ts? overwrite // We are updating the root saga to include the Employees' sagas so that the can be run at together
-    force redux\rootSaga.ts
- conflict redux\storeState.ts
-? Overwrite redux\storeState.ts? overwrite // We are updating the application state to include the IEmployeeState that just got created
-    force redux\storeState.ts
 ```
 
 # Changelog Generator
@@ -467,7 +676,6 @@ This yeoman generator will build different React components, creating a skeleton
 
 ### TODO List
 
-- [ ] Add Storybook Subgenerator
 - [ ] Allow The User To Choose A CSS Preprocessor (LESS OR LESS)
 - [ ] Allow The User To Specify CRUD Requirements When Generating The Page
 - [ ] Allow The User To Choose A [Layout](https://ant.design/components/layout/) When Generating The Boilerplate

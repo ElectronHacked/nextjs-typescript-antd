@@ -165,7 +165,7 @@ module.exports = class extends Generator {
         errable: { ${errable} },
       }));`;
     } else {
-      ACTIONS = `export const ${actionNameToCamelCase} = createAction<I${reducerName}State, I${reducerName}State>(${CONSTANT_NAME}, state => ({ state })); // Make sure you pass a proper payload!!!`;
+      ACTIONS = `export const ${actionNameToCamelCase} = createAction<I${reducerName}State, I${reducerName}State>(${CONSTANT_NAME}, state => state); // Make sure you pass a proper payload!!!`;
     }
 
     // update constsntstss to export the newly-created actions

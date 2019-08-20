@@ -53,7 +53,7 @@ module.exports = class extends Generator {
         {
           type: 'confirm',
           name: 'createReducer',
-          message: 'Would you like to create reducer for this page?',
+          message: 'Would you like to create a store for this page?',
           default: false,
         },
       ]).then(({ title, isNestedPage, parentPage, createReducer }) => {

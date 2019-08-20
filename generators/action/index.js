@@ -22,7 +22,7 @@ module.exports = class extends Generator {
       {
         type: 'list',
         name: 'reducerName',
-        message: 'Select the reducer',
+        message: 'Select the store',
         choices: storeOptions,
       },
       {

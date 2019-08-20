@@ -4,7 +4,7 @@ import {
 /* new-constant-import-goes-here */
 } from './constants';
 import {
-  toggle<%= stateShortName %>SuccessibleState
+  toggle<%= stateShortName %>BooleanableState
   /* new-action-import-goes-here */
 } from './actions';
 import { select<%= stateShortName %>BooleanableState } from './selectors';
@@ -12,7 +12,7 @@ import { select<%= stateShortName %>BooleanableState } from './selectors';
 export function* intializeSaga() {
   const booleanable = yield select(select<%= stateShortName %>BooleanableState('__booleanable__'));
 
-  yield put(toggle<%= stateShortName %>SuccessibleState({ __booleanable__: !booleanable }));
+  yield put(toggle<%= stateShortName %>BooleanableState({ __booleanable__: !booleanable }));
 
   console.log('<%= sagaName %> has been initialized properly __booleanable__:', booleanable );
 }

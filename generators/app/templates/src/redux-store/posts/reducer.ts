@@ -7,6 +7,9 @@ import {
   FETCH_POST_COMMENTS,
   FETCH_POST_COMMENTS_SUCESS,
   FETCH_POST_COMMENTS_ERROR,
+  TOGGLE_POSTS_BOOLEANABLE_STATE,
+  TOGGLE_POSTS_ERRABLE_STATE,
+  TOGGLE_POSTS_SUCCESSIBLE_STATE,
 } from './constants';
 import { reducerPayloadDoableHelper } from 'redux-store/rootReducer';
 
@@ -34,6 +37,9 @@ export default (
     case FETCH_POSTS_ERROR:
     case FETCH_POST_COMMENTS:
     case FETCH_POST_COMMENTS_ERROR:
+    case TOGGLE_POSTS_BOOLEANABLE_STATE:
+    case TOGGLE_POSTS_ERRABLE_STATE:
+    case TOGGLE_POSTS_SUCCESSIBLE_STATE:
       return {
         ...state,
         ...payload,

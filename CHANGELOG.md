@@ -1,3 +1,9 @@
+#### 2.1.10 (2019-09-17)
+
+##### Other Changes
+
+* store ([0f40378e](https://github.com/ElectronHacked/nextjs-typescript-antd/commit/0f40378e764da535903fadf628039cfaf2ca6a2a))
+
 #### 2.1.9 (2019-09-17)
 
 #### 2.1.8 (2019-08-20)

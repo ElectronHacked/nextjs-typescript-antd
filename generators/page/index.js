@@ -157,7 +157,7 @@ module.exports = class extends Generator {
           },
         },
         {
-          local: require.resolve('../reducer'),
+          local: require.resolve('../store'),
         },
       );
     }

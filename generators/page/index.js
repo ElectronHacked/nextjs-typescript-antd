@@ -149,7 +149,7 @@ module.exports = class extends Generator {
     // Add reducer for this page
     if (createReducer) {
       this.composeWith(
-        'nextjs-typescript-antd:reducer',
+        'nextjs-typescript-antd:store',
         {
           options: {
             name,
